@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/home';
 
     /**
      * Create a new controller instance.
@@ -37,7 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -48,16 +48,17 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'qualification' => 'required|string|max:255',
-            'phoneNumber' => 'required|string|max:255',
-            'joiningDate' => 'required|date|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'designation' =>'required'
-        ]);
+//        return Validator::make($data, [
+//            'name' => 'required|string|max:255',
+//            'address' => 'required|string|max:255',
+//            'qualification' => 'required|string|max:255',
+//            'phoneNumber' => 'required|string|max:255',
+//            'joiningDate' => 'required|date|max:255',
+//            'email' => 'required|string|email|max:255|unique:users',
+//            'password' => 'required|string|min:6',
+//            'confirm_password'=>'required|same:password',
+//            'designation' =>'required'
+//        ]);
 
     }
 
@@ -69,23 +70,37 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'address' =>  $data['address'],
-            'qualification' =>  $data['qualification'],
-            'designation' => $data['designation'],
-            'phoneNumber' =>  $data['phoneNumber'],
-            'joiningDate' =>  $data['joiningDate'],
-            'checkInTime' =>  '09:00:00',
-            'checkOutTime' =>  '16:00:00',
-            'breakAllowed' =>  30,
-            'workingDays' =>  5
-        ]);
-        $role = Role::findOrFail(2);
-        $user->role()->attach($role);
-        return $user;
+//        $user = User::create([
+//            'name' => $data['name'],
+//            'email' => $data['email'],
+//            'password' => bcrypt($data['password']),
+//            'address' =>  $data['address'],
+//            'qualification' =>  $data['qualification'],
+//            'designation' => $data['designation'],
+//            'phoneNumber' =>  $data['phoneNumber'],
+//            'joiningDate' =>  $data['joiningDate'],
+//            'checkInTime' =>  '09:00:00',
+//            'checkOutTime' =>  '16:00:00',
+//            'breakAllowed' =>  30,
+//            'workingDays' =>  5
+//        ]);
+//        $role = Role::findOrFail(2);
+//        $user->role()->attach($role);
+
+        //upload image
+        if($file =$data->file('image')){
+
+            dd($file);
+            $name = $data['name'].time().$file->getClientOriginalName();
+            $file->move('images/member',$name);
+
+            $member =Member::get()->last();
+            $member->imageable()->create(['path'=>$name]);
+        }
+
+
+
+        return view('Admin.index');
 //        $user ->role->create([''])
     }
 

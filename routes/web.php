@@ -11,49 +11,65 @@
 |
 */
 use App\User;
-
+//
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/upload-csv','ApplicantsController@uploadCsv');
-Route::post('/upload-csv','ApplicantsController@uploadCsvPost');
+//Route::get('/upload-csv','ApplicantsController@uploadCsv');
+//Route::get('/',function (){
+//
+//    dd('hello');
+//});
 
 
 
-Auth::routes();
+//Auth::routes();
 
 //Route::post('/login/custom',[
 //'uses'=>'LoginController@login',
 //'as'=>'login.custom'
 //]);
 
-Route::group(['middleware'=>'auth'],function(){
-	Route::get('/home', 'ApplicantsController@home')->name('home');
+Route::group(['middleware' => ['auth','admin']], function () {
+    Route::get('/applicants/lists', 'ApplicantsController@home')->name('home');
+    Route::get('admin/home', 'HomeController@home')->name('admin.home');
+    Route::get('/admin/register','UserController@showRegisterForm');
+    Route::post('/admin/register/success/','UserController@store')->name('admin.register');
+    Route::post('/upload-cv','ApplicantsController@uploadCvPost');
+    Route::get('/upload-csv/view','ApplicantsController@uploadCsv');
+    Route::post('/upload-csv','ApplicantsController@uploadCsvPost');
+    Route::get('/view-cv/{id}','ApplicantsController@viewCv');
+    Route::get('/delete/{id}','ApplicantsController@delete');
+    Route::get('/register','Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('/register','Auth\RegisterController@register');
 
 });
-Route::get('/home', 'ApplicantsController@home')->name('home');
-Route::get('/admin/login','UserController@showLoginForm');
-Route::get('/admin/register','UserController@showRegisterForm');
-Route::post('/admin/login/success','UserController@login')->name('user.login');
-Route::post('/admin/register/success/','UserController@register')->name('admin.register');
-Route::post('/change/password','UserController@changePassword')->name('change.password');
+Route::group(['middleware' => ['firstLogin','auth','employee']], function () {
+    Route::get('employee/home', 'HomeController@employeeHome')->name('employee.home');
 
-//Route::get('admin/home', 'AdminController@index');
-//Route::get('employee/home', 'EmployeeController@index');
+});
+//Auth::routes();
+Route::resource('employee','UserController');
+//Route::post('/password/email','Auth\ForgotPasswordController@sendRequestLinkEmail');
+Route::group(['middleware' => ['web','guest']], function () {
 
-Route::post('/upload-cv','ApplicantsController@uploadCvPost');
+    Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
+});
+    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('/', 'Auth\LoginController@login')->name('login');
+    Route::get('/change/password', 'UserController@changePassword')->middleware('auth')->name('password');
+    Route::post('/password', 'UserController@newPassword')->middleware('auth')->name('new.password');
 
-Route::get('/view-cv/{id}','ApplicantsController@viewCv');
+// Forgot password Route
+    Route::group(['middleware' => ['web','guest']], function () {
+    Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('/password/rest', 'Auth\ResetPasswordController@reset')->name('reset');
+    Route::get('/password/reset/{token?}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
-Route::get('/delete/{id}','ApplicantsController@delete');
+});
 
-Auth::routes();
-
-Route::get('/data',function(){
-    return view('admin');
-
-})->name('users');
 //Route::get('/home', 'HomeController@index')->name('home');
 //
 //

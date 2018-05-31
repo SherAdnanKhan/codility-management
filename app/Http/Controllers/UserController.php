@@ -6,21 +6,23 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
-use AuthenticatesUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    use AuthenticatesUsers;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-    public function showLoginForm()
+    public  function __construct()
     {
-        return view('Admin.login');
+        $this->middleware('auth');
     }
+
     public function showRegisterForm()
     {
         return view('Admin.register');
@@ -29,7 +31,34 @@ class UserController extends Controller
     public function register(Request $request)
     {
 
-//        $user ->role->create([''])
+        $this->validate($request,[
+            'email'=>'required|email',
+            'password'=>'required|min:6',
+            'confirm_password'=>'required|same:password',
+            'name'            =>'required'
+
+        ]);
+
+        $user =User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>bcrypt($request->password)
+        ]);
+        return view('Admin.index');
+    }
+    public function login(Request $request)
+    {
+        $this->validate($request,[
+            'email'=>'required|email',
+            'password'=>'required|min:6'
+
+
+        ]);
+        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$request->remember)){
+
+            return redirect()->intended('/dashboard');
+        }
+        return redirect()->back()->withInput()->withFlashMessage('Wrong username/password combination.');
     }
     public function index()
     {
@@ -45,14 +74,32 @@ class UserController extends Controller
     {
         //;
     }
-    public function changePassword(Request $request)
+    public function newPassword(Request $request)
     {
-//        dd($request->check);
-        $user = User::whereEmail($request->check )->first();
-            $user->password = bcrypt($request->password);
-            $user->save();
-        dd($user);
-        return view('change_password')->withInput('password','email');
+        $this->validate($request, [
+            'new_password' => 'required|min:6',
+        ]);
+        $email = Auth::user()->email;
+        $user = User::whereEmail($email)->update(['password' => bcrypt($request->new_password), 'firstLogin' => 0]);
+
+        if (Auth::user()->isEmployee() == true) {
+            return redirect()->route('employee.home');
+        }
+
+        if(Auth::user()->isAdmin() == true)
+        {
+
+            return redirect()->route('admin.home');
+
+        }
+
+    }
+    public function changePassword()
+    {
+
+        $email = Auth::user()->email;
+        $user = User::whereEmail($email)->first();
+        return view('change_password',compact('user'));
     }
 
     /**
@@ -63,12 +110,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|alpha',
-            'email' => 'required|email',
-            'password' =>'required'
-        ]);
+        $this->validate($request,[
+            'email'=>'required|email',
+            'password'=>'required|min:6',
+            'confirm_password'=>'required|same:password',
+            'name'            =>'required'
 
+        ]);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -78,7 +126,7 @@ class UserController extends Controller
         ]);
         $role = Role::findOrFail(1);
         $user->role()->attach($role);
-        return $user;
+        return view('Admin.index');
     }
 
     /**
@@ -100,7 +148,17 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+//dd(Auth::user()->id);
+        $get_id= Auth::user()->isAdmin() ? $id : Auth::user()->id;
+//        dd($get_id);
+
+        $user = User::findOrFail($get_id);
+        if($user->isEmployee()) {
+//dd($user);
+            return view('Admin.employee_edit', compact('user'));
+
+        }
+        return redirect()->back();
     }
 
     /**
@@ -112,7 +170,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        if (Auth::user()->isAdmin) {
+
+            $user->email =$request->email;
+            $user->name = $request->name;
+        }
+
     }
 
     /**
