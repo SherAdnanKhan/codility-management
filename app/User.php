@@ -4,12 +4,13 @@ namespace App;
 use App\Role;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
-  public function role()
+    public function role()
     {
         return $this->belongsToMany('App\Role','role_admins');
     }
@@ -32,26 +33,39 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function photos(){
+        return $this->hasOne('App\Photo');
+
+    }
     public function isAdmin()
     {
         foreach ($this->role as $role )
         {
             if ($role->name == 'Administrator') {
-
+                return true;
+            }
+            return false;
+        }
+    }
+    public function isEmployee()
+    {
+        foreach ($this->role as $role )
+        {
+            if ($role->name == 'Employee') {
                 return true;
             }
             return false;
         }
     }
 
-    public function isFirstLogin()
+    public function isfirstLogin()
     {
-
-            if ($this->firstLogin == true ) {
-                return false;
-            }
+        $user = User::whereEmail(Auth::user()->email)->pluck('firstLogin')->first();
+        if ($user == true ){
+            return false;
+        }else {
             return true;
-
+        }
     }
 
 }

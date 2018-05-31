@@ -16,12 +16,11 @@ class EmployeeMiddleware
      */
     public function handle($request, Closure $next)
     {
-        foreach (Auth::user()->role as $role) {
-            if($role->name=='employee')
-            {
+        if(Auth::check()) {
+            if (Auth::user()->isEmployee()) {
                 return $next($request);
             }
         }
-        return redirect('/');
+        return redirect()->back();
     }
 }
