@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Photo;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,23 +47,13 @@ class UserController extends Controller
         ]);
         return view('Admin.index');
     }
-    public function login(Request $request)
-    {
-        $this->validate($request,[
-            'email'=>'required|email',
-            'password'=>'required|min:6'
 
-
-        ]);
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$request->remember)){
-
-            return redirect()->intended('/dashboard');
-        }
-        return redirect()->back()->withInput()->withFlashMessage('Wrong username/password combination.');
-    }
     public function index()
     {
-        //
+
+        $users=User::all();
+
+        return view('Employee.index',compact('users'));
     }
 
     /**
@@ -96,9 +87,9 @@ class UserController extends Controller
     }
     public function changePassword()
     {
-
         $email = Auth::user()->email;
-        $user = User::whereEmail($email)->first();
+        $user = User::whereEmail($email)->where('firstLogin',1)->first();
+
         return view('change_password',compact('user'));
     }
 
@@ -111,12 +102,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'email'=>'required|email',
+            'email'=>'required|email|unique:users',
             'password'=>'required|min:6',
             'confirm_password'=>'required|same:password',
             'name'            =>'required'
 
         ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -148,16 +140,22 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+
 //dd(Auth::user()->id);
-        $get_id= Auth::user()->isAdmin() ? $id : Auth::user()->id;
+//        $get_id= Auth::user()->isAdmin() ? $id : Auth::user()->id;
 //        dd($get_id);
+           if(Auth::user()->isAdmin()) {
+               $user = User::findOrFail($id);
+           }
+           elseif (Auth::user()->isEmployee()){
 
-        $user = User::findOrFail($get_id);
-        if($user->isEmployee()) {
-//dd($user);
-            return view('Admin.employee_edit', compact('user'));
+               $user = User::findOrFail(Auth::user()->id);
+           }
 
-        }
+   return view('Admin.employee_edit', compact('user'));
+
+//            }
+
         return redirect()->back();
     }
 
@@ -170,23 +168,58 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        if (Auth::user()->isAdmin) {
 
-            $user->email =$request->email;
-            $user->name = $request->name;
+        $this->validate($request,[
+            'image'            =>'required | mimes:jpeg,jpg'
+
+        ]);
+
+        if($file =$request->file('image')){
+
+            $name = $request->name .time() .$file->getClientOriginalName();
+            $file->move('images/user',$name);
+            $user = User::findOrFail($id);
+            $photo = Photo::whereUserId($id)->get()->first();
+
+            if (!(empty($photo))){
+
+                    unlink(public_path('/images/user/'.$user->photos->path));
+
+                Photo::whereUserId($id)->update(['path' => $name]);
+
+              }
+              else {
+
+                $user->photos()->create(['path' => $name]);
+            }
+
         }
+//        $user = User::findOrFail($id);
+//        if (Auth::user()->isAdmin) {
+//
+//            $user->email =$request->email;
+//            $user->name = $request->name;
+//        }
 
+
+        return $user->redirect();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $id/
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $photo = Photo::whereUserId($id)->get()->first();
+        $user->delete();
+        if (!(empty($photo))){
+            unlink(public_path('/images/user/' . $photo->path));
+    }
+    return redirect()->route('profile.index');
+
     }
 }

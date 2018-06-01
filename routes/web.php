@@ -32,12 +32,12 @@ Route::get('/', function () {
 //]);
 
 Route::group(['middleware' => ['auth','admin']], function () {
-    Route::get('/applicants/lists', 'ApplicantsController@home')->name('home');
+    Route::get('/applicants/lists', 'ApplicantsController@home')->name('applicant_list');
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
-    Route::get('/admin/register','UserController@showRegisterForm');
+    Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
     Route::post('/admin/register/success/','UserController@store')->name('admin.register');
     Route::post('/upload-cv','ApplicantsController@uploadCvPost');
-    Route::get('/upload-csv/view','ApplicantsController@uploadCsv');
+    Route::get('/upload-csv/view','ApplicantsController@uploadCsv')->name('upload.cvs');
     Route::post('/upload-csv','ApplicantsController@uploadCsvPost');
     Route::get('/view-cv/{id}','ApplicantsController@viewCv');
     Route::get('/delete/{id}','ApplicantsController@delete');
@@ -50,14 +50,14 @@ Route::group(['middleware' => ['firstLogin','auth','employee']], function () {
 
 });
 //Auth::routes();
-Route::resource('employee','UserController');
+Route::resource('profile','UserController');
 //Route::post('/password/email','Auth\ForgotPasswordController@sendRequestLinkEmail');
 Route::group(['middleware' => ['web','guest']], function () {
 
     Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 });
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('/', 'Auth\LoginController@login')->name('login');
+    Route::post('/login/success', 'Auth\LoginController@login')->name('login');
     Route::get('/change/password', 'UserController@changePassword')->middleware('auth')->name('password');
     Route::post('/password', 'UserController@newPassword')->middleware('auth')->name('new.password');
 

@@ -34,6 +34,7 @@ class User extends Authenticatable
     ];
 
     public function photos(){
+
         return $this->hasOne('App\Photo');
 
     }
@@ -65,6 +66,18 @@ class User extends Authenticatable
             return false;
         }else {
             return true;
+        }
+    }
+
+    public function redirect(){
+
+        if(Auth::user()->isAdmin()){
+
+            return redirect()->route('admin.home');
+        }
+        else{
+
+            return redirect()->route('employee.home');
         }
     }
 

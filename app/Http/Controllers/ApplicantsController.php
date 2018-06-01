@@ -69,7 +69,7 @@ class ApplicantsController extends Controller
 
             }
 
-            return redirect('/upload-csv/view')->with('info','File uploaded successfully.');
+            return redirect()->route('applicant_list')->with('info','File uploaded successfully.');
         }else
         {
             return redirect('/upload-csv')->with('info','File upload error.');
@@ -125,7 +125,7 @@ class ApplicantsController extends Controller
             $user->cvData=$text;
             $user->save();
 
-            return redirect('home');
+            return redirect('Admin.applicant_list');
 
 
         }else{
@@ -145,7 +145,7 @@ class ApplicantsController extends Controller
 
         }else
         {
-            return redirect('home')->with('status','Resume not Found.');
+            return redirect('Admin.applicant_list')->with('status','Resume not Found.');
         }
     }
 
@@ -153,6 +153,6 @@ class ApplicantsController extends Controller
     {
         $applicant = Applicants::find($id);
         $applicant->delete();
-        return redirect('home')->with('status','Employee Deleted.');
+        return redirect('Admin.applicant_list')->with('status','Employee Deleted.');
     }
 }

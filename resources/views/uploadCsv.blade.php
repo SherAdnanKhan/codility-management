@@ -1,21 +1,24 @@
 @extends('layouts.app')
 
-@section('content')
+@section('body')
 
-@section('mystyles')
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-@endsection
-
-<div class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6">
+    <div class="container" style="margin-top: 5%;">
+        <div class="Register-form" style="background-color: #fff;">
+            <div class="form-inner flex-fill">
+                <div class="card-header">
+                    <h4><i class="fa fa-file-excel"></i>  Upload CSV File </h4>
+                </div>
+                <div class="card-body">
     @if(session('info'))
 <div class="alert alert-success"> 
 {{session('info')}}
 </div>
 @endif
-	<h2 align="center">Upload XLS <i class="fas fa-file-alt"></i></h2>
+
+
 	<form action="" id="upload-form" enctype="multipart/form-data" method="post">
 		<!-- {{csrf_field()}} -->
-		<input class="form-control" accept=".xls,.xlsx" type="file" onchange="uploadFile()" id="csvFile" name="csvFile" />
+		<input class="input-material" accept=".xls,.xlsx" type="file" onchange="uploadFile()" id="csvFile" name="csvFile" />
         <br>
         <div class="progress" id="progressBarDiv" style="display: none;">
         <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
@@ -23,7 +26,10 @@
 		<h3 id="status"></h3>
         <!-- <p id="loaded_n_total"></p> To show how many bytes are uploaded -->
 	</form>
-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 @section('myscripts')
@@ -45,7 +51,7 @@
         ajax.addEventListener("abort",abortHandler,false);
         ajax.onreadystatechange=function(){
             if (ajax.readyState == 4 && ajax.status == 200) { // when completed we can move away
-            window.location = "/home";
+            window.location = "/applicants/lists";
             }
         }
         ajax.open("POST","/upload-csv");
