@@ -11,118 +11,88 @@
                     <div class="card-body">
                         <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                             {{ csrf_field() }}
-
-
                             <div class="form-group-material">
-                                    <input id="name" type="text"  class="input-material" name="name" value="{{ old('name') }}" required autofocus>
-
-                                    @if ($errors->has('name'))
-                                        <span class="help-block">
+                                <input id="name" type="text"  class="input-material" name="name" value="{{ old('name') }}" required autofocus>
+                                @if ($errors->has('name'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
-                                    @endif
-
+                                @endif
                                 <label for="name" class="label-material">Name</label>
-
                             </div>
-
                             <div class="form-group-material">
+                                <input id="email" type="email"  class="input-material" name="email" value="{{ old('email') }}" required>
 
-                                    <input id="email" type="email"  class="input-material" name="email" value="{{ old('email') }}" required>
-                                    <label for="email" class="label-material">E-Mail Address</label>
                                     @if ($errors->has('email'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                     @endif
-
+                                <label for="email" class="label-material">E-Mail Address</label>
                             </div>
                             <div class="form-group-material">
-                                    <input id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
-
-                                    @if ($errors->has('designation'))
-                                        <span class="help-block">
+                                <input id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
+                                @if ($errors->has('designation'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('designation') }}</strong>
                                     </span>
-                                    @endif
-                                    <label for="email" class="label-material ">Designation</label>
-
+                                @endif
+                                <label for="email" class="label-material ">Designation</label>
                             </div>
                             <div class="form-group-material">
-                                    <input id="joiningDate" type="date"  class="input-material" name="joiningDate" value="{{ old('joiningDate') }}" required autofocus>
-
-                                    @if ($errors->has('joiningDate'))
-                                        <span class="help-block">
+                                <input id="joiningDate" type="date"  class="input-material" name="joiningDate" value="{{ old('joiningDate') }}" required autofocus>
+                                @if ($errors->has('joiningDate'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('joiningDate') }}</strong>
                                     </span>
-                                    @endif
-
+                                @endif
                                 <label for="joiningDate" class="label-material active">Joining Date</label>
                             </div>
                             <div class="form-group-material">
-                                    <input id="password" type="password"  class="input-material" name="password" required>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
+                                <input id="password" type="password"  class="input-material" name="password" required>
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                    @endif
-                                    <label for="password" class="label-material">Password</label>
-
+                                @endif
+                                <label for="password" class="label-material">Password</label>
                             </div>
-
                             <div class="form-group-material">
-
-                                    <input id="confirm_password" type="password"  class="input-material" name="confirm_password" required>
-                                    @if ($errors->has('confirm_password'))
-                                        <span class="help-block">
+                                <input id="confirm_password" type="password"  class="input-material" name="confirm_password" required>
+                                @if ($errors->has('confirm_password'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('confirm_password') }}</strong>
                                     </span>
-                                    @endif
-
+                                @endif
                                 <label for="confirm_password" class="label-material">Confirm Password</label>
-
                             </div>
-
                             <div class="form-group-material">
-
-                                    <input id="address" type="text"  class="input-material" name="address" value="{{ old('address') }}" required autofocus>
-
-                                    @if ($errors->has('address'))
-                                        <span class="help-block">
+                                <input id="address" type="text"  class="input-material" name="address" value="{{ old('address') }}" required autofocus>
+                                @if ($errors->has('address'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
                                     </span>
-                                    @endif
-
+                                @endif
                                 <label for="address" class="label-material">Address</label>
                             </div>
-
                             <div class="form-group-material">
-
-                                    <input id="qualification" type="text"  class="input-material" name="qualification" value="{{ old('qualification') }}" required autofocus>
-
-                                    @if ($errors->has('qualification'))
-                                        <span class="help-block">
+                                <input id="qualification" type="text"  class="input-material" name="qualification" value="{{ old('qualification') }}" required autofocus>
+                                @if ($errors->has('qualification'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('qualification') }}</strong>
                                     </span>
-                                    @endif
-
+                                @endif
                                 <label for="qualification" class="label-material">Qualification</label>
                             </div>
-
                             <div class="form-group-material">
-
-                                    <input id="phoneNumber" type="text"  class="input-material" name="phoneNumber" value="{{ old('phoneNumber') }}" required autofocus>
-
-                                    @if ($errors->has('phoneNumber'))
-                                        <span class="help-block">
+                                <input id="phoneNumber" type="text"  class="input-material" name="phoneNumber" value="{{ old('phoneNumber') }}" required autofocus>
+                                @if ($errors->has('phoneNumber'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('phoneNumber') }}</strong>
                                     </span>
-                                    @endif
-
+                                @endif
                                 <label for="phoneNumber" class="label-material">Phone Number</label>
                             </div>
-
                             <div class="form-group-material">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn ">

@@ -24,7 +24,6 @@ class RedirectIfAuthenticated
                 return redirect('/admin/home');
             }
         }
-
         return $next($request);
     }
 }

@@ -86,13 +86,8 @@ class RegisterController extends Controller
         ]);
         $role = Role::findOrFail(2);
         $user->role()->attach($role);
-
-
-
-
-
         return view('Admin.index');
-//        $user ->role->create([''])
+
     }
 
 

@@ -18,10 +18,10 @@ class ApplicantsController extends Controller
             $applicants=Applicants::where('cvData','LIKE','%'.$query.'%')->paginate(10);
             if(count($applicants)>0)
             {
-                return view('home',['applicants'=>$applicants,'query' => $query]);
+                return view('applicants/lists',['applicants'=>$applicants,'query' => $query]);
             }else
             {
-                return redirect('home')->with('status','Sorry,Nothing Found.');
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
             }
         }else{
             $applicants=Applicants::paginate(10);
@@ -37,10 +37,8 @@ class ApplicantsController extends Controller
     {
         if($request->hasFile('csvFile') && ($request->csvFile->getClientOriginalExtension()=="xlsx" || $request->csvFile->getClientOriginalExtension()=="xls"))
         {
-
             $fileUrl= Storage::putFile('public',$request->file('csvFile'));
             $name = pathinfo($fileUrl, PATHINFO_FILENAME);
-
             Storage::move($fileUrl,$name.".".$request->csvFile->getClientOriginalExtension()); // 		changing extension to xls
             $filePath=storage_path("app//".$name.".".$request->csvFile->getClientOriginalExtension());
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
@@ -66,10 +64,8 @@ class ApplicantsController extends Controller
                     $applicant->country=$value['O'];
                     $applicant->save();
                 }
-
-            }
-
-            return redirect()->route('applicant_list')->with('info','File uploaded successfully.');
+                }
+                return redirect()->route('applicant_list')->with('info','File uploaded successfully.');
         }else
         {
             return redirect('/upload-csv')->with('info','File upload error.');
@@ -77,21 +73,15 @@ class ApplicantsController extends Controller
 
     }
 
-
     public function uploadCvPost(Request $request)
     {
         if($request->hasFile('uploadedCv') && ($request->uploadedCv->getClientOriginalExtension()=="doc" || $request->uploadedCv->getClientOriginalExtension()=="docx" || $request->uploadedCv->getClientOriginalExtension()=="pdf") )
         {
             $user=Applicants::where('id',$request->userId)->first();
-
-
             $slug = Str::slug($user->firstName." ".$user->LastName);
             $count = Applicants::whereRaw("cvSlug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-
             $finalFileName= $count ? "{$slug}-{$count}" : $slug;
-
             $file = $request->file('uploadedCv')->storeAs('Public/Resumes', $finalFileName.'.'.$request->uploadedCv->getClientOriginalExtension() ,'local');
-
             $name = pathinfo($file, PATHINFO_FILENAME);
             $filePath=storage_path("app\\Public\\Resumes\\".$finalFileName.".".$request->uploadedCv->getClientOriginalExtension());
             //pdf parsing
@@ -127,12 +117,9 @@ class ApplicantsController extends Controller
 
             return redirect('Admin.applicant_list');
 
-
         }else{
             return "File Type Incorrect.";
         }
-
-
     }
 
     public function viewCv($id)
@@ -140,12 +127,11 @@ class ApplicantsController extends Controller
         $user=Applicants::where('id',$id)->first();
         if($user->cvUrl != "")
         {
-
             return response()->file(storage_path('app/'.$user->cvUrl));
 
         }else
         {
-            return redirect('Admin.applicant_list')->with('status','Resume not Found.');
+            return redirect('/applicants/lists')->with('status','Resume not Found.');
         }
     }
 
@@ -153,6 +139,6 @@ class ApplicantsController extends Controller
     {
         $applicant = Applicants::find($id);
         $applicant->delete();
-        return redirect('Admin.applicant_list')->with('status','Employee Deleted.');
+        return redirect('/applicants/lists')->with('status','Employee Deleted.');
     }
 }

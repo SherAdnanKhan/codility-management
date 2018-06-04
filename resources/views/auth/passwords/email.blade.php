@@ -11,32 +11,24 @@
                         </div>
                     @endif
                     <p>Send Mail</p>
-                    <form class="text-left form-validate align-items-center" method="POST" action="{{ route('password.email') }}">
+                        <form class="text-left form-validate align-items-center" method="POST" action="{{ route('password.email') }}">
                         {{ csrf_field() }}
-
                         <div class="form-group-material">
-
-                                <input id="email" type="email" class="input-material" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
+                            <input id="email" type="email" class="input-material" name="email" value="{{ old('email') }}" required>
+                            @if ($errors->has('email'))
+                                <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            <label for="email" class="label-material">E-Mail Address</label>
-
+                                </span>
+                            @endif
+                                <label for="email" class="label-material">E-Mail Address</label>
                         </div>
-
-                        <div class="form-group">
-
+                            <div class="form-group">
                                 <button type="submit" class="btn ">
                                     Send Password Reset Link
                                 </button>
-
-                        </div>
+                            </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

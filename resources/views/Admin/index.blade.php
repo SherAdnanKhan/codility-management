@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('body')
 	<!-- navbar-->
 
@@ -59,7 +58,7 @@
 		<div class="container-fluid">
 			<div class="row d-flex">
 				<div class="col-md-4"></div>
-				<div class="col-md-4">
+				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
 							<h4>Todays Attendence</h4>
@@ -98,7 +97,8 @@
 								</table>
 							</div>
 						</div>
-					</div></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
