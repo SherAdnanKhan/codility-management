@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Photo;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -12,13 +13,14 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     use AuthenticatesUsers;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-    public  function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
@@ -30,39 +32,24 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-
-        $this->validate($request,[
-            'email'=>'required|email',
-            'password'=>'required|min:6',
-            'confirm_password'=>'required|same:password',
-            'name'            =>'required'
-
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
+            'name' => 'required'
         ]);
-
-        $user =User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>bcrypt($request->password)
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
         ]);
         return view('Admin.index');
     }
-    public function login(Request $request)
-    {
-        $this->validate($request,[
-            'email'=>'required|email',
-            'password'=>'required|min:6'
 
-
-        ]);
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$request->remember)){
-
-            return redirect()->intended('/dashboard');
-        }
-        return redirect()->back()->withInput()->withFlashMessage('Wrong username/password combination.');
-    }
     public function index()
     {
-        //
+        $users = User::all();
+        return view('Employee.index', compact('users'));
     }
 
     /**
@@ -74,6 +61,7 @@ class UserController extends Controller
     {
         //;
     }
+
     public function newPassword(Request $request)
     {
         $this->validate($request, [
@@ -81,40 +69,35 @@ class UserController extends Controller
         ]);
         $email = Auth::user()->email;
         $user = User::whereEmail($email)->update(['password' => bcrypt($request->new_password), 'firstLogin' => 0]);
-
         if (Auth::user()->isEmployee() == true) {
             return redirect()->route('employee.home');
-        }
-
-        if(Auth::user()->isAdmin() == true)
-        {
-
+        }if (Auth::user()->isAdmin() == true) {
             return redirect()->route('admin.home');
 
         }
 
     }
+
     public function changePassword()
     {
-
         $email = Auth::user()->email;
-        $user = User::whereEmail($email)->first();
-        return view('change_password',compact('user'));
+        $user = User::whereEmail($email)->where('firstLogin', 1)->first();
+        return view('change_password', compact('user'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'email'=>'required|email',
-            'password'=>'required|min:6',
-            'confirm_password'=>'required|same:password',
-            'name'            =>'required'
+        $this->validate($request, [
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
+            'name' => 'required'
 
         ]);
         $user = User::create([
@@ -132,7 +115,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -143,50 +126,65 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-//dd(Auth::user()->id);
-        $get_id= Auth::user()->isAdmin() ? $id : Auth::user()->id;
-//        dd($get_id);
-
-        $user = User::findOrFail($get_id);
-        if($user->isEmployee()) {
-//dd($user);
-            return view('Admin.employee_edit', compact('user'));
-
+        if (Auth::user()->isAdmin()) {
+            $user = User::findOrFail($id);
+        } elseif (Auth::user()->isEmployee()) {
+            $user = User::findOrFail(Auth::user()->id);
         }
-        return redirect()->back();
+        return view('Admin.employee_edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        if (Auth::user()->isAdmin) {
-
-            $user->email =$request->email;
-            $user->name = $request->name;
+        $this->validate($request, [
+            'image' => 'required | mimes:jpeg,jpg'
+        ]);
+        if ($file = $request->file('image')) {
+            $name = $request->name . time() . $file->getClientOriginalName();
+            $file->move('images/user', $name);
+            $user = User::findOrFail($id);
+            $photo = Photo::whereUserId($id)->get()->first();
+            if (!(empty($photo))) {
+                unlink(public_path('/images/user/' . $user->photos->path));
+                Photo::whereUserId($id)->update(['path' => $name]);
+                } else {
+                $user->photos()->create(['path' => $name]);
+            }
         }
-
+        if (Auth::user()->isAdmin()) {
+            return redirect()->route('admin.home');
+        } else {
+            return redirect()->route('employee.home');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id /
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
-    }
+        $user = User::findOrFail($id);
+        $photo = $user->photos;
+        $user->delete();
+        if (!(empty($photo))) {
+            $photo->delete();
+            unlink(public_path('/images/user/' . $photo->path));
+        }
+        return redirect()->route('profile.index');
+        }
 }

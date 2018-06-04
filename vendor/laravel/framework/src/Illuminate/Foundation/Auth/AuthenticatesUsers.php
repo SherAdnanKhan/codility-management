@@ -73,15 +73,10 @@ trait AuthenticatesUsers
     protected function attemptLogin(Request $request)
     {
 
-        $user = User:: whereEmail($request->email)->first();
-        if( $user->firstLogin == false) {
-            return $this->guard()->attempt(
-                $this->credentials($request), $request->has('remember')
-            );
 
-        }
-        return $request;
-
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->has('remember')
+        );
 
     }
 
@@ -109,7 +104,7 @@ trait AuthenticatesUsers
         $this->clearLoginAttempts($request);
 
         return $this->authenticated($request, $this->guard()->user())
-                ?: redirect()->intended($this->redirectPath());
+            ?: redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -121,16 +116,12 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        if (isset($user)){
-             if ($user->isAdmin()) {
-                return redirect('admin');
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.home');
 
-            } else {
-                return redirect('home');
-            }
-
-            }
-        return view('change_password',compact('request','user'));
+        } else {
+            return redirect()->route('employee.home');
+        }
 
     }
 

@@ -1,111 +1,87 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">EMPLOYEE EDIT</div>
-
-                    <div class="panel-body">
+@section('body')
+    <div class="container" style="margin-top: 5%">
+        <div class="">
+            <div class="register-form" style="background-color: #fff">
+                <div class="form-inner flex-fill ">
+                    <div class="card-header">
+                        <h4>Edit Profile</h4>
+                    </div>
+                    <div class="card-body">
                         @if($user)
-                        <form class="form-horizontal" method="POST" action={{ route('employee.update', $user->id) }}>
+                        <form class="form-horizontal" method="POST" action= "{{ route('profile.update', $user->id) }}"  enctype="multipart/form-data" >
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
-
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Name</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}" required autofocus>
-
-                                    @if ($errors->has('name'))
-                                        <span class="help-block">
+                            <div class="form-group-material">
+                                 <input id="name" type="text" class="input-material" name="name" value="{{ $user->name }}" required autofocus>
+                                @if ($errors->has('name'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
-                                    @endif
-                                </div>
+                                @endif
+                                <label for="name" class="label-material">Name</label>
                             </div>
-
-                                @if(\Auth::user()->isAdmin())
-
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
-
+                            @if(\Auth::user()->isAdmin())
+                                <div class="form-group-material">
+                                    <input id="email" type="email" class="input-material" name="email" value="{{ $user->email }}" required>
                                     @if ($errors->has('email'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                        </span>
                                     @endif
-                                </div>
-                            </div>
-                            <div class="form-group{{ $errors->has('designation') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">Designation</label>
-
-                                <div class="col-md-6">
-                                    <input id="designation" type="text" class="form-control" name="designation" value="{{ $user->designation }}" required>
-
+                                <label for="email" class="label-material">E-Mail Address</label>
+                                 </div>
+                                    @elseif($user->isEmployee())
+                                <div class="form-group-material">
+                                    <input id="designation" type="text" class="input-material" name="designation" value="{{ $user->designation }}" required>
                                     @if ($errors->has('designation'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('designation') }}</strong>
-                                    </span>
+                                        </span>
                                     @endif
+                                    <label for="email" class="label-material">Designation</label>
                                 </div>
-                            </div>
-                                    @endif
-
-
-                            <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                <label for="address" class="col-md-4 control-label">Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="address" type="text" class="form-control" name="address" value="{{ $user->address }}" required autofocus>
-
+                                <div class="form-group-material">
+                                    <input id="address" type="text" class="input-material" name="address" value="{{ $user->address }}" required autofocus>
                                     @if ($errors->has('address'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
-                                    </span>
+                                        </span>
                                     @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('qualification') ? ' has-error' : '' }}">
-                                <label for="qualification" class="col-md-4 control-label">Qualification</label>
-
-                                <div class="col-md-6">
-                                    <input id="qualification" type="text" class="form-control" name="qualification" value="{{ $user->qualification }}" required autofocus>
-
+                                <label for="address" class="label-material">Address</label>
+                                 </div>
+                                <div class="form-group-material">
+                                    <input id="qualification" type="text" class="input-material" name="qualification" value="{{ $user->qualification }}" required autofocus>
                                     @if ($errors->has('qualification'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('qualification') }}</strong>
-                                    </span>
+                                        </span>
                                     @endif
+                                    <label for="qualification" class="label-material">Qualification</label>
                                 </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('contact') ? ' has-error' : '' }}">
-                                <label for="phoneNumber" class="col-md-4 control-label">Phone Number</label>
-
-                                <div class="col-md-6">
-                                    <input id="contact" type="text" class="form-control" name="contact" value="{{ $user->phoneNumber }}" required autofocus>
-
+                                <div class="form-group-material">
+                                    <input id="contact" type="text" class="input-material" name="contact" value="{{ $user->phoneNumber }}" required autofocus>
                                     @if ($errors->has('contact'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('contact') }}</strong>
-                                    </span>
+                                         </span>
+                                    @endif
+                                    <label for="phoneNumber" class="label-material">Phone Number</label>
+                                </div>
+                                    @endif
+                                <div class="form-group-material">
+                                    <input id="image" type="file" class="input-material" name="image" required >
+                                    @if ($errors->has('image'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('image') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Register
-                                    </button>
-                                </div>
+                            <div class="form-group-material">
+                                <button type="submit" class="btn">
+                                       Profile Update
+                                </button>
                             </div>
                         </form>
                             @endif

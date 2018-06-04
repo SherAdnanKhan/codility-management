@@ -32,7 +32,7 @@ trait RegistersUsers
 
         event(new Registered($user = $this->create($request->all())));
 
-        return redirect()->route('users');
+        return redirect()->route('admin.home');
 //
 //$this->guard()->login($user);
 //        return $this->registered($request, $user)

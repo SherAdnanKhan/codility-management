@@ -1,47 +1,35 @@
-@extends('layouts.app')
+@extends('layouts.without_nav')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
+@section('body')
+    <div class="page login-page">
+        <div class="container">
+            <div class="form-outer text-center d-flex justify-content-center align-items-center" >
+                <div class="form-inner flex-fill">
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
+                    <p>Send Mail</p>
+                        <form class="text-left form-validate align-items-center" method="POST" action="{{ route('password.email') }}">
                         {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
+                        <div class="form-group-material">
+                            <input id="email" type="email" class="input-material" name="email" value="{{ old('email') }}" required>
+                            @if ($errors->has('email'))
+                                <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                                </span>
+                            @endif
+                                <label for="email" class="label-material">E-Mail Address</label>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="form-group">
+                                <button type="submit" class="btn ">
                                     Send Password Reset Link
                                 </button>
                             </div>
-                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

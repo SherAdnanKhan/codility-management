@@ -35,7 +35,6 @@ class User extends Authenticatable
 
     public function photos(){
         return $this->hasOne('App\Photo');
-
     }
     public function isAdmin()
     {
@@ -44,9 +43,10 @@ class User extends Authenticatable
             if ($role->name == 'Administrator') {
                 return true;
             }
-            return false;
+                return false;
         }
     }
+
     public function isEmployee()
     {
         foreach ($this->role as $role )
@@ -54,7 +54,7 @@ class User extends Authenticatable
             if ($role->name == 'Employee') {
                 return true;
             }
-            return false;
+                return false;
         }
     }
 
@@ -67,5 +67,6 @@ class User extends Authenticatable
             return true;
         }
     }
+
 
 }
