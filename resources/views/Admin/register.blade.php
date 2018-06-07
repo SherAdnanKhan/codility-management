@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    <title> {{config('app.name')}} | Register Admin</title>
+@endsection
 @section('body')
     <div class="container" style="margin-top: 5%;">
         <div class="Register-form" style="background-color: #fff;">

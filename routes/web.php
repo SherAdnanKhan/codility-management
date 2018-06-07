@@ -27,6 +27,7 @@ Route::get('/', function () {
     Route::get('/delete/{id}','ApplicantsController@delete');
     Route::get('/register','Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('/register','Auth\RegisterController@register');
+    Route::resource('/timetable','TimeTableController');
 });
     Route::group(['middleware' => ['firstLogin','auth','employee']], function () {
     Route::get('employee/home', 'HomeController@employeeHome')->name('employee.home');

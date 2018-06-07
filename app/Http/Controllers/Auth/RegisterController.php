@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Role;
+use App\TimeTable;
 use App\User;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -68,8 +70,23 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return User
      */
+    public function getAllowedDays()
+    {
+        $get_time  =TimeTable::whereId(1)->first();
+        $check_day['monday'] =$get_time->monday;
+        $check_day['tuesday'] =$get_time->tuesday;
+        $check_day['wednesday'] =$get_time->wednesday;
+        $check_day['thursday'] =$get_time->thursday;
+        $check_day['friday'] =$get_time->friday;
+        $check_day['saturday'] =$get_time->saturday;
+        $check_day['sunday'] =$get_time->sunday;
+        $time = array_count_values($check_day);
+        return $time[1];
+    }
     protected function create(array $data)
     {
+        $count =$this->getAllowedDays();
+        $timing  = TimeTable::whereId(1)->first();
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -79,10 +96,10 @@ class RegisterController extends Controller
             'designation' => $data['designation'],
             'phoneNumber' =>  $data['phoneNumber'],
             'joiningDate' =>  $data['joiningDate'],
-            'checkInTime' =>  '09:00:00',
-            'checkOutTime' =>  '16:00:00',
-            'breakAllowed' =>  30,
-            'workingDays' =>  5
+            'checkInTime' =>  Carbon::parse($timing->start_time)->timestamp,
+            'checkOutTime' =>  Carbon::parse($timing->end_time)->timestamp,
+            'breakAllowed' =>  Carbon::parse($timing->non_working_hour)->timestamp,
+            'workingDays' =>  $count
         ]);
         $role = Role::findOrFail(2);
         $user->role()->attach($role);

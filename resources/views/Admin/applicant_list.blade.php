@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+    <title> {{config('app.name')}} | Applicants</title>
+@endsection
 @section('body')
     <div class="">
         <div class="">

@@ -1,5 +1,7 @@
 @extends('layouts.without_nav')
-
+@section('title')
+    <title> {{config('app.name')}} | Email</title>
+@endsection
 @section('body')
     <div class="page login-page">
         <div class="container">
