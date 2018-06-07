@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+	<title> {{config('app.name')}} | Administrator</title>
+@endsection
 @section('body')
 	<!-- navbar-->
 

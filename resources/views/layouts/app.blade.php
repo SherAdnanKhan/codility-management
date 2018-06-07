@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> {{config('app.name')}} </title>
+
     @yield('title')
     <meta name="description" content="Codility Management Application">
     <meta name="author" content="Codility">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <link rel="stylesheet" href="{{asset('styles/bootstrap-iso.css')}}">
     <!-- Bootstrap CSS-->
+    {{--<link rel="stylesheet" href="{{asset('styles/styles.css')}}">--}}
+    @yield('page_styles')
     <link rel="stylesheet" href="{{asset('styles/bootstrap.min.css')}}">
+
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <!-- Fontastic Custom icon font-->
@@ -79,6 +83,7 @@
                         </ul>
                     </li>
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-user-circle"></i>Applicants list</a></li>
+                    <li><a href="{{route('timetable.index')}}"><i class="fa fa-user-circle"></i>Manage TimeTable</a></li>
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
                     @endif
                 </ul>
@@ -138,6 +143,6 @@
 {{--<script src="{{asset('scripts/charts-home.js')}}"></script>--}}
 <!-- Main File-->
 <script src="{{asset('scripts/front.js')}}"></script>
-@yield('myscripts')
+@yield('page_scripts')
 </body>
 </html>

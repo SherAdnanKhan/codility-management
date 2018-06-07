@@ -1,5 +1,7 @@
 @extends('layouts.without_nav')
-
+@section('title')
+    <title> {{config('app.name')}} |Change Password </title>
+@endsection
 @section('body')
     <div class="container">
         <div class="page login-page">

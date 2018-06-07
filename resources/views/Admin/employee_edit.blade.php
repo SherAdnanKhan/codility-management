@@ -1,5 +1,13 @@
 @extends('layouts.app')
+@section('title')
+    <title> {{config('app.name')}} | Employee Detail</title>
+@endsection
+@section('page_styles')
 
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
+
+@endsection
 @section('body')
     <div class="container" style="margin-top: 5%">
         <div class="">
@@ -9,7 +17,7 @@
                         <h4>Edit Profile</h4>
                     </div>
                     <div class="card-body">
-                        @if($user)
+                    @if($user)
                         <form class="form-horizontal" method="POST" action= "{{ route('profile.update', $user->id) }}"  enctype="multipart/form-data" >
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
@@ -32,7 +40,28 @@
                                     @endif
                                 <label for="email" class="label-material">E-Mail Address</label>
                                  </div>
-                                    @elseif($user->isEmployee())
+                            @if ($user->isEmployee())
+                                <div class="form-group-material">
+                                    <div class='input-group-material date' >
+                                        <input type='text' id='check_in_time' name="check_in_time"   value="{{$user->checkInTime}}" class="input-material" />
+                                        <span class="input-group-addon">
+                                        <span class="fa fa-clock-o"></span>
+                                    </span>
+                                        <label for="check_in_time" class="label-material">CheckIn Time</label>
+                                    </div>
+                                </div>
+                                <div class="form-group-material">
+                                    <div class='input-group-material date' >
+                                        <input type='text' id='check_out_time' value="{{$user->checkOutTime}}" name="check_out_time" class="input-material" />
+                                        <span class="input-group-addon">
+                                        <span class="fa fa-clock-o"></span>
+                                    </span>
+                                        <label for="check_out_time" class="label-material">CheckOut Time</label>
+                                    </div>
+                                </div>
+                                @endif
+                                @elseif($user->isEmployee())
+
                                 <div class="form-group-material">
                                     <input id="designation" type="text" class="input-material" name="designation" value="{{ $user->designation }}" required>
                                     @if ($errors->has('designation'))
@@ -71,7 +100,7 @@
                                 </div>
                                     @endif
                                 <div class="form-group-material">
-                                    <input id="image" type="file" class="input-material" name="image" required >
+                                    <input id="image" type="file" class="input-material" name="image" >
                                     @if ($errors->has('image'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('image') }}</strong>
@@ -90,4 +119,20 @@
             </div>
         </div>
     </div>
+@endsection
+@section('page_scripts')
+    <script src="{{asset('scripts/moment.js')}}"></script>
+    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#check_in_time').datetimepicker({format: 'LT', format: 'hh:mm A'});
+            $('#check_out_time').datetimepicker({format: 'LT', format: 'hh:mm A' });
+            $("#check_in_time").on("dp.change", function (e) {
+                $('#check_out_time').data("DateTimePicker").minDate(e.date);
+            });
+            $("#check_out_time").on("dp.change", function (e) {
+                $('#check_in_time').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+    </script>
 @endsection

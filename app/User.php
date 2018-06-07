@@ -67,6 +67,14 @@ class User extends Authenticatable
             return true;
         }
     }
+    public function getCheckInTimeAttribute($value)
+    {
+        return date('h:i A',$value);
+    }
+    public function getCheckOutTimeAttribute($value)
+    {
+        return date('h:i A',$value);
+    }
 
 
 }

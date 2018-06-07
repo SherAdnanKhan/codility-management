@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Photo;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -149,12 +150,33 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'image' => 'required | mimes:jpeg,jpg'
+            'image' => 'mimes:jpeg,jpg'
         ]);
+        $user = User::findOrFail($id);
+
+        if (Auth::user()->isAdmin()){
+            $check_in_time = Carbon::parse($request->check_in_time )->timestamp;
+            $check_out_time = Carbon::parse( $request->check_out_time )->timestamp;
+            $update= User::whereId($id)->update([
+                'email'         => $request->email,
+                'name'          => $request->name,
+                'checkInTime'   =>$check_in_time,
+                'checkOutTime'  =>$check_out_time
+            ]);
+        } else{
+            $update= User::whereId($id)->update([
+                'name' => $request->name,
+                'designation' => $request->designation,
+                'address' => $request->address,
+                'qualification' => $request->qualification,
+                'phoneNumber' => $request->contact,
+                'address' => $request->name
+
+            ]);
+        }
         if ($file = $request->file('image')) {
             $name = $request->name . time() . $file->getClientOriginalName();
             $file->move('images/user', $name);
-            $user = User::findOrFail($id);
             $photo = Photo::whereUserId($id)->get()->first();
             if (!(empty($photo))) {
                 unlink(public_path('/images/user/' . $user->photos->path));

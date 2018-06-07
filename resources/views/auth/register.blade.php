@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    <title> {{config('app.name')}} | Register Employee</title>
+@endsection
 @section('body')
     <div class="container" style="margin-top: 5%">
         <div class="">

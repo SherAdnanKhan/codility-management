@@ -20,4 +20,10 @@ $factory->define(App\User::class, function () {
         'remember_token' => str_random(10),
     ];
 });
+$factory->define(App\TimeTable::class, function () {
+    return [
+        'end_time' => \Carbon\Carbon::today()->timestamp,
+        'start_time' => \Carbon\Carbon::today()->timestamp
+    ];
+});
 
