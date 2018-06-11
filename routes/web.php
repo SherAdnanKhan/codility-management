@@ -12,6 +12,7 @@
 */
 use App\User;
 //
+//Auth::routes();
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -28,6 +29,7 @@ Route::get('/', function () {
     Route::get('/register','Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('/register','Auth\RegisterController@register');
     Route::resource('/timetable','TimeTableController');
+    Route::resource('/leave','LeaveController');
 });
     Route::group(['middleware' => ['firstLogin','auth','employee']], function () {
     Route::get('employee/home', 'HomeController@employeeHome')->name('employee.home');
@@ -36,9 +38,10 @@ Route::get('/', function () {
     Route::resource('profile','UserController');
     Route::group(['middleware' => ['web','guest']], function () {
     Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('/login/success', 'Auth\LoginController@login')->name('login.success');
 });
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('/login/success', 'Auth\LoginController@login')->name('login');
+
     Route::get('/change/password', 'UserController@changePassword')->middleware('auth')->name('password');
     Route::post('/password', 'UserController@newPassword')->middleware('auth')->name('new.password');
 // Forgot password Route

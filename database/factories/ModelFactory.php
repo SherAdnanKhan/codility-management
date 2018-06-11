@@ -27,3 +27,4 @@ $factory->define(App\TimeTable::class, function () {
     ];
 });
 
+

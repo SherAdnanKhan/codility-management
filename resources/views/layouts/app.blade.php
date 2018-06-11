@@ -71,19 +71,19 @@
                             <li><a href="{{route('register')}}">Employee Register</a></li>
                         </ul>
                     </li>
-                    <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register
-                        </a>
+                    <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a>
                     </li>
-                    <li><a href="#leaves" aria-expanded="false" data-toggle="collapse"><i class="fa fa-briefcase-medical">
-                            </i> Leave & Lates &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                    <li><a href="#settings" aria-expanded="false" data-toggle="collapse">
+                                <i class="fa fa-cogs"></i>Settings&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                         </a>
-                        <ul id="leaves" class="collapse list-unstyled ">
-                            <li><a href="adminRegister.html">Manage Leaves </a></li>
-                            <li><a href="employeeRegister.html">Employee Leaves</a></li>
-                        </ul>
+                         <ul id="settings" class="collapse list-unstyled ">
+                             <li><a href="{{route('leave.index')}}"><i class="fa fa-cog"></i>Manage Leaves</a></li>
+                             <li><a href="{{route('timetable.index')}}"><i class="fa fa-clock"></i>Manage TimeTable</a></li>
+                         </ul>
                     </li>
+
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-user-circle"></i>Applicants list</a></li>
-                    <li><a href="{{route('timetable.index')}}"><i class="fa fa-user-circle"></i>Manage TimeTable</a></li>
+
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
                     @endif
                 </ul>
@@ -132,6 +132,7 @@
     @yield('body')
 </div>
 <!-- JavaScript files-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{{asset('scripts/jquery.min.js')}}"></script>
 <script src="{{asset('scripts/popper.min.js')}}"> </script>
 <script src="{{asset('scripts/bootstrap.min.js')}}"></script>

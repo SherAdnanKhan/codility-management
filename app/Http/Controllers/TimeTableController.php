@@ -36,6 +36,13 @@ class TimeTableController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'working_hour' => 'required',
+            'non_working_hour' => 'required'
+
+        ]);
         $start_time = Carbon::parse($request->start_time )->timestamp;
         $end_time = Carbon::parse($request->end_time )->timestamp;
         $working_hour = Carbon::parse($request->working_hour )->timestamp;
