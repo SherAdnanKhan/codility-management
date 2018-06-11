@@ -8,7 +8,7 @@
             <div class="form-outer text-center d-flex justify-content-center align-items-center" >
                 <div class="form-inner flex-fill">
                     <div class="logo"> <img style="max-width: 70%" class="img-responsive " src="{{asset('images/logo.png')}}" alt="Codility Management"></div>
-                    <form  class="text-left form-validate align-items-center" method="POST" action="{{ route('login') }}">
+                    <form  class="text-left form-validate align-items-center" method="POST" action="{{ route('login.success') }}">
                         {{ csrf_field() }}
                         <div class="form-group-material ">
                             <input id="email" type="email" value="{{ old('email') }}"  name="email" required data-msg="Please enter your Email" class="input-material">

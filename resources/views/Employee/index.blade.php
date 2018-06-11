@@ -33,7 +33,7 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
+
                                     <th>Employee Name</th>
                                     <th>Employee Email</th>
                                     <th>Designation</th>
@@ -48,7 +48,7 @@
                                 @if($users)
                                     @foreach($users as $user)
                                         <tr>
-                                        <td scope="row">{{$user->id}}</td>
+
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->designation?$user->designation: 'Administrator'}}</td>
@@ -56,7 +56,7 @@
                                         <td>{{$user->address?$user->address:'Codility'}}</td>
                                         <td>{{$user->qualification?$user->qualification :''}}</td>
                                         <td>{{$user->phoneNumber?$user->phoneNumber:'Codility Number'}}</td>
-                                        <td class="text-primary lead"><a href="{{route('profile.edit',$user->id)}}"><span class="fa fa-pencil-square"></span>E</a>
+                                        <td class="text-primary lead"><a href="{{route('profile.edit',$user->id)}}"><span class="fa fa-edit"></span></a>
                                             <form class="form-horizontal" method="POST" action = "{{ route('profile.destroy', $user->id) }}"  enctype="multipart/form-data" >
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}

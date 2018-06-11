@@ -28,36 +28,44 @@
                             <div class="form-group-material">
                             <div class='input-group-material date' >
                                 <input type='text' id='start_time' name="start_time"   value="{{$time->start_time}}" class="input-material" />
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-clock-o"></span>
+                                @if ($errors->has('start_time'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('start_time') }}</strong>
                                     </span>
+                                @endif
                                 <label for="start_time" class="label-material">Start Time</label>
                             </div>
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
                                 <input type='text' id='end_time' value="{{$time->end_time}}" name="end_time" class="input-material" />
-                                <span class="input-group-addon">
-                                        <span class="fa fa-clock-o"></span>
+                                @if ($errors->has('end_time'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('end_time') }}</strong>
                                     </span>
+                                @endif
                                 <label for="end_time" class="label-material">End Time</label>
                             </div>
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
                                 <input type='text' id='working_hour' value="{{$time->working_hour}}" name ="working_hour" class="input-material" />
-                                <span class="input-group-addon">
-                                        <span class="fa fa-clock-o"></span>
+                                @if ($errors->has('working_hour'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('working_hour') }}</strong>
                                     </span>
+                                @endif
                                 <label for="working_hour" class="label-material">Working Hours</label>
                             </div>
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
                                 <input type='text' id='non_working_hour' value="{{$time->non_working_hour}}" name ="non_working_hour" class="input-material" />
-                                <span class="input-group-addon">
-                                        <span class="fa fa-clock-o"></span>
+                                @if ($errors->has('non_working_hour'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('non_working_hour') }}</strong>
                                     </span>
+                                @endif
                                 <label for="non_working_hour" class="label-material">Non Working Hours</label>
                             </div>
                         </div>

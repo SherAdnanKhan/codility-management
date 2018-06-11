@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title> {{config('app.name')}} | Employee Detail</title>
+    <title> {{config('app.name')}} |  Profile</title>
 @endsection
 @section('page_styles')
 
