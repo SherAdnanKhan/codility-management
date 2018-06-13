@@ -34,8 +34,11 @@
                             </div>
                         </div>
                         <div class="form-group-material">
-                            <button type="submit" class="btn">
+                            <button type="submit" class="btn btn-outline-success">
                                 Login
+                            </button>
+                            <button type="reset" class="btn btn-outline-danger">
+                                Reset
                             </button>
                             <a class="btn btn-link" href="{{ route('password.request') }}">Forgot Your Password?</a>
                         </div>

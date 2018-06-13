@@ -18,7 +18,7 @@
                     </div>
                     <div class="card-body">
                     @if($user)
-                        <form class="form-horizontal" method="POST" action= "{{ route('profile.update', $user->id) }}"  enctype="multipart/form-data" >
+                        <form class="form-horizontal" id="employee" method="POST" action= "{{ route('profile.update', $user->id) }}"  enctype="multipart/form-data" >
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
                             <div class="form-group-material">
@@ -108,8 +108,11 @@
                                     @endif
                                 </div>
                             <div class="form-group-material">
-                                <button type="submit" class="btn">
+                                <button type="submit" class="btn btn-outline-success">
                                        Profile Update
+                                </button>
+                                <button type="button" id="button_clear" class="btn btn-outline-danger">
+                                    Reset
                                 </button>
                             </div>
                         </form>
@@ -134,5 +137,10 @@
                 $('#check_in_time').data("DateTimePicker").maxDate(e.date);
             });
         });
+        $('#button_clear').click(function(){
+            $('#employee input[type="text"]').val('');
+            $('#employee input[type="email"]').val('');
+        });
+
     </script>
 @endsection

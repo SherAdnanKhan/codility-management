@@ -1,1 +1,9 @@
 /* your styles go here */
+
+
+form .help-block{
+
+    color: red;
+    font-weight: lighter;
+    font-size: 13px;
+}

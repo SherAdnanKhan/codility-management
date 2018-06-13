@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('timetable.store') }}">
+                    <form class="form-horizontal" id ="timetable" method="POST" action="{{ route('timetable.store') }}">
                     {{ csrf_field() }}
                         @foreach($timetable as $time)
                             <div class="form-group-material">
@@ -99,7 +99,9 @@
                         </div>
                         @endforeach
                         <button type="submit" class="btn btn-outline-success">Schedule Time</button>
-
+                        <button type="button" id="button_clear" class="btn btn-outline-danger">
+                            Reset
+                        </button>
                     </form>
 
                 </div>
@@ -123,6 +125,10 @@
         $("#end_time").on("dp.change", function (e) {
             $('#start_time').data("DateTimePicker").maxDate(e.date);
         });
+    });
+    $('#button_clear').click(function(){
+        $('#timetable input[type="text"]').val('');
+        $('#timetable input[type="checkbox"]').prop('checked', false);
     });
 </script>
 @endsection

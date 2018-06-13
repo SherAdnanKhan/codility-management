@@ -28,6 +28,7 @@
                                 <button type="submit" class="btn ">
                                     New Password
                                 </button>
+                                <button type="reset" class="btn btn-outline-danger">Reset</button>
                             </div>
                         </form>
                         @else

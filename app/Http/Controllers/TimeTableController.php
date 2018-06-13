@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\TimeTable;
@@ -43,10 +44,18 @@ class TimeTableController extends Controller
             'non_working_hour' => 'required'
 
         ]);
+
         $start_time = Carbon::parse($request->start_time )->timestamp;
         $end_time = Carbon::parse($request->end_time )->timestamp;
         $working_hour = Carbon::parse($request->working_hour )->timestamp;
         $non_working_hour = Carbon::parse($request->non_working_hour )->timestamp;
+        $time = TimeTable::whereId(1)->first();
+        $get_start_time = Carbon::parse($time->start_time )->timestamp;
+        $get_end_time   =Carbon::parse($time->end_time )->timestamp;
+        $user =User::where(['checkInTime'=>$get_start_time,'checkOutTime'=>$get_end_time])->update([
+            'checkInTime' => $start_time,
+            'checkOutTime' => $end_time,
+        ]);
         $time_table= TimeTable::whereId(1)->update([
             'start_time'         =>$start_time,
             'end_time'           =>$end_time,
@@ -60,6 +69,7 @@ class TimeTableController extends Controller
             'saturday'           =>$request->saturday?true:false,
             'sunday'             =>$request->sunday?true:false,
         ]);
+
         return redirect('/timetable')->with('timetable','TimeTable Changed SuccessFull');
     }
 

@@ -201,6 +201,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        
         $photo = $user->photos;
         $user->delete();
         if (!(empty($photo))) {

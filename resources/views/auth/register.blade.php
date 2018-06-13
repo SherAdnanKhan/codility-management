@@ -11,7 +11,7 @@
                         <h4>Employee Register</h4>
                     </div>
                     <div class="card-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                        <form class="form-horizontal" id="register" method="POST" action="{{ route('register') }}">
                             {{ csrf_field() }}
                             <div class="form-group-material">
                                 <input id="name" type="text"  class="input-material" name="name" value="{{ old('name') }}" required autofocus>
@@ -97,8 +97,11 @@
                             </div>
                             <div class="form-group-material">
                                 <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn ">
+                                    <button type="submit" class="btn btn-outline-success">
                                         Register
+                                    </button>
+                                    <button type="button" id="button_clear" class="btn btn-outline-danger">
+                                        Reset
                                     </button>
                                 </div>
                             </div>
@@ -108,4 +111,13 @@
             </div>
         </div>
     </div>
+@endsection
+@section('page_scripts')
+    <script type="text/javascript">
+        $('#button_clear').click(function(){
+            $('#register input[type="text"]').val('');
+            $('#register input[type="email"]').val('');
+            $('#register input[type="password"]').val('');
+        });
+    </script>
 @endsection

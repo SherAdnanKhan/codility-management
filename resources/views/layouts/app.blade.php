@@ -10,6 +10,7 @@
     <meta name="author" content="Codility">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <link rel="shortcut icon"  href="{{asset('images/logo.png')}}"/>
     <link rel="stylesheet" href="{{asset('styles/bootstrap-iso.css')}}">
     <!-- Bootstrap CSS-->
     {{--<link rel="stylesheet" href="{{asset('styles/styles.css')}}">--}}
@@ -73,17 +74,7 @@
                     </li>
                     <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a>
                     </li>
-                    <li><a href="#settings" aria-expanded="false" data-toggle="collapse">
-                                <i class="fa fa-cogs"></i>Settings&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
-                        </a>
-                         <ul id="settings" class="collapse list-unstyled ">
-                             <li><a href="{{route('leave.index')}}"><i class="fa fa-cog"></i>Manage Leaves</a></li>
-                             <li><a href="{{route('timetable.index')}}"><i class="fa fa-clock"></i>Manage TimeTable</a></li>
-                         </ul>
-                    </li>
-
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-user-circle"></i>Applicants list</a></li>
-
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
                     @endif
                 </ul>
@@ -114,6 +105,10 @@
                                     <i class="fa fa-caret-down"></i>
                                 </a>
                                 <ul aria-labelledby="notifications" class="dropdown-menu">
+                                    @if (\Auth::user()->isAdmin())
+                                    <li><a rel="nofollow" href="{{route('leave.index')}}" class="dropdown-item d-flex">Manage Leaves</a></li>
+                                    <li><a  rel="nofollow" href="{{route('timetable.index')}}" class="dropdown-item d-flex">Manage TimeTable</a></li>
+                                    @endif
                                     <li><a rel="nofollow" href="{{route('profile.edit',\Auth::user()->id )}}" class="dropdown-item d-flex">Profile</a></li>
                                     <li><a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();" class="dropdown-item d-flex">Logout
