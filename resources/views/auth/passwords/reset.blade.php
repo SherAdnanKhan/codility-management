@@ -44,8 +44,11 @@
                                 <label for="password-confirm" class="label-material">Confirm Password</label>
                             </div>
                             <div class="form-group-material">
-                                <button type="submit" class="btn">
+                                <button type="submit" class="btn btn-outline-success">
                                         Reset Password
+                                </button>
+                                <button type="reset" class="btn btn-outline-danger">
+                                    Reset
                                 </button>
                             </div>
                         </form>

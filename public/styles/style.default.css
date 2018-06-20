@@ -4,6 +4,12 @@
 *     GENERAL
 * ==========================================================
 */
+
+.form-submit{
+  background: none;
+  border: none;
+  color :red;
+}
 .text-bold {
   font-weight: 700;
 }

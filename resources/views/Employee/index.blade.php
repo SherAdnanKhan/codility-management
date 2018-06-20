@@ -4,7 +4,7 @@
 @endsection
 @section('body')
 
-    <div class="container-fluid">
+    <div class="container">
         <!-- Page Header-->
         <header>
             <h1 class="h3 display">Employee Detail</h1>
@@ -56,11 +56,12 @@
                                         <td>{{$user->address?$user->address:'Codility'}}</td>
                                         <td>{{$user->qualification?$user->qualification :''}}</td>
                                         <td>{{$user->phoneNumber?$user->phoneNumber:'Codility Number'}}</td>
-                                        <td class="text-primary lead"><a href="{{route('profile.edit',$user->id)}}"><span class="fa fa-edit"></span></a>
+                                        <td class="text-primary lead">
+                                            <a href="{{route('profile.edit',$user->id)}}"><span class="fa fa-edit"></span></a>
                                             <form class="form-horizontal" method="POST" action = "{{ route('profile.destroy', $user->id) }}"  enctype="multipart/form-data" >
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="fa fa-times">
+                                                <button class="form-submit fa fa-times" type="submit" >
                                                 </button>
                                             </form>
                                         </td>

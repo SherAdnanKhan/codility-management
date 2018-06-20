@@ -7,6 +7,7 @@
     @yield('title')
     <meta name="description" content="Codility Management Application">
     <meta name="author" content="Codility">
+    <link rel="shortcut icon"  href="{{asset('images/logo.png')}}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
     <!-- Bootstrap CSS-->

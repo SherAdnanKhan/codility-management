@@ -54,7 +54,7 @@
 
                         {{--@endforeach--}}
                         <button type="submit" class="btn btn-outline-success">Add Leaves</button>
-
+                        <button type="reset" class="btn btn-outline-danger">Reset</button>
                     </form>
 
                 </div>
@@ -97,8 +97,8 @@
                             <form class="form-horizontal" method="POST" action = "{{ route('leave.destroy', $leave->id) }}" >
                                 {{ method_field('DELETE') }}
                                 {{ csrf_field() }}
-                                <button type="submit" style="background-color: {{$leave->color_code?$leave->color_code:'yellow'}}" >
-                                    <span class="fa fa-times"></span>
+                                <button type="submit" class="form-submit fa fa-times" style="background-color: {{$leave->color_code?$leave->color_code:'yellow'}}" >
+
                                 </button>
                             </form>
                         </td>

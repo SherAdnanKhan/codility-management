@@ -25,8 +25,11 @@
                                 <label for="email" class="label-material">E-Mail Address</label>
                         </div>
                             <div class="form-group">
-                                <button type="submit" class="btn ">
+                                <button type="submit" class="btn btn-outline-success">
                                     Send Password Reset Link
+                                </button>
+                                <button type="reset" class="btn btn-outline-danger">
+                                    Reset
                                 </button>
                             </div>
                     </form>
