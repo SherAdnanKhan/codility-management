@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePhotosTable extends Migration
+class AddColumnToInformsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreatePhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('path');
-            $table->integer('user_id')->unsigned();
-            $table->timestamps();
+        Schema::table('informs', function (Blueprint $table) {
+            $table->integer('leave_type')->nullable()->unsigned();
         });
     }
 
@@ -28,6 +25,8 @@ class CreatePhotosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::table('leaves', function (Blueprint $table) {
+            $table->dropColumn('leave_type');
+        });
     }
 }

@@ -23,7 +23,8 @@ $factory->define(App\User::class, function () {
 $factory->define(App\TimeTable::class, function () {
     return [
         'end_time' => \Carbon\Carbon::today()->timestamp,
-        'start_time' => \Carbon\Carbon::today()->timestamp
+        'start_time' => \Carbon\Carbon::today()->timestamp,
+        'monday' =>true
     ];
 });
 

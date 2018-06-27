@@ -8,5 +8,5 @@ class Leave extends Model
 {
     //
 
-    protected $fillable=['name','color_code','allowed'];
+    protected $fillable=['name','color_code','allowed','leave_type'];
 }

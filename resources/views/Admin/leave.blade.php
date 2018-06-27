@@ -3,11 +3,11 @@
     <title> {{config('app.name')}} | Manage Leaves</title>
 @endsection
 @section('body')
-    @if (session('timetable'))
-        <div class="alert alert-success">
-            {{ session('timetable') }}
-        </div>
-    @endif
+    {{--@if (session('timetable'))--}}
+        {{--<div class="alert alert-success">--}}
+            {{--{{ session('timetable') }}--}}
+        {{--</div>--}}
+    {{--@endif--}}
         <div class="container" style="margin-top: 6%;">
             <div class="row">
     <div class="col-lg-6" >

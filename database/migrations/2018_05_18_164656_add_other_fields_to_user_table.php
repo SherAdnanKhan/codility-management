@@ -19,11 +19,11 @@ class AddOtherFieldsToUserTable extends Migration
             $table->string('qualification')->nullable();
             $table->boolean('firstLogin')->default(1);
             $table->date('joiningDate')->nullable();
-            $table->time('checkInTime')->nullable();
-            $table->time('checkOutTime')->nullable();
+            $table->bigInteger('checkInTime')->nullable();
+            $table->bigInteger('checkOutTime')->nullable();
             $table->integer('breakAllowed')->nullable();
             $table->tinyInteger('workingDays')->nullable();
-
+            $table->string('designation')->nullable();
         });
     }
 
