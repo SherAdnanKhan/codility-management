@@ -68,7 +68,7 @@
                             <label for='leave_type' class='select-label col-sm-offset-3 col-sm-11 form-control-label '>Select Leave Type</label>
                             <div class='col-sm-12  mb-12 '>
                                 <select name='leave_type'  class='form-control  ajax'>
-
+                                <option value="">Select Leave Type</option>
                                 </select>
                         </div>
                         </div>
@@ -131,8 +131,11 @@
                     console.log(leave.id);
                     $(".ajax").append("<option value="+leave.id+" >"+leave.name+"</option>");
                 }
-                $(".view").css('display','block');
+                    $(".view").css('display','block');
             })
+            }
+            if ($(this).val() == 'late') {
+                $(".view").css('display','none');
             }
         });
     </script>

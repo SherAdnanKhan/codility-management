@@ -33,28 +33,42 @@ class Attendance extends Model
             return 'No Time Spent';
         }
         }
-    public function getAttendanceTypeAttribute($value){
-
-        switch ($value) {
-            case "check_in":
-                return 'On Time';
-                break;
-            case "late":
-                return 'Late';
-                break;
-            case "LeaveBySystem":
-                return 'Informed Leave';
-                break;
-            case "AbsentBySystem":
-                return 'Absent';
-                break;
-            default:
-                return $value;
-        }
-        }
+    public function getAttendanceTypeAttribute($value)
+    {
+        switch ($value)
+            {
+                case "check_in":
+                    return 'On Time';
+                    break;
+                case "late":
+                    return 'Late';
+                    break;
+                case "LeaveBySystem":
+                    return 'Informed-Leave Marked System ';
+                    break;
+                case "AbsentBySystem":
+                    return 'Absent Marked System';
+                    break;
+                case "LeaveByAdmin":
+                    return 'Leave Marked Admin';
+            case "inform":
+                return 'Inform';
+                default:
+                    return 'No Status';
+            }
+    }
     public function getCheckOutTimeAttribute($value){
         if($value== true) {
             return date('m/d/Y h:i A', $value);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public function getLateInformedAttribute($value){
+        if($value== true) {
+            return 'But LATE';
         }
         else
         {
@@ -66,5 +80,8 @@ class Attendance extends Model
     }
     public function leave(){
         return $this->hasOne('App\Leave','id','leave_id');
+    }
+    public function inform(){
+        return $this->hasOne('App\Inform','id','leave_id');
     }
 }

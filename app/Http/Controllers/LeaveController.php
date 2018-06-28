@@ -16,7 +16,7 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        $leaves =Leave::all();
+        $leaves =Leave::all()->sortByDesc('id');
         return view('Admin.leave',compact('leaves'));
         
     }
@@ -40,9 +40,9 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' =>'required',
+            'name'      =>'required',
             'color_code'=>'required',
-            'allowed'=>'required'
+            'allowed'   =>'required'
 
         ]);
         $leave = Leave::create($request->all());

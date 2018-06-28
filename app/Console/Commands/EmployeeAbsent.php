@@ -40,27 +40,23 @@ class EmployeeAbsent extends Command
      */
     public function handle()
     {
-        $users = User::all();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->get();
         $carbon = Carbon::today();
         $attendance  = Carbon::parse($carbon)->timestamp;
-        $limit = Carbon::parse($carbon);
-        $add_day = $limit->addDays(1);
-        $limit_date = strtotime($add_day);
         foreach ($users as $user)
         {
-            $check_attendance = \App\Attendance::whereBetween('check_in_time',[$attendance ,$limit_date])->where('user_id',$user->id)->first();
+            $check_attendance = \App\Attendance::whereBetween('check_in_time',[$attendance ,$carbon->endOfDay()->timestamp])->where('user_id',$user->id)->first();
             if($check_attendance == null){
-                $inform = \App\Inform::whereBetween('attendance_date',[$attendance, $limit_date])->where('user_id',$user->id)->first();
+                $inform = \App\Inform::whereBetween('attendance_date',[$attendance, $carbon->endOfDay()->timestamp])->where('user_id',$user->id)->first();
 
                 if(!($inform == null)){
 
                     $user->attendance()->create(['check_in_time'=>$attendance,'check_out_time'=>$attendance,'attendance_type'=>'LeaveBySystem','leave_id'=>$inform->id,'leave_comment'=>$inform->reason,'informed'=>true,'late_informed'=>$inform->inform_late]);
                 }
                 else{
-                    $user->attendance()->create(['check_in_time'=>$attendance,'check_out_time'=>$attendance,'attendance_type'=>'AbsendBySystem',]);
+                    $user->attendance()->create(['check_in_time'=>$attendance,'check_out_time'=>$attendance,'attendance_type'=>'AbsentBySystem',]);
                 }
             }
         }
-        $leave =Leave::create(['name'=>'cron','color_code'=>'#fff','allowed'=>'2']);
     }
 }

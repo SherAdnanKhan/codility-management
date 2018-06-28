@@ -58,14 +58,14 @@
                                 <tbody>
                                 @if($attendances)
                                     @foreach($attendances as $attendance)
-                                            <tr>
+                                            <tr style="color:{{$attendance->attendance_type=='Late'?'red':'green'}};">
                                                 <td>{{$attendance->check_in_time}}</td>
                                                 <td>{{$attendance->check_out_time?$attendance->check_out_time:'Not Inserted'}}</td>
                                                 <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
                                                 <td>{{$attendance->time_spent}}</td>
-                                                <td>{{$attendance->attendance_type}}</td>
+                                                <td>{{$attendance->attendance_type}} {{$attendance->attendance_type=='Inform'? $attendance->late_informed:''}}</td>
                                                 <td class="text-primary lead">
-                                                    @if($attendance->check_in_time && (!($attendance->check_out_time)))
+                                                    @if($attendance->check_in_time && (!($attendance->check_out_time )) && ($attendance->attendance_type=='On Time' || $attendance->attendance_type=='Late' || $attendance->attendance_type=='Inform'))
                                                     <a href="{{route('attendance.edit',$attendance->id)}}"><span class="fa fa-edit"></span></a>
                                                 </td>
                                                 @endif
