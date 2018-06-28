@@ -82,5 +82,8 @@ class User extends Authenticatable
     {
         return date('h:i A',$value);
     }
+    public function tasks(){
+        return $this->hasMany('App\Task');
+    }
 
 }

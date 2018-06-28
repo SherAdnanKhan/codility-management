@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('title')
-    <title> {{config('app.name')}} | Inform</title>
+    <title> {{config('app.name')}} | Task </title>
 @endsection
 @section('body')
 
     <div class="container">
         <!-- Page Header-->
         <header class="page-header">
-            <h1 class="h3 display">Informs Employee Detail</h1>
+            <h1 class="h3 display">Task Management</h1>
         </header>
         @if (session('status'))
             <div class="alert alert-success">
@@ -20,7 +20,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <a href="{{route('inform.create')}}" class="btn btn-outline-success ">Add Employee Inform
+                                <a href="{{route('task.create')}}" class="btn btn-outline-success ">Add New Task
                                     <span class="fa fa-plus"></span></a>
                             </div>
                             <div class="col-lg-3">
@@ -39,32 +39,19 @@
                                 <thead>
                                 <tr>
 
-                                    <th>Employee Name</th>
-                                    <th>Attendance Date</th>
-                                    <th>Informed At</th>
-                                    <th>Inform Type</th>
-                                    <th>Informed Status</th>
-                                    <th>Reason</th>
-                                    <th>Action</th>
+                                    <th>Task Date</th>
+                                    <th>Task Timing</th>
+                                    <th>Task Description</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if($informs)
-                                    @foreach($informs as $inform)
+                                @if($tasks)
+                                    @foreach($tasks as $task)
                                         <tr>
 
-                                            <td>{{$inform->users->name}}</td>
-                                            <td>{{$inform->attendance_date}}</td>
-                                            <td>{{$inform->inform_at}}</td>
-                                            <td>{{$inform->inform_type}}{{$inform->leaves?' ON '.$inform->leaves->name:''}}</td>
-                                            <td>{{$inform->inform_late?'Yes Late Informed':'No Late Informed'}}</td>
-                                            <td>{{$inform->reason}}</td>
-                                            <td class="text-primary lead">
-                                                <a href="{{route('inform.edit',$inform->id)}}"><span class="fa fa-edit"></span></a>
-                                                <a  data-value="{{$inform->id}}"  class="delete_link" href="#" >
-                                                    <span class="fa fa-times"></span>
-                                                </a>
-                                            </td>
+                                            <td>{{$task->created_at->toDateString()}}</td>
+                                            <td>{{$task->time_take}}</td>
+                                            <td>{{$task->description}}</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -100,8 +87,8 @@
                 $('#modal-body').html("Are You Sure Delete "  +
                     '<form class=form-inline" method="POST"  action ="/inform/'+result.id+'"   enctype="multipart/form-data" >' +
                     '{{method_field('DELETE')}}' +
-                        '{{ csrf_field()}}'+
-                ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');
+                    '{{ csrf_field()}}'+
+                    ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');
                 $('#deleteMyModal').modal();
                 console.log(result);
 

@@ -31,7 +31,7 @@ Route::get('/', function () {
     Route::resource('/timetable','TimeTableController');
     Route::resource('/leave','LeaveController');
     Route::resource('/inform','InformController');
-//    Route::resource('/attendance','AttendanceController');
+    Route::resource('/task','TaskController');
         Route::get('/leaves','LeaveController@leave');
         Route::delete('/attendance/{id}','AttendanceController@destroy')->name('attendance.destroy');
     });
@@ -42,7 +42,10 @@ Route::get('/', function () {
 
 });
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/attendance/create','AttendanceController@index')->name('attendance.create');
+    Route::get('/task/create','TaskController@create')->name('task.create');
+    Route::post('/task','TaskController@store')->name('task.store');
+    Route::get('/task','TaskController@index')->name('task.index');
+    Route::get('/attendance/create','AttendanceController@create')->name('attendance.create');
     Route::post('/attendance','AttendanceController@store')->name('attendance.store');
     Route::get('/attendance','AttendanceController@index')->name('attendance.index');
     Route::get('/attendance/{id}','AttendanceController@show')->name('attendance.show');
