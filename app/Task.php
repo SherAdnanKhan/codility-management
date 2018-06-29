@@ -9,12 +9,22 @@ class Task extends Model
     protected $fillable=[
         'user_id',
         'time_take',
-        'description'
+        'description',
+        'date'
     ];
 
     public function getTimeTakeAttribute($value){
         if($value== true) {
             return date('h:i', $value);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public function getDateAttribute($value){
+        if($value== true) {
+            return date('m/d/Y', $value);
         }
         else
         {

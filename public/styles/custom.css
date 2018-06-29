@@ -1,7 +1,12 @@
 /* your styles go here */
 
 
-
+td>form.form-horizontal {
+    display: inline; !important;
+}
+td>form.form-horizontal button{
+    color: red !important;
+}
 form .help-block{
 
     color: red;

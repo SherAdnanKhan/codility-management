@@ -39,8 +39,10 @@
                                 <tr>
                                     <th>Employee Name</th>
                                     <th>Task Date</th>
+                                    <th>Task Created</th>
                                     <th>Task Timing</th>
                                     <th>Task Description</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -48,9 +50,18 @@
                                     @foreach($tasks as $task)
                                         <tr>
                                             <td>{{$task->user->name}}</td>
-                                            <td>{{$task->created_at->toDateString()}}</td>
+                                            <td>{{$task->date}}</td>
+                                            <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
-                                            <td>{{$task->description}}</td>
+                                            <td>{{substr($task->description,0,50 )."..."}}</td>
+                                            <td><a href="{{route('task.edit',$task->id)}}"> <span class="fa fa-edit"></span>
+                                                </a>
+                                                <a href="{{route('task.show',$task->id)}}"> <span class="fa fa-file"></span>
+                                                </a>
+                                                <a  data-value="{{$task->id}}"  class="delete_link" href="#" >
+                                                    <span class="fa fa-times"></span>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -81,10 +92,10 @@
 
     <script>
         $(".delete_link").on('click',function() {
-            var inform=$(this).data("value");
-            $.get('/inform/'+ inform +'/',function (result) {
+            var task=$(this).data("value");
+            $.get('/delete-task/'+ task +'/',function (result) {
                 $('#modal-body').html("Are You Sure Delete "  +
-                    '<form class=form-inline" method="POST"  action ="/inform/'+result.id+'"   enctype="multipart/form-data" >' +
+                    '<form class=form-inline" method="POST"  action ="/task/'+result.id+'"   enctype="multipart/form-data" >' +
                     '{{method_field('DELETE')}}' +
                     '{{ csrf_field()}}'+
                     ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');

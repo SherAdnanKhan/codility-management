@@ -51,10 +51,11 @@ class TaskController extends Controller
                 'description'=>'required',
             ]);
             $consume_time = Carbon::parse($request->time_taken)->timestamp;
-
+            $date = Carbon::parse($request->date)->timestamp;
             Task::create([
                 'user_id'=>Auth::id(),
                 'time_take'=>$consume_time,
+                'date'       =>$date,
                 'description'=>$request->description
             ]);
             return redirect()->route('task.index');
@@ -98,21 +99,29 @@ class TaskController extends Controller
             'description'=>'required',
         ]);
         $consume_time = Carbon::parse($request->time_taken)->timestamp;
+        $date = Carbon::parse($request->date)->timestamp;
 
         Task::whereId($id)->update([
-            'user_id'=>Auth::id(),
-            'time_take'=>$consume_time,
+            'user_id'    =>Auth::id(),
+            'time_take'  =>$consume_time,
+            'date'       =>$date,
             'description'=>$request->description
         ]);
         return redirect()->route('task.index');
     }
 
+    public function modal($id)
+    {
+        $result=Task::findOrFail($id)->first();
+        return \response()->json($result);
+    }
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
         Task::findOrFail($id)->delete();

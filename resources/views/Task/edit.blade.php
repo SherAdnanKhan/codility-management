@@ -21,11 +21,12 @@
                 </div>
 
                 <div class="card-body">
-                    <form class="form-horizontal" id ="task" method="POST" action="{{route('task.store')}}" >
+                    <form class="form-horizontal" id ="task" method="POST" action="{{route('task.update',$task->id)}}" >
+                        {{method_field('PATCH')}}
                         {{ csrf_field() }}
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='date' name="date"   value="{{old('date')}}" class="input-material" />
+                                <input type='text' id='date' name="date"   value="{{$task->date}}" class="input-material" />
 
                                 <label for="date" class="label-material">Task Date</label>
                             </div>
@@ -37,7 +38,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='time_taken' name="time_taken"   value="{{old('time_taken')}}" class="input-material" />
+                                <input type='text' id='time_taken' name="time_taken"   value="{{$task->time_take}}" class="input-material" />
 
                                 <label for="time_taken" class="label-material">Time Taken For Task </label>
                             </div>
@@ -51,7 +52,7 @@
                             <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Task</label>
                             <div class="col-sm-12  mb-12 ">
                                 <textarea cols="10" name="description" class="form-control">
-                                    {{old('description')}}
+                                    {{$task->description}}
                                 </textarea>
                             </div>
                             @if ($errors->has('description'))
@@ -60,7 +61,7 @@
                                     </span>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-outline-success">Schedule Task</button>
+                        <button type="submit" class="btn btn-outline-success">Update Task</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
                             Reset
                         </button>

@@ -38,8 +38,8 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-
                                     <th>Task Date</th>
+                                    <th>Task Created Date</th>
                                     <th>Task Timing</th>
                                     <th>Task Description</th>
                                 </tr>
@@ -48,10 +48,10 @@
                                 @if($tasks)
                                     @foreach($tasks as $task)
                                         <tr>
-
-                                            <td>{{$task->created_at->toDateString()}}</td>
+                                            <td>{{$task->date}}</td>
+                                            <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
-                                            <td>{{$task->description}}</td>
+                                            <td>{{substr($task->description,0,50 )."..."}}</td>
                                         </tr>
                                     @endforeach
                                 @endif

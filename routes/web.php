@@ -32,8 +32,10 @@ Route::get('/', function () {
     Route::resource('/leave','LeaveController');
     Route::resource('/inform','InformController');
     Route::resource('/task','TaskController');
-        Route::get('/leaves','LeaveController@leave');
-        Route::delete('/attendance/{id}','AttendanceController@destroy')->name('attendance.destroy');
+    Route::get('/leaves','LeaveController@leave');
+    Route::get('/delete-task/{id}','TaskController@modal');
+    Route::delete('/attendance/{id}','AttendanceController@destroy')->name('attendance.destroy');
+
     });
     Route::group(['middleware' => ['firstLogin','auth','employee']], function () {
 
