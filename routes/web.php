@@ -10,7 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Attendance;
+//use App\Mail\MailCheckIn;
+use App\Mail\MailCheckIn;
+use App\Mail\MailReport;
+use App\Mail\MailTask;
+use App\Task;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+
+//use Mail;
+
 //
 //Auth::routes();
 Route::get('/', function () {
@@ -21,7 +33,7 @@ Route::get('/', function () {
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
     Route::post('/admin/register/success/','UserController@store')->name('admin.register');
-    Route::post('/upload-cv','ApplicantsController@uploadCvPost');
+    Route::post('/upload-cv/','ApplicantsController@uploadCvPost');
     Route::get('/upload-csv/view','ApplicantsController@uploadCsv')->name('upload.cvs');
     Route::post('/upload-csv','ApplicantsController@uploadCsvPost');
     Route::get('/view-cv/{id}','ApplicantsController@viewCv');
@@ -75,3 +87,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
+Route::get('/sendmail',function () {
+
+    //get_attendance
+    //tasks
+    //users
+});

@@ -84,4 +84,7 @@ class Attendance extends Model
     public function inform(){
         return $this->hasOne('App\Inform','id','leave_id');
     }
+    public function tasks(){
+        return $this->hasMany('App\Task','user_id','user_id');
+    }
 }

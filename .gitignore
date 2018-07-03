@@ -1,6 +1,6 @@
 !.gitignore
-/vendor
+vendor/
 .env
-.idea/workspace.xml
-/public/images/user
+.idea
+public/images/user
 

@@ -34,5 +34,8 @@ class Task extends Model
     public function user(){
         return $this->belongsTo('App\User');
     }
+    public function attendance(){
+        return $this->hasMany('App\Attendance','user_id','user_id');
+    }
 
 }
