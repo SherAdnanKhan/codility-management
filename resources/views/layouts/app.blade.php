@@ -63,18 +63,26 @@
                             <i class="fa fa-home"></i>Dashboard
                         </a>
                     </li>
+                    {{--<li><a href="{{route('attendance.index')}}">--}}
+                            {{--<i class="fa fa-user-tie"></i>Attendance--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                    <li><a href="{{route('task.index')}}">
+                            <i class="fa fa-tasks"></i>Task Management
+                        </a>
+                    </li>
                     @if (\Auth::user()->isAdmin())
                     <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
-                            <i class="fa fa-user"></i> Employees &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            <i class="fa fa-users"></i> Employees &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                         </a>
                         <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                             <li><a href="{{route('profile.index')}}">Employee Lists</a></li>
                             <li><a href="{{route('register')}}">Employee Register</a></li>
                         </ul>
                     </li>
-                    <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a>
-                    </li>
-                    <li><a href="{{route('applicant_list')}}"><i class="fa fa-user-circle"></i>Applicants list</a></li>
+                    <li><a href="{{route('inform.index')}}"><i class="fa fa-info-circle"></i>Employee Inform</a></li>
+                    <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
+                    <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
                     @endif
                 </ul>

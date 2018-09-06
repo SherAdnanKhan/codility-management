@@ -83,8 +83,9 @@ class ApplicantsController extends Controller
             $finalFileName= $count ? "{$slug}-{$count}" : $slug;
             $file = $request->file('uploadedCv')->storeAs('Public/Resumes', $finalFileName.'.'.$request->uploadedCv->getClientOriginalExtension() ,'local');
             $name = pathinfo($file, PATHINFO_FILENAME);
-            $filePath=storage_path("app\\Public\\Resumes\\".$finalFileName.".".$request->uploadedCv->getClientOriginalExtension());
+            $filePath=storage_path("app/Public/Resumes/".$finalFileName.".".$request->uploadedCv->getClientOriginalExtension());
             //pdf parsing
+
             if( $request->uploadedCv->getClientOriginalExtension()=="pdf")
             {
                 $parser = new \Smalot\PdfParser\Parser();
@@ -92,6 +93,8 @@ class ApplicantsController extends Controller
                 $text = $pdf->getText();
             }else
             {
+
+
                 $text="";
                 $phpWord = \PhpOffice\PhpWord\IOFactory::load($filePath);
                 $sections = $phpWord->getSections();
@@ -109,13 +112,14 @@ class ApplicantsController extends Controller
                     }
                 }
             }
+
             $user->cvSlug=$finalFileName;
             $user->cvExt=$request->uploadedCv->getClientOriginalExtension();
             $user->cvUrl=$file;
             $user->cvData=$text;
             $user->save();
 
-            return redirect('Admin.applicant_list');
+            return redirect()->route('applicant_list')->with('status','Uploaded Resume of Applicant');
 
         }else{
             return "File Type Incorrect.";

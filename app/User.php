@@ -36,6 +36,13 @@ class User extends Authenticatable
     public function photos(){
         return $this->hasOne('App\Photo');
     }
+    public function users(){
+        return $this->hasMany('App\Inform');
+    }
+    public function attendance(){
+
+        return $this->hasMany('App\Attendance','user_id','id');
+    }
     public function isAdmin()
     {
         foreach ($this->role as $role )
@@ -75,6 +82,8 @@ class User extends Authenticatable
     {
         return date('h:i A',$value);
     }
-
+    public function tasks(){
+        return $this->hasMany('App\Task');
+    }
 
 }

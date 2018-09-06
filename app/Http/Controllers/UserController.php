@@ -49,7 +49,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = User::orderByDesc('id')->paginate(10);
         return view('Employee.index', compact('users'));
     }
 
@@ -119,9 +119,10 @@ class UserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+       $users=User::whereName($request->name)->paginate(10);
+        return view('Employee.index', compact('users'));
     }
 
     /**

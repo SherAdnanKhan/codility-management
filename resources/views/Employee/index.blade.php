@@ -19,12 +19,14 @@
                                     <span class="fa fa-plus"></span></a>
                             </div>
                             <div class="col-lg-3">
-                                <div class="input-group input-group-md">
-                                    <input class="form-control" placeholder="Search by Name" type="text">
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-success ">Search</button>
+                                <form action="{{route('employee.show')}}" method="GET">
+                                    <div class="input-group input-group-md">
+                                        <input class="form-control" placeholder="Search by Name" type="text" name="name">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-outline-success ">Search</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -70,6 +72,9 @@
                                 @endif
                                 </tbody>
                             </table>
+                            <div class="bootstrap-iso">
+                            {{$users->links()}}
+                            </div>
                         </div>
                     </div>
                 </div>

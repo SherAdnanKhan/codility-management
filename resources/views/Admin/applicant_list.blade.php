@@ -112,33 +112,34 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+                    <button id="submitBtn" type="submit" class="btn btn-outline-success ">Submit</button>
                     <button type="button" class="btn " data-dismiss="modal">Close</button>
                 </div>
             </form></div>
         </div>
     </div>
-@section('myscripts')
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('.cvUploadLink').on('click',function(event){
-                event.preventDefault();
-                var userId=$(this).attr('data-id');
-                $('#modalTiltle').html("Upload Resume");
-                $('#modalBody').html('<input type="file" name="uploadedCv" accept=".doc, .docx,.pdf"  class="form-control"/><input id="userId" type="hidden" name="userId"/>');
-                $('#userId').val(userId);
-                $('#modalForm').attr('action','/upload-cv');
-                $('#modal').modal();
-            });
-            $('.deleteLink').on('click',function(event){
-                event.preventDefault();
-                $('#modalTiltle').html("Confirmation");
-                $('#modalBody').html("Are you sure you want to delete?");
-                $('#modalForm').attr('action',$(this).attr('href'));
-                $('#modalForm').attr('method','');
-                $('#modal').modal();
-            });
-        });
-    </script>
+
 @endsection
+@section('page_scripts')
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('.cvUploadLink').on('click',function(event){
+                        event.preventDefault();
+                        var userId=$(this).attr('data-id');
+                        $('#modalTiltle').html("Upload Resume");
+                        $('#modalBody').html('<input type="file" name="uploadedCv" accept=".doc, .docx,.pdf"  class="form-control"/><input id="userId" type="hidden" name="userId"/>');
+                        $('#userId').val(userId);
+                        $('#modalForm').attr('action','/upload-cv');
+                        $('#modal').modal();
+                    });
+                    $('.deleteLink').on('click',function(event){
+                        event.preventDefault();
+                        $('#modalTiltle').html("Confirmation");
+                        $('#modalBody').html("Are you sure you want to delete?");
+                        $('#modalForm').attr('action',$(this).attr('href'));
+                        $('#modalForm').attr('method','');
+                        $('#modal').modal();
+                    });
+                });
+            </script>
 @endsection

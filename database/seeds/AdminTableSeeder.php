@@ -13,7 +13,7 @@ class AdminTableSeeder extends Seeder
     {
         factory(App\User::class,1)->create()
             ->each(function ($u){
-                $u->role()->attach(1);
+                $u->role()->attach(2);
             });
     }
 }

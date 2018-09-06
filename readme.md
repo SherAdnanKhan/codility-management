@@ -39,7 +39,8 @@ MAIL_ENCRYPTION=ssl
            'name' => env('MAIL_FROM_NAME', 'Your Mail Name'),
 
   
-  Step 9 : Then update or install composer
+  Step 9 : add youremail@gmail.com to "LateEmployee","SendReport","SendTask" in  ->to(iamatta24@gmail.com)
+  Step 10 : Then update or install composer
 #### Then Open Terminal an go to your folder path and setup Laravel...
 
 ```sh
@@ -62,6 +63,20 @@ https://yourvirtualhost or localhost /
 | Password  |secret          |
 
 After login Update your profile Upload Admin Avatar
+##Composer Update or require 'composer require guzzlehttp/guzzle'
+
+#####For CronJobs/Scheduling setup 
+######Add the following Cron entry to your server
+```sh
+* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+```
+
+After All setup Succesfull
+```sh
+composer update
+php artisan config:cache
+php artisan cache:clear
+```
 ####Now you are setup Codility Managment Application in your System
 
 

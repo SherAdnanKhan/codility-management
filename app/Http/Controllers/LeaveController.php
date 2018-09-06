@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
+use App\Inform;
 use App\Leave;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        $leaves =Leave::all();
+        $leaves =Leave::all()->sortByDesc('id');
         return view('Admin.leave',compact('leaves'));
         
     }
@@ -38,9 +40,10 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' =>'required',
+            'name'      =>'required',
             'color_code'=>'required',
-            'allowed'=>'required'
+            'allowed'   =>'required'
+
         ]);
         $leave = Leave::create($request->all());
         return redirect()->route('leave.index');
@@ -54,7 +57,7 @@ class LeaveController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -97,5 +100,9 @@ class LeaveController extends Controller
         $leave = Leave::whereId($id)->delete();
         return redirect()->route('leave.index');
 
+    }
+    public function leave(){
+        $result = Leave::all();
+        return \response()->json($result);
     }
 }

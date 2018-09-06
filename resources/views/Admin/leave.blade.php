@@ -3,11 +3,11 @@
     <title> {{config('app.name')}} | Manage Leaves</title>
 @endsection
 @section('body')
-    @if (session('timetable'))
-        <div class="alert alert-success">
-            {{ session('timetable') }}
-        </div>
-    @endif
+    {{--@if (session('timetable'))--}}
+        {{--<div class="alert alert-success">--}}
+            {{--{{ session('timetable') }}--}}
+        {{--</div>--}}
+    {{--@endif--}}
         <div class="container" style="margin-top: 6%;">
             <div class="row">
     <div class="col-lg-6" >
@@ -89,15 +89,15 @@
                         <td>{{$leave->allowed}}</td>
                         <td>
                             <a  style="color: {{$leave->color_code?$leave->color_code:'yellow'}}" data-value="{{$leave->id}}"  class="edit_link" href="#" >
-
                                 <span class="fa fa-edit"></span>
                             </a>
+
                         </td>
                         <td >
                             <form class="form-horizontal" method="POST" action = "{{ route('leave.destroy', $leave->id) }}" >
                                 {{ method_field('DELETE') }}
                                 {{ csrf_field() }}
-                                <button type="submit" class="form-submit fa fa-times" style="background-color: {{$leave->color_code?$leave->color_code:'yellow'}}" >
+                                <button type="submit" class="form-submit fa fa-times delete_link" style="background-color: {{$leave->color_code?$leave->color_code:'yellow'}}" >
 
                                 </button>
                             </form>

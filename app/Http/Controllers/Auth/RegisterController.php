@@ -85,6 +85,7 @@ class RegisterController extends Controller
     }
     protected function create(array $data)
     {
+
         $count =$this->getAllowedDays();
         $timing  = TimeTable::whereId(1)->first();
         $user = User::create([
@@ -101,7 +102,7 @@ class RegisterController extends Controller
             'breakAllowed' =>  Carbon::parse($timing->non_working_hour)->timestamp,
             'workingDays' =>  $count
         ]);
-        $role = Role::findOrFail(2);
+        $role = Role::findOrFail(1);
         $user->role()->attach($role);
         return view('Admin.index');
 

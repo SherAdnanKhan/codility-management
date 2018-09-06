@@ -15,7 +15,7 @@ class TimeTableController extends Controller
      */
     public function index()
     {
-        $timetable = TimeTable::all();
+        $timetable = TimeTable::all()->sortByDesc('id');
         return view('Admin.timetable',compact('timetable'));
     }
 
