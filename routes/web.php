@@ -11,19 +11,6 @@
 |
 */
 
-use App\Attendance;
-//use App\Mail\MailCheckIn;
-use App\Mail\MailCheckIn;
-use App\Mail\MailReport;
-use App\Mail\MailTask;
-use App\Task;
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
-
-//use Mail;
-
-//
 //Auth::routes();
 Route::get('/', function () {
     return view('auth.login');
@@ -32,7 +19,8 @@ Route::get('/', function () {
     Route::get('/applicants/lists', 'ApplicantsController@home')->name('applicant_list');
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
-    Route::post('/admin/register/success/','UserController@store')->name('admin.register');
+        Route::get('/employee','UserController@show')->name('employee.show');
+        Route::post('/admin/register/success/','UserController@store')->name('admin.register');
     Route::post('/upload-cv/','ApplicantsController@uploadCvPost');
     Route::get('/upload-csv/view','ApplicantsController@uploadCsv')->name('upload.cvs');
     Route::post('/upload-csv','ApplicantsController@uploadCsvPost');
@@ -42,7 +30,9 @@ Route::get('/', function () {
     Route::post('/register','Auth\RegisterController@register');
     Route::resource('/timetable','TimeTableController');
     Route::resource('/leave','LeaveController');
+    Route::get('/search/inform','InformController@search')->name('inform.search');
     Route::resource('/inform','InformController');
+    Route::get('/search/task','TaskController@search')->name('task.search');
     Route::resource('/task','TaskController');
     Route::get('/leaves','LeaveController@leave');
     Route::get('/delete-task/{id}','TaskController@modal');
@@ -56,6 +46,7 @@ Route::get('/', function () {
 
 });
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/employee/task','TaskController@search')->name('task.search.employee');
     Route::get('/task/create','TaskController@create')->name('task.create');
     Route::post('/task','TaskController@store')->name('task.store');
     Route::get('/task','TaskController@index')->name('task.index');
@@ -87,9 +78,3 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
-Route::get('/sendmail',function () {
-
-    //get_attendance
-    //tasks
-    //users
-});

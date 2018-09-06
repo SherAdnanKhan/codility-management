@@ -84,3 +84,13 @@ header > .h3
 .slider.round:before {
     border-radius: 50%;
 }
+.date_search{
+    display: none;
+}
+.custom-card{
+    text-align: right;
+    background-color: #fff;
+    border: 0px solid #d6d6d6;
+    border-radius: 46px 46px 0px 0px;
+    box-shadow: 9px -12px 6px rgba(0, 0, 0, 0.1) !important;
+}

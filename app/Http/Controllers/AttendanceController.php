@@ -169,4 +169,9 @@ class AttendanceController extends Controller
         $attendance= Attendance::whereId($id)->delete();
         return redirect()->route('attendance.index')->with('status','Employee Attendance Deleted !');
     }
+    public function search(Request $request){
+        $attendance=User::whereName($request->name)->first();
+        $take=$attendance->attendance;
+        dd($take);
+    }
 }

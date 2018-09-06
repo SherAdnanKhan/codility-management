@@ -29,12 +29,14 @@
                                        href="#createMyModal">Mark Attendance</a>
                             </div>
                             <div class="col-lg-3">
+                                <form action="#" method="GET">
                                 <div class="input-group input-group-md">
-                                    <input class="form-control" placeholder="Search by Name" type="text">
+                                    <input class="form-control" placeholder="Search by Name" type="text" name="name">
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-success ">Search</button>
+                                        <button type="submit" class="btn btn-outline-success ">Search</button>
                                     </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -220,7 +222,7 @@
 @endsection
 @section('page_scripts')
     <script src="{{asset('scripts/moment.js')}}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
         $(function () {

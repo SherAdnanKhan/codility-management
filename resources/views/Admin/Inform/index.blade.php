@@ -2,6 +2,11 @@
 @section('title')
     <title> {{config('app.name')}} | Inform</title>
 @endsection
+@section('page_styles')
+
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
+@endsection
 @section('body')
 
     <div class="container">
@@ -18,19 +23,90 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
+
                         <div class="row">
                             <div class="col-lg-9">
+
+                            </div>
+                            <div class="col-lg-3">
                                 <a href="{{route('inform.create')}}" class="btn btn-outline-success ">Add Employee Inform
                                     <span class="fa fa-plus"></span></a>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="input-group input-group-md">
-                                    <input class="form-control" placeholder="Search by Name" type="text">
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-success ">Search</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <form class="filter_form" id ="filter_form" method="GET" action="{{route('inform.search')}}" >
+                                    {{--{{ csrf_field() }}--}}
+                                    <div class="row">
+                                        <div class="form-group-material col-sm-2 ">
+                                            <label for="inform_type" class="select-label form-control-label ">Search Inform By</label>
+                                            <select name="filter" id="filter" class="form-control filters ">
+                                                <option>Please Choose</option>
+
+                                                <option {{\Request::get('filter')=='today'?'selected ':''}}value="today">Today</option>
+                                                <option {{\Request::get('filter')=='week'?'selected ':''}}value="week">This Week</option>
+                                                <option {{\Request::get('filter')=='month'?'selected ':''}}value="month">This Month</option>
+                                                <option {{\Request::get('filter')=='year'?'selected ':''}}value="year">This Year</option>
+                                                <option {{\Request::get('filter')=='custom'?'selected ':''}}value="custom">Custom</option>
+
+                                            </select>
+
+                                            @if ($errors->has('filter'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('filter') }}</strong>
+                                    </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+
+                                            <div class='bootstrap-iso input-group-material' >
+                                                <input type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+
+                                                <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
+                                            </div>
+                                            @if ($errors->has('start_date'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('start_date') }}</strong>
+                                    </span>
+                                            @endif
+
+                                        </div>
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+
+                                            <div class=' bootstrap-iso input-group-material date' >
+                                                <input type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+
+                                                <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
+                                            </div>
+                                            @if ($errors->has('end_date'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('end_date') }}</strong>
+                                    </span>
+                                            @endif
+
+                                        </div>
+
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
+
+                                                <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
+                                            </div>
+                                            @if ($errors->has('name'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="col-sm-1 " style="margin-top: 27px;">
+                                            <button type="submit" class="btn btn-outline-success">Search Inform</button>
+                                        </div>
+
                                     </div>
-                                </div>
+                                </form>
                             </div>
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -72,6 +148,9 @@
                             </table>
                         </div>
                     </div>
+                    <div class="bootstrap-iso">
+                        {{$informs->links()}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,9 +169,39 @@
             </div>
         </div>
     </div>
+
 @endsection
 @section('page_scripts')
+    <script src="{{asset('scripts/moment.js')}}"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
+    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // var FromEndDate = new Date();
+            $('#start_date').datetimepicker({format:'L'
+            });
+            $('#end_date').datetimepicker({
+                format:'L',
+            });
+        });
+        $("#start_date").on("dp.change", function (e) {
 
+            $('#end_date').data("DateTimePicker").minDate(e.date);
+        });
+        $("#end_date").on("dp.change", function (e) {
+            $('#start_date').data("DateTimePicker").maxDate(e.date);
+        });
+        $("#filter").change(function() {
+
+            if($(this).val() =='custom'){
+                $('.date_search').css('display','block');
+            }if($(this).val() != 'custom'){
+                $('.date_search').css('display','none');
+            }
+
+        });
+
+    </script>
     <script>
         $(".delete_link").on('click',function() {
             var inform=$(this).data("value");

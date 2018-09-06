@@ -29,11 +29,11 @@
 
                                 <label for="date" class="label-material">Task Date</label>
                             </div>
-                            @if ($errors->has('date'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('date') }}</strong>
-                                    </span>
-                            @endif
+                                @if ($errors->has('date'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('date') }}</strong>
+                                        </span>
+                                @endif
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >

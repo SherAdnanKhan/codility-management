@@ -22,7 +22,7 @@ class InformController extends Controller
     public function index()
     {
         //
-        $informs= Inform::all()->sortByDesc('id');
+        $informs= Inform::orderBy('id','desc')->paginate(10);
         return view('Admin.Inform.index',compact('informs'));
     }
 
@@ -144,5 +144,26 @@ class InformController extends Controller
     {
         $inform = Inform::whereId($id)->delete();
         return redirect()->route('inform.index')->with('status','Employee Inform Deleted !');
+    }
+    public function search(Request $request){
+
+        $this->validate($request,[
+            'start_date' =>'required_if:filter,custom',
+            'end_date'  =>'required_if:filter,custom',
+        ]);
+        if($request->filter == 'custom') {
+            $this->start_date = Carbon::parse($request->start_date)->timestamp;
+            $this->end_date   = Carbon::parse($request->end_date)->timestamp;
+        }else{
+            $start_date = Carbon::now();
+            $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
+            $this->end_date=Carbon::now()->timestamp;
+        }
+        $name=$request->name?$request->name:'';
+        $user=User::whereName($name)->first();
+        $informs=Inform::whereBetween('attendance_date',[$this->start_date,$this->end_date])->orWhere('user_id',$user !=null?$user->id:'')->paginate(10);
+        $informs->withPath("task?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+        return view('Admin.Inform.index',compact('informs'));
+
     }
 }

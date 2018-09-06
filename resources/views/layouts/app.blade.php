@@ -63,10 +63,10 @@
                             <i class="fa fa-home"></i>Dashboard
                         </a>
                     </li>
-                    <li><a href="{{route('attendance.index')}}">
-                            <i class="fa fa-user-tie"></i>Attendance
-                        </a>
-                    </li>
+                    {{--<li><a href="{{route('attendance.index')}}">--}}
+                            {{--<i class="fa fa-user-tie"></i>Attendance--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                     <li><a href="{{route('task.index')}}">
                             <i class="fa fa-tasks"></i>Task Management
                         </a>
