@@ -21,15 +21,15 @@ class AttendanceController extends Controller
     public function index()
     {
         if (Auth::user()->isEmployee()) {
-            $attendances = Attendance::whereUserId(Auth::user()->id)->orderBy('id', 'desc')->get();
+            $attendances = Attendance::whereUserId(Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
             $get_tomorrow = Carbon::today()->endOfDay()->timestamp;
             $get_today = Carbon::today()->timestamp;
             $today = Attendance::whereBetween('check_in_time',[$get_today,$get_tomorrow])->Where('user_id', Auth::id())->first();
             return view('Attendance.index', compact('attendances', 'today'));
         }
         elseif(Auth::user()->isAdmin()){
-            $attendances = Attendance::all()->sortByDesc('id');
-            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get(  );
+            $attendances = Attendance::orderBy('id','desc')->paginate(10);
+            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get();
             return view('Attendance.admin_attendance_index', compact('attendances','users'));
         }
         }
@@ -170,8 +170,31 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.index')->with('status','Employee Attendance Deleted !');
     }
     public function search(Request $request){
-        $attendance=User::whereName($request->name)->first();
-        $take=$attendance->attendance;
-        dd($take);
+        $this->validate($request,[
+            'start_date' =>'required_if:filter,custom',
+            'end_date'  =>'required_if:filter,custom',
+
+        ]);
+        if($request->filter == 'custom') {
+            $this->start_date = Carbon::parse($request->start_date)->timestamp;
+            $this->end_date   = Carbon::parse($request->end_date)->timestamp;
+        }else{
+            $start_date = Carbon::now();
+            $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
+            $this->end_date=Carbon::now()->timestamp;
+        }
+        $name=$request->name?$request->name:'';
+        if (Auth::user()->isAdmin()) {
+            $user = User::whereName($name)->first();
+            $attendances = Attendance::whereBetween('date', [$this->start_date, $this->end_date])->orWhere('user_id', $user != null ? $user->id : '')->paginate(10);
+            $attendances->withPath("attendance?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+            return view('Attendance.admin_attendance_index', compact('attendances'));
+        }
+        else{
+            $attendances = Attendance::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orWhere('description',$request->description)->paginate(10);
+            $attendances->withPath("attendance?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+            return view('Attendance.admin_attendance_index', compact('attendances'));
+        }
+
     }
 }

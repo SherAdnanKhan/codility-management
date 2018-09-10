@@ -18,12 +18,12 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="row">
-                            <div class="col-lg-9">
-
-                            </div>
+                        <div class="row" style="margin-bottom: 30px">
                             <div class="col-lg-3">
                                 <a  class="btn btn-outline-success" href="{{route('task.create')}}"><span class="fa fa-plus"></span> Schedule Task</a>
+
+                            </div>
+                            <div class="col-lg-9 ">
                             </div>
                         </div>
                         <div class="row">

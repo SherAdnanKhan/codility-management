@@ -10,7 +10,7 @@
     <meta name="author" content="Codility">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
-    <link rel="shortcut icon"  href="{{asset('images/logo.png')}}"/>
+    <link rel="shortcut icon"  href="{{asset('images/favicon.png')}}"/>
     <link rel="stylesheet" href="{{asset('styles/bootstrap-iso.css')}}">
     <!-- Bootstrap CSS-->
     {{--<link rel="stylesheet" href="{{asset('styles/styles.css')}}">--}}
@@ -63,10 +63,10 @@
                             <i class="fa fa-home"></i>Dashboard
                         </a>
                     </li>
-                    {{--<li><a href="{{route('attendance.index')}}">--}}
-                            {{--<i class="fa fa-user-tie"></i>Attendance--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
+                    <li><a href="{{route('attendance.index')}}">
+                            <i class="fa fa-user-tie"></i>Attendance
+                        </a>
+                    </li>
                     <li><a href="{{route('task.index')}}">
                             <i class="fa fa-tasks"></i>Task Management
                         </a>
@@ -101,7 +101,7 @@
                             </a>
                             <a href="{{\Auth::user()->isAdmin() ? route('admin.home'): route('employee.home')}}" class="navbar-brand">
                              <div class="navbar-brand d-none d-md-inline-block">
-                                 <img style="max-width: 70%" class="img-responsive " src="{{asset('images/logo.png')}}" alt="Codility Management">
+                                 <img style="" class="img-responsive " src="{{asset('images/logo.svg')}}" alt="Codility Management">
                              </div>
                             </a>
                         </div>
