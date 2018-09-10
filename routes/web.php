@@ -19,8 +19,9 @@ Route::get('/', function () {
     Route::get('/applicants/lists', 'ApplicantsController@home')->name('applicant_list');
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
-        Route::get('/employee','UserController@show')->name('employee.show');
-        Route::post('/admin/register/success/','UserController@store')->name('admin.register');
+    Route::get('/attendance/inform','AttendanceController@search')->name('attendance.search');
+    Route::get('/employee','UserController@show')->name('employee.show');
+    Route::post('/admin/register/success/','UserController@store')->name('admin.register');
     Route::post('/upload-cv/','ApplicantsController@uploadCvPost');
     Route::get('/upload-csv/view','ApplicantsController@uploadCsv')->name('upload.cvs');
     Route::post('/upload-csv','ApplicantsController@uploadCsvPost');

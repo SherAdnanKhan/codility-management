@@ -24,13 +24,13 @@
                 <div class="card">
                     <div class="card-header">
 
-                        <div class="row">
-                            <div class="col-lg-9">
-
-                            </div>
+                        <div class="row" style="margin-bottom: 30px">
                             <div class="col-lg-3">
                                 <a href="{{route('inform.create')}}" class="btn btn-outline-success ">Add Employee Inform
                                     <span class="fa fa-plus"></span></a>
+                            </div>
+                            <div class=" col-lg-9">
+
                             </div>
                         </div>
                         <div class="row">

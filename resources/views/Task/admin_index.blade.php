@@ -23,13 +23,13 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="row">
+                        <div class="row" style="margin-bottom: 30px">
+                            <div class="col-lg-3">
+                                <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
+                                   href="#createMyModal"><span class="fa fa-plus"></span> Employee Task</a>
+                            </div>
                             <div class="col-lg-9">
 
-                            </div>
-                            <div class="col-lg-3">
-                                 <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
-                                     href="#createMyModal"><span class="fa fa-plus"></span> Employee Task</a>
                             </div>
                         </div>
                         <div class="row">

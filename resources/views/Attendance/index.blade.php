@@ -23,8 +23,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="row">
-                            <div class="col-lg-9">
+                        <div class="row" style="margin-bottom: 30px">
+                            <div class="col-lg-3" >
                                @if(empty($today))
                                 <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
                                    href="#createMyModal">Mark Attendance</a>
@@ -32,14 +32,84 @@
 
 
                             </div>
-                            <div class="col-lg-3">
-                                <div class="input-group input-group-md">
-                                    <input class="form-control" placeholder="Search by Name" type="text">
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-success ">Search</button>
-                                    </div>
-                                </div>
+                            <div class="col-lg-9">
+
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form class="filter_form" id ="filter_form" method="GET" action="{{route('attendance.search')}}" >
+                                    {{--{{ csrf_field() }}--}}
+                                    <div class="row">
+                                        <div class="form-group-material col-sm-2 ">
+                                            <label for="inform_type" class="select-label form-control-label ">Search Attendance By</label>
+                                            <select name="filter" id="filter" class="form-control filters ">
+                                                <option>Please Choose</option>
+
+                                                <option {{\Request::get('filter')=='today'?'selected ':''}}value="today">Today</option>
+                                                <option {{\Request::get('filter')=='week'?'selected ':''}}value="week">This Week</option>
+                                                <option {{\Request::get('filter')=='month'?'selected ':''}}value="month">This Month</option>
+                                                <option {{\Request::get('filter')=='year'?'selected ':''}}value="year">This Year</option>
+                                                <option {{\Request::get('filter')=='custom'?'selected ':''}}value="custom">Custom</option>
+
+                                            </select>
+
+                                            @if ($errors->has('filter'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('filter') }}</strong>
+                                    </span>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+
+                                            <div class='bootstrap-iso input-group-material' >
+                                                <input type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+
+                                                <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
+                                            </div>
+                                            @if ($errors->has('start_date'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('start_date') }}</strong>
+                                    </span>
+                                            @endif
+
+                                        </div>
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+
+                                            <div class=' bootstrap-iso input-group-material date' >
+                                                <input type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+
+                                                <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
+                                            </div>
+                                            @if ($errors->has('end_date'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('end_date') }}</strong>
+                                    </span>
+                                            @endif
+
+                                        </div>
+
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input type='text' id='name' name="name"   value="" class="input-material" />
+
+                                                <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
+                                            </div>
+                                            @if ($errors->has('name'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="col-sm-1 " style="margin-top: 27px;">
+                                            <button type="submit" class="btn btn-outline-success">Search Attendance</button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -166,6 +236,37 @@
             $('#timetable input[type="text"]').val('');
             $('#timetable input[type="checkbox"]').prop('checked', false);
         });
+        $(function () {
+            // var FromEndDate = new Date();
+            $('#start_date').datetimepicker({format:'L'
+            });
+            $('#end_date').datetimepicker({
+                format:'L',
+            });
+        });
+        $("#start_date").on("dp.change", function (e) {
 
+            $('#end_date').data("DateTimePicker").minDate(e.date);
+        });
+        $("#end_date").on("dp.change", function (e) {
+            $('#start_date').data("DateTimePicker").maxDate(e.date);
+        });
+        $("#filter").change(function() {
+
+            if($(this).val() =='custom'){
+                $('.date_search').css('display','block');
+            }if($(this).val() != 'custom'){
+                $('.date_search').css('display','none');
+            }
+
+        });
+        $(function () {
+            $('#date').datetimepicker({
+                format:'l',
+            });
+            $('#time_taken').datetimepicker({
+                format:'hh:mm'
+            });
+        });
     </script>
 @endsection
