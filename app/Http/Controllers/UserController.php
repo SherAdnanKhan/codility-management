@@ -108,7 +108,7 @@ class UserController extends Controller
 
 
         ]);
-        $role = Role::findOrFail(1);
+        $role = Role::findOrFail(2);
         $user->role()->attach($role);
         return view('Admin.index');
     }

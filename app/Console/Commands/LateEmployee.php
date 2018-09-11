@@ -52,15 +52,15 @@ class LateEmployee extends Command
         foreach ($users as $user)
         {
             $check_attendance = Attendance::whereBetween('check_in_time', [$today, Carbon::now()->timestamp])->where('user_id',$user->id)->first();
-
+            $late_users=array();
             if ($check_attendance== null)
             {
-                $late_users[]= $user->name;
+                $late_users = $user->name;
 
             }
         }
 
-        if (!(is_null($late_users))) {
+        if (!(empty($late_users))) {
             Mail::send(new MailCheckIn($late_users));
         }
     }

@@ -19,11 +19,11 @@ class MailReport extends Mailable
      *
      * @return void
      */
-    public function __construct($get_attendance,$users,$tasks)
+    public function __construct($get_attendance, $users, $tasks)
     {
-        $this->tasks            = $tasks;
-        $this->users            = $users;
-        $this->get_attendances  = $get_attendance;
+        $this->tasks = $tasks;
+        $this->users = $users;
+        $this->get_attendances = $get_attendance;
     }
 
     /**
@@ -33,9 +33,11 @@ class MailReport extends Mailable
      */
     public function build()
     {
-        $report_tasks       = $this->tasks;
-        $report_attendance  = $this->get_attendances;
-        $report_users       = $this->users;
-        return $this->markdown('mail_report',compact('report_attendance','report_tasks','report_users'))->to('iamatta24@gmail.com');
+        $report_tasks = $this->tasks;
+        $report_attendance = $this->get_attendances;
+        $report_users = $this->users;
+        $to = array('amir@codility.co', 'hr@codility.co', 'ejaz@codility.co', 'khurram@codility.co');
+
+        return $this->markdown('mail_report', compact('report_attendance', 'report_tasks', 'report_users'))->to($to);
     }
 }

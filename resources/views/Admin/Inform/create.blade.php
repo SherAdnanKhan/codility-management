@@ -152,6 +152,7 @@
         $('#button_clear').click(function(){
             $('#timetable input[type="text"]').val('');
             $('#timetable input[type="checkbox"]').prop('checked', false);
+            $('#timetable select').prop('value', '');
         });
 
 
