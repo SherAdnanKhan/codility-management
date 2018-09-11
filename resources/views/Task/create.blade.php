@@ -86,8 +86,8 @@
             });
         });
         $('#button_clear').click(function(){
-            $('#timetable input[type="text"]').val('');
-            $('#timetable textarea').val('');
+            $('#task input[type="text"]').val('');
+            $('#task textarea').val('');
         });
 
 
