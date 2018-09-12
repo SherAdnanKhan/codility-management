@@ -98,13 +98,14 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
-            'name' => 'required'
-
+            'name' => 'required',
+            'designation'=>'required'
         ]);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'designation' => $request->designation,
 
 
         ]);
