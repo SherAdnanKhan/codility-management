@@ -32,6 +32,15 @@
 
                             </div>
                             <div class="form-group-material">
+                                <input id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
+                                @if ($errors->has('designation'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('designation') }}</strong>
+                                    </span>
+                                @endif
+                                <label for="email" class="label-material ">Designation</label>
+                            </div>
+                            <div class="form-group-material">
                                 <input id="password" type="password" class="input-material" name="password" required>
                                 @if ($errors->has('password'))
                                     <span class="help-block">
