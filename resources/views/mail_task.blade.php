@@ -4,9 +4,7 @@
 @component('mail::panel')
         Dear Admin ,
         These Task performed by Employee Today who checkout last Hour.
-        @foreach($users as $user)
-            {{'except  '.$user->name}}
-        @endforeach
+
 @endcomponent
 @component('mail::table')
     | Name                            | Task                            |Time Tak                         |
@@ -16,6 +14,9 @@
     |      {{$task->user->name}}      |{{$task->description}}           | {{$task->time_take}}            |
              @endforeach
         @endforeach
+    @foreach($users as $user)
+        | <p style="color: red">{{$user->name}}</p> |<p  style="color: red">Not Done</p>|<p  style="color: red">00:800</p>|
+    @endforeach
 @endcomponent
 Thanks,
 {{ config('app.name') }}

@@ -64,8 +64,11 @@ class AttendanceController extends Controller
         $attendance_time = Carbon::parse($request->check_in_time);
         $compare_time = $attendance_time->gt($default_time);
         if ($request->check_out_time){
+            $time = $request->break_interval ? Carbon::parse($request->break_interval)->format('H:i') :false;
+            $explode_time = explode(':', $time);
+            $break_time = ($explode_time[0]*60) + ($explode_time[1]);
             $out_time = Carbon::parse($request->check_out_time);
-            $time_spent = $out_time->diffInRealMinutes($attendance_time);
+            $time_spent =  $out_time->diffInRealMinutes($attendance_time) - $break_time ;
         }
         else{$time_spent =false;}
         if ($compare_time) {
@@ -88,6 +91,7 @@ class AttendanceController extends Controller
             return redirect()->route('attendance.index')->with('status', 'Attendance Mark By Admin!');
 
         }else {
+
             $attendance = Attendance::create([
                 'check_in_time'     => $check_in_time,
                 'check_out_time'    => $check_out_time,

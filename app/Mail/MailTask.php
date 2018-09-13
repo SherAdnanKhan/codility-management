@@ -33,7 +33,8 @@ class MailTask extends Mailable
     {
         $get_tasks = $this->task;
         $no_task   = $this->users;
-        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co');
+        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
+
         return $this->markdown('mail_task',compact('get_tasks','no_task'))->to($to);
     }
 }
