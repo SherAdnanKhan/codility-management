@@ -53,7 +53,7 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'check_in_time'   => 'required',
+            'check_in_time'   => 'required|date',
         ]);
 
         $check_in_time  = Carbon::parse($request->check_in_time)->timestamp;
@@ -65,7 +65,7 @@ class AttendanceController extends Controller
         $compare_time = $attendance_time->gt($default_time);
         if ($request->check_out_time){
             $out_time = Carbon::parse($request->check_out_time);
-            $time_spent = $out_time->diffInHours($attendance_time);
+            $time_spent = $out_time->diffInRealMinutes($attendance_time);
         }
         else{$time_spent =false;}
         if ($compare_time) {
@@ -186,14 +186,15 @@ class AttendanceController extends Controller
         $name=$request->name?$request->name:'';
         if (Auth::user()->isAdmin()) {
             $user = User::whereName($name)->first();
-            $attendances = Attendance::whereBetween('date', [$this->start_date, $this->end_date])->orWhere('user_id', $user != null ? $user->id : '')->paginate(10);
+            $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->orWhere('user_id', $user != null ? $user->id : '')->paginate(10);
             $attendances->withPath("attendance?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
-            return view('Attendance.admin_attendance_index', compact('attendances'));
+            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get();
+            return view('Attendance.admin_attendance_index', compact('attendances','users'));
         }
         else{
-            $attendances = Attendance::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orWhere('description',$request->description)->paginate(10);
+            $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->paginate(10);
             $attendances->withPath("attendance?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
-            return view('Attendance.admin_attendance_index', compact('attendances'));
+            return view('Attendance.index', compact('attendances'));
         }
 
     }

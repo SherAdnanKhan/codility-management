@@ -17,13 +17,13 @@
         <div class="Register-form" style="background-color: #fff;">
             <div class="form-inner flex-fill">
                 <div class="card-header">
-                    <h4>Insert Task</h4>
+                    <h4>Update Task</h4>
                 </div>
-
                 <div class="card-body">
                     <form class="form-horizontal" id ="task" method="POST" action="{{route('task.update',$task->id)}}" >
                         {{method_field('PATCH')}}
                         {{ csrf_field() }}
+                        @if(\Auth::user()->isAdmin())
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
                                 <input type='text' id='date' name="date"   value="{{$task->date}}" class="input-material" />
@@ -36,6 +36,7 @@
                                     </span>
                             @endif
                         </div>
+                        @endif
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
                                 <input type='text' id='time_taken' name="time_taken"   value="{{$task->time_take}}" class="input-material" />
@@ -48,6 +49,7 @@
                                     </span>
                             @endif
                         </div>
+                        @if(\Auth::user()->isAdmin())
                         <div class="form-group row">
                             <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Task</label>
                             <div class="col-sm-12  mb-12 ">
@@ -61,6 +63,7 @@
                                     </span>
                             @endif
                         </div>
+                        @endif
                         <button type="submit" class="btn btn-outline-success">Update Task</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
                             Reset
@@ -87,8 +90,8 @@
             });
         });
         $('#button_clear').click(function(){
-            $('#timetable input[type="text"]').val('');
-            $('#timetable textarea').val('');
+            $('#task input[type="text"]').val('');
+            $('#task textarea').val('');
         });
 
 

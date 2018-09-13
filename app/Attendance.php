@@ -27,7 +27,7 @@ class Attendance extends Model
     }
     public function getTimeSpentAttribute($value){
         if ($value==true) {
-            return ($value.' Hours');
+            return (date('H:i' ,mktime(0,$value)).' Hours');
         }
         else{
             return 'No Time Spent';

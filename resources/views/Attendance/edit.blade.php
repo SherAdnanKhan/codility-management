@@ -26,7 +26,7 @@
                         {{ csrf_field() }}
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='check_in_time' name="check_in_time" disabled="disabled"  value="{{$attendance->check_in_time}}" class="input-material" />
+                                <input type='text' id='check_in_time' name="check_in_time" {!! \Auth::user()->isAdmin()?"":"disabled ='disabled'"!!}  value="{{$attendance->check_in_time}}" class="input-material" />
 
                                 <label for="check_in_time" class="label-material">Check In </label>
                             </div>

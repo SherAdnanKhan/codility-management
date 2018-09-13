@@ -19,7 +19,7 @@ Route::get('/', function () {
     Route::get('/applicants/lists', 'ApplicantsController@home')->name('applicant_list');
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
-    Route::get('/attendance/inform','AttendanceController@search')->name('attendance.search');
+    Route::get('/attendance/search','AttendanceController@search')->name('attendance.search');
     Route::get('/employee','UserController@show')->name('employee.show');
     Route::post('/admin/register/success/','UserController@store')->name('admin.register');
     Route::post('/upload-cv/','ApplicantsController@uploadCvPost');
@@ -34,7 +34,8 @@ Route::get('/', function () {
     Route::get('/search/inform','InformController@search')->name('inform.search');
     Route::resource('/inform','InformController');
     Route::get('/search/task','TaskController@search')->name('task.search');
-    Route::resource('/task','TaskController');
+//    Route::resource('/task','TaskController');
+    Route::delete('task/{task}','TaskController@destroy')->name('task.destroy');
     Route::get('/leaves','LeaveController@leave');
     Route::get('/delete-task/{id}','TaskController@modal');
     Route::delete('/attendance/{id}','AttendanceController@destroy')->name('attendance.destroy');
@@ -47,6 +48,8 @@ Route::get('/', function () {
 
 });
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/attendance/search','AttendanceController@search')->name('attendance.search');
     Route::get('/employee/task','TaskController@search')->name('task.search.employee');
     Route::get('/task/create','TaskController@create')->name('task.create');
     Route::post('/task','TaskController@store')->name('task.store');
@@ -57,6 +60,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/attendance/{id}','AttendanceController@show')->name('attendance.show');
     Route::patch('/attendance/{id}','AttendanceController@update')->name('attendance.update');
     Route::get('/attendance/{id}/edit','AttendanceController@edit')->name('attendance.edit');
+    Route::patch('/task/{id}','TaskController@update')->name('task.update');
+    Route::get('/task/{id}/edit','TaskController@edit')->name('task.edit');
+    Route::get('task/{id}','TaskController@show')->name('task.show');
 
 });
 
