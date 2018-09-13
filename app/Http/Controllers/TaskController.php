@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
 use App\Task;
 use App\User;
 use Carbon\Carbon;
@@ -38,8 +39,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
         return view('Task.create');
+
     }
 
     /**
@@ -59,16 +60,15 @@ class TaskController extends Controller
             ]);
         }elseif(Auth::user()->isEmployee()) {
             $this->validate($request, [
-                'time_taken' => 'required',
                 'description' => 'required',
                 'date'        => 'required|date'
             ]);
         }
-        $consume_time = Carbon::parse($request->time_taken)->timestamp;
+        $consume_time = $request->time_taken?Carbon::parse($request->time_taken)->timestamp:null;
         $date = Carbon::parse($request->date)->timestamp;
         Task::create([
             'user_id' => Auth::user()->isEmployee()?Auth::id():$request->employee,
-            'time_take' => $consume_time,
+            'time_take' => $consume_time?$consume_time:0,
             'date' => $date,
             'description' => $request->description
         ]);
@@ -108,21 +108,35 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'time_taken' =>'required',
-            'description'=>'required',
-        ]);
-        $consume_time = Carbon::parse($request->time_taken)->timestamp;
-        $date = Carbon::parse($request->date)->timestamp;
+        if (Auth::user()->isAdmin()) {
+            $this->validate($request, [
+                'date' => 'required|date',
+                'time_taken' => 'required',
+                'description' => 'required',
+            ]);
+            $consume_time = Carbon::parse($request->time_taken)->timestamp;
+            $date = Carbon::parse($request->date)->timestamp;
 
-        Task::whereId($id)->update([
-            'user_id'    =>Auth::id(),
-            'time_take'  =>$consume_time,
-            'date'       =>$date,
-            'description'=>$request->description
-        ]);
-        return redirect()->route('task.index');
-    }
+            Task::whereId($id)->update([
+                'time_take' => $consume_time,
+                'date' => $date,
+                'description' => $request->description
+            ]);
+            return redirect()->route('task.index');
+        }elseif(Auth::user()->isEmployee()){
+            $this->validate($request, [
+                'time_taken' => 'required',
+            ]);
+            $consume_time = Carbon::parse($request->time_taken)->timestamp;
+            $date = Carbon::parse($request->date)->timestamp;
+
+            Task::whereId($id)->update([
+                'time_take' => $consume_time,
+
+            ]);
+            return redirect()->route('task.index');
+        }
+        }
 
     public function modal($id)
     {

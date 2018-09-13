@@ -337,7 +337,8 @@
         });
         $(function () {
             // var FromEndDate = new Date();
-            $('#start_date').datetimepicker({format:'L'
+            $('#start_date').datetimepicker({format:'L',
+
             });
             $('#end_date').datetimepicker({
                 format:'L',

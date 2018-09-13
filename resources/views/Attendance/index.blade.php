@@ -92,9 +92,9 @@
 
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
-                                                <input type='text' id='name' name="name"   value="" class="input-material" />
+                                                <input type='text' id='name' name="name"   value="{{\Request::get('name')}}" class="input-material" />
 
-                                                <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
+                                                <label for="name" class="label-material" style="left: 17px">Name (Optional)</label>
                                             </div>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
@@ -154,7 +154,7 @@
         <div role="document" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5  class="modal-title">Mark Your Attendance</h5>
+                    <h5  class="modal-title">Mark  Attendance</h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body" id="modal-body">
@@ -216,13 +216,16 @@
     <script type="text/javascript">
         $(function () {
             $('#check_out_time').datetimepicker({
-                useCurrent: false
+                useCurrent: false,
+                minDate:new Date()
             });
             $('#check_in_time').datetimepicker({
-                // minDate:new Date()
+                minDate:new Date()
+
             });
             $('#break_interval').datetimepicker({
                 format:'H:mm',
+
 
             });
             $("#check_in_time").on("dp.change", function (e) {

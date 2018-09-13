@@ -19,7 +19,6 @@
                 <div class="card-header">
                     <h4>Insert Task</h4>
                 </div>
-
                 <div class="card-body">
                     <form class="form-horizontal" id ="task" method="POST" action="{{route('task.store')}}" >
                         {{ csrf_field() }}
@@ -79,7 +78,8 @@
     <script type="text/javascript">
         $(function () {
             $('#date').datetimepicker({
-                format:'l'
+                format:'l',
+                minDate: new Date()
             });
             $('#time_taken').datetimepicker({
                 format:'hh:mm'

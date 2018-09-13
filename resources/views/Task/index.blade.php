@@ -82,7 +82,7 @@
 
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
-                                                <input type='text' id='name' name="name"   value="" class="input-material" />
+                                                <input type='text' id='description' name="description"   value="{{\Request::get('description')}}" class="input-material" />
 
                                                 <label for="name" class="label-material" style="left: 17px">Enter Task Description</label>
                                             </div>
@@ -111,6 +111,7 @@
                                     <th>Task Created Date</th>
                                     <th>Task Timing</th>
                                     <th>Task Description</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -121,6 +122,20 @@
                                             <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
                                             <td>{{substr($task->description,0,50 )."..."}}</td>
+
+                                            <td>
+                                                <?php
+                                                    $today=\Carbon\Carbon::today();
+                                                    $date =\Carbon\Carbon::parse($task->date);
+                                                    $status =$date->gte($today);
+                                                    ?>
+                                                @if($status == true)
+                                                        <a href="{{route('task.edit',$task->id)}}"> <span class="fa fa-edit"></span></a>
+
+                                                    @else
+                                                        Time Passed
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
