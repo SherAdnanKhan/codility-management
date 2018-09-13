@@ -23,11 +23,11 @@ class Attendance extends Model
         return date('H:i ',$value);}
     }
     public function getCheckInTimeAttribute($value){
-        return date('m/d/Y H:i A',$value);
+        return date('m/d/Y h:i A',$value);
     }
     public function getTimeSpentAttribute($value){
         if ($value==true) {
-            return (date('H:i:s' ,mktime(0,$value)).' Hours');
+            return (date('H:i' ,mktime(0,$value)).' Hours');
         }
         else{
             return 'No Time Spent';
@@ -59,7 +59,7 @@ class Attendance extends Model
     }
     public function getCheckOutTimeAttribute($value){
         if($value== true) {
-            return date('m/d/Y H:i A', $value);
+            return date('m/d/Y h:i A', $value);
         }
         else
         {

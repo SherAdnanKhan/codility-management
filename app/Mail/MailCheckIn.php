@@ -33,8 +33,7 @@ class MailCheckIn extends Mailable
     {
 
         $users = $this->get_users;
-        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co');
-
+        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
         return $this->markdown('mail_checkin',compact('users'))->to($to);
     }
 }

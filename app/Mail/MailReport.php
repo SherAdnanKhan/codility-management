@@ -36,8 +36,10 @@ class MailReport extends Mailable
         $report_tasks = $this->tasks;
         $report_attendance = $this->get_attendances;
         $report_users = $this->users;
-        $to = array('amir@codility.co', 'hr@codility.co', 'ejaz@codility.co', 'khurram@codility.co');
+        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
 
         return $this->markdown('mail_report', compact('report_attendance', 'report_tasks', 'report_users'))->to($to);
+
+
     }
 }
