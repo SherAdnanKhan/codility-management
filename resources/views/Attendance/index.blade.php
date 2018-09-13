@@ -215,13 +215,16 @@
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
         $(function () {
+            var nowDate = new Date();
+            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
             $('#check_out_time').datetimepicker({
-                useCurrent: false,
-                minDate:new Date()
+                useCurrent:false,
+                minDate:today ,
+                maxDate:new Date()
             });
             $('#check_in_time').datetimepicker({
-                minDate:new Date()
-
+                  maxDate:new Date(),
+                  minDate:today ,
             });
             $('#break_interval').datetimepicker({
                 format:'H:mm',
