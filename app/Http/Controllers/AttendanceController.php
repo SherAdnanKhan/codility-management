@@ -130,7 +130,7 @@ class AttendanceController extends Controller
      */
     public function edit($id)
     {
-        $attendance = Attendance::findOrFail($id);
+        $attendance = Attendance::whereId($id)->first();
         return view('Attendance.edit',compact('attendance'));
     }
 
@@ -147,16 +147,19 @@ class AttendanceController extends Controller
             'check_out_time'   => 'required',
             'break_interval'   => 'required'
         ]);
-        $check_out_time = Carbon::parse($request->check_out_time)->timestamp;
+        $check_out_time = Carbon::parse($request->check_out_time);
         $break_interval = Carbon::parse($request->break_interval)->timestamp;
 
         $get_attendance = Attendance::whereId($id)->pluck('check_in_time')->first();
         $check_in_time  = Carbon::parse($get_attendance);
-        $out_time =Carbon::parse($request->check_out_time);
-        $time_spent = $out_time->diffInHours($check_in_time);
+        $time = $request->break_interval ? Carbon::parse($request->break_interval)->format('H:i') :false;
+        $explode_time = explode(':', $time);
+        $break_time = ($explode_time[0]*60) + ($explode_time[1]);
+        $out_time = Carbon::parse($request->check_out_time);
+        $time_spent =  $check_out_time->diffInRealMinutes($check_in_time) - $break_time ;
 
         $attendance = Attendance::whereId($id)->update([
-            'check_out_time'        =>  $check_out_time,
+            'check_out_time'        =>  $check_out_time->timestamp,
             'break_interval'        =>  $break_interval,
             'time_spent'            =>  $time_spent
         ]);
@@ -191,14 +194,19 @@ class AttendanceController extends Controller
         $name=$request->name?$request->name:'';
         if (Auth::user()->isAdmin()) {
             $user = User::whereName($name)->first();
-            $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->orWhere('user_id', $user != null ? $user->id : '')->paginate(10);
-            $attendances->withPath("attendance?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+            if ($user == null){
+                $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->paginate(10);
+            }elseif ($user != null){
+                $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+
+            }
+            $attendances->withPath("?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
             $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get();
             return view('Attendance.admin_attendance_index', compact('attendances','users'));
         }
         else{
             $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->paginate(10);
-            $attendances->withPath("attendance?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+            $attendances->withPath("?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
             return view('Attendance.index', compact('attendances'));
         }
 

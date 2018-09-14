@@ -141,7 +141,7 @@
                                             @endif
                                             >
                                                 @if($attendance->leave_comment)
-                                                    {{$attendance->inform->inform_type=='leave'?$attendance->inform->leaves->name :'But Late'}}
+                                                    {{$attendance->inform?$attendance->inform->inform_type =='leave'?$attendance->inform->leaves->name :'But Late':''}}
                                                 @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
                                                     {{$attendance->leave->name}}
                                                     @else

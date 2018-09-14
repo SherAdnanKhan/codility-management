@@ -96,7 +96,7 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::findOrFail($id);
+        $task = Task::whereId($id)->first();
         return view('Task.edit',compact('task'));
     }
 
