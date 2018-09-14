@@ -77,9 +77,12 @@
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
         $(function () {
+            var nowDate = new Date();
+            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
             $('#date').datetimepicker({
                 format:'l',
-                minDate: new Date()
+                minDate:today ,
+                maxDate:new Date()
             });
             $('#time_taken').datetimepicker({
                 format:'hh:mm'

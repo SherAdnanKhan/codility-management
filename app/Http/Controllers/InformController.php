@@ -68,7 +68,6 @@ class InformController extends Controller
             'leave_type'     =>$request->leave_type?$request->leave_type:Null
 
         ]);
-
         if (!(empty($check_attendance))){
             $user = User::whereId($request->employee)->pluck('checkInTime')->first();
             $compare_time =Carbon::parse($request->inform_at);
@@ -94,7 +93,7 @@ class InformController extends Controller
      */
     public function show($id)
     {
-        $result = Inform::findOrFail($id)->first();
+        $result = Inform::whereId($id)->first();
         return \response()->json($result);
     }
 

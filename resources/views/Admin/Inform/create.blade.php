@@ -144,7 +144,7 @@
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
         $(function () {
-            $('#inform_at').datetimepicker({ format:'LT'});
+            $('#inform_at').datetimepicker({});
             $('#attendance_date').datetimepicker({
                     format:'l'
             });

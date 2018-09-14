@@ -39,6 +39,9 @@ class User extends Authenticatable
     public function users(){
         return $this->hasMany('App\Inform');
     }
+    public function informs(){
+        return $this->hasOne('App\Inform','user_id','id');
+    }
     public function attendance(){
 
         return $this->hasMany('App\Attendance','user_id','id');

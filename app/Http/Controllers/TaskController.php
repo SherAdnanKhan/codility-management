@@ -84,7 +84,8 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        $task=Task::whereId($id)->first();
+        return \response()->json($task);
     }
 
     /**
@@ -95,7 +96,7 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::findOrFail($id);
+        $task = Task::whereId($id)->first();
         return view('Task.edit',compact('task'));
     }
 
@@ -140,7 +141,7 @@ class TaskController extends Controller
 
     public function modal($id)
     {
-        $result=Task::findOrFail($id)->first();
+        $result=Task::whereId($id)->first();
         return \response()->json($result);
     }
     /**
@@ -152,7 +153,7 @@ class TaskController extends Controller
 
     public function destroy($id)
     {
-        Task::findOrFail($id)->delete();
+        Task::whereId($id)->delete();
         return redirect()->route('task.index');
     }
     public function search(Request $request){
