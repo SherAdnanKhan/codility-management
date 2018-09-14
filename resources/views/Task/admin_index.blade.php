@@ -274,7 +274,7 @@
         });
         $(".show_link").on('click',function() {
             var task=$(this).data("value");
-            $.get('/delete-task/'+ task +'/',function (result) {
+            $.get('/task/'+ task +'/',function (result) {
                 $('#show_body').html('<div class=""> <div class=""> <div class="card custom-card"> <div class="card-body">'+
                 '<p class="card-text">Task Date :'+result.date+'</p>'+
                 '<p class="card-text">Task Time :'+result.time_take+'</p>'+

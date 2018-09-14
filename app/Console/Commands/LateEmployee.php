@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Attendance;
+use App\Inform;
 use App\Leave;
+use App\Mail\MailLateEmployee;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -47,21 +49,23 @@ class LateEmployee extends Command
         $carbon = Carbon::now();
         $today  = $carbon->startOfDay()->timestamp;
         $late_users=array();
+        $late_users_data=array();
         $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[Carbon::now()->subHours(1)->timestamp, Carbon::now()->timestamp])->get();
 
 //        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[$today, Carbon::now()->timestamp])->get();
         foreach ($users as $user)
         {
-            $check_attendance = Attendance::whereBetween('check_in_time', [$today, Carbon::now()->timestamp])->where('user_id',$user->id)->first();
-
-            if ($check_attendance== null)
+            $check_attendance = $user->attendance()->whereBetween('check_in_time', [$today, Carbon::now()->timestamp])->where('user_id',$user->id)->first();
+            $informs=$user->informs()->whereBetween('attendance_date', [$today, Carbon::now()->timestamp])->first();
+            if ($check_attendance== null && $informs == null)
             {
                 $late_users[] = $user->name;
+                $late_users_data[]=$user->email;
 
             }
         }
-
-        if (!(empty($late_users))) {
+        if (!(empty($late_users) && empty($late_users_data))) {
+            Mail::send(new MailLateEmployee($late_users_data,$late_users));
             Mail::send(new MailCheckIn($late_users));
         }
     }

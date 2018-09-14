@@ -3,7 +3,7 @@
 
 @component('mail::panel')
         Dear Admin ,
-        These Task performed by Employee Today who checkout last Hour.
+        These Task performed by employee today who checkout in last hour.
 
 @endcomponent
 @component('mail::table')
@@ -15,9 +15,9 @@
              @endforeach
         @endforeach
     @foreach($users as $user)
-        | <p style="color: red">{{$user->name}}</p> |<p  style="color: red">Not Done</p>|<p  style="color: red">00:800</p>|
+        | <p style="color: red">{{$user->name}}</p> |<p  style="color: red">Not Done</p>|<p  style="color: red">00:00</p>       |
     @endforeach
 @endcomponent
-Thanks,
+Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

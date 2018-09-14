@@ -82,7 +82,7 @@ class Attendance extends Model
         return $this->hasOne('App\Leave','id','leave_id');
     }
     public function inform(){
-        return $this->hasOne('App\Inform','id','leave_id');
+        return $this->hasOne('App\Inform','user_id','user_id');
     }
     public function tasks(){
         return $this->hasMany('App\Task','user_id','user_id');

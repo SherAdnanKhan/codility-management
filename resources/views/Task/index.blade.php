@@ -195,8 +195,8 @@
     </script>
     <script>
         $(".delete_link").on('click',function() {
-            var inform=$(this).data("value");
-            $.get('/inform/'+ inform +'/',function (result) {
+            var task=$(this).data("value");
+            $.get('/task/'+ task +'/',function (result) {
                 $('#modal-body').html("Are You Sure Delete "  +
                     '<form class=form-inline" method="POST"  action ="/inform/'+result.id+'"   enctype="multipart/form-data" >' +
                     '{{method_field('DELETE')}}' +

@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('late:employee')
             ->hourly();
         $schedule->command('employee:absent')
-            ->dailyAt('23:30');
+            ->dailyAt('23:45');
         $schedule->command('mail:report')
             ->dailyAt('23:50');
     }

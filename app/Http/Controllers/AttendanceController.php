@@ -117,6 +117,7 @@ class AttendanceController extends Controller
     public function show($id)
     {
         //
+
         $attendance=Attendance::whereId($id)->pluck('id')->first();
         return \response()->json($attendance);
     }
