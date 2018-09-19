@@ -75,24 +75,5 @@
     <script src="{{asset('scripts/moment.js')}}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
-    <script type="text/javascript">
-        $(function () {
-            var nowDate = new Date();
-            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-            $('#date').datetimepicker({
-                format:'l',
-                minDate:today ,
-                maxDate:new Date()
-            });
-            $('#time_taken').datetimepicker({
-                format:'hh:mm'
-            });
-        });
-        $('#button_clear').click(function(){
-            $('#task input[type="text"]').val('');
-            $('#task textarea').val('');
-        });
-
-
-    </script>
+    <script src="{{asset('scripts/endoanse.min.js')}}"></script>
 @endsection

@@ -86,7 +86,7 @@
                 format:'l'
             });
             $('#time_taken').datetimepicker({
-                format:'hh:mm'
+                format:'H:mm'
             });
         });
         $('#button_clear').click(function(){

@@ -125,11 +125,11 @@
 
                                             <td>
                                                 <?php
-                                                    $today=\Carbon\Carbon::today();
-                                                    $date =\Carbon\Carbon::parse($task->date);
+                                                    $today=\Carbon\Carbon::now();
+                                                    $date =\Carbon\Carbon::parse($task->date)->addHours(30);
                                                     $status =$date->gte($today);
                                                     ?>
-                                                @if($status == true)
+                                                    @if($status == true)
                                                         <a href="{{route('task.edit',$task->id)}}"> <span class="fa fa-edit"></span></a>
 
                                                     @else
