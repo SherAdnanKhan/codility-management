@@ -60,7 +60,7 @@ class AttendanceController extends Controller
         $check_out_time = $request->check_out_time  ? Carbon::parse($request->check_out_time)->timestamp:false;
         $break_interval = $request->break_interval ? Carbon::parse($request->break_interval)->timestamp :false;
         $user = Auth::user()->isEmployee()?User::findOrFail(Auth::id()):User::findOrFail($request->employee);
-        $default_time = Carbon::parse($user->checkInTime);
+        $default_time = Carbon::parse($user->checkInTime)->addMinutes(30);
         $attendance_time = Carbon::parse($request->check_in_time);
         $compare_time = $attendance_time->gt($default_time);
         if ($request->check_out_time){

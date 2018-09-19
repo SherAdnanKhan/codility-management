@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
@@ -86,5 +87,8 @@ class Attendance extends Model
     }
     public function tasks(){
         return $this->hasMany('App\Task','user_id','user_id');
+    }
+    public function task_report(){
+        return $this->hasMany('App\Task','user_id','user_id')->whereBetween('date',[Carbon::yesterday()->timestamp, Carbon::now()->timestamp]);
     }
 }

@@ -78,7 +78,7 @@
     <script type="text/javascript">
         $(function () {
             var nowDate = new Date();
-            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), -24, 0, 0, 0);
             $('#check_out_time').datetimepicker({
                 useCurrent:false,
                 minDate:today ,
