@@ -30,14 +30,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('mail:task')
-            ->hourly();
-        $schedule->command('late:employee')
-            ->hourly();
-        $schedule->command('employee:absent')
-            ->dailyAt('7:45');
-        $schedule->command('mail:report')
-            ->dailyAt('8:00');
+        $schedule->command('mail:task')->cron('*/60 * * * 1-6');
+        $schedule->command('late:employee')->cron('*/60 * * * 1-5');
+        $schedule->command('employee:absent')->cron('55 23 * * 1-5');
+        $schedule->command('mail:report')->cron('0 8 * * 1-6');
     }
 
     /**
