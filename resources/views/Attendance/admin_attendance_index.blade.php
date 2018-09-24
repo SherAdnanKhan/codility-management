@@ -152,15 +152,15 @@
                                                     <a href="{{route('attendance.edit',$attendance->id)}}">
                                                         <span class="fa fa-edit"></span>
                                                     </a>
-                                                <form class=form-inline" style="display: inline" method="POST"  action ="{{route('attendance.destroy',$attendance->id)}}"   enctype="multipart/form-data" >
-                                                    {{method_field('DELETE')}}
-                                                    {{ csrf_field()}}
-                                                     <button class="form-submit  fa fa-times" type="submit" > </button>
-                                                </form>
+                                                {{--<form class=form-inline" style="display: inline" method="POST"  action ="{{route('attendance.destroy',$attendance->id)}}"   enctype="multipart/form-data" >--}}
+                                                    {{--{{method_field('DELETE')}}--}}
+                                                    {{--{{ csrf_field()}}--}}
+                                                     {{--<button class="form-submit  fa fa-times" type="submit" > </button>--}}
+                                                {{--</form>--}}
 
-                                                        {{--<a  data-value="{{$attendance->id}}"  class="delete_link" href="#" >--}}
-                                                        {{--<span class="fa fa-times"></span>--}}
-                                                    {{--</a>--}}
+                                                        <a  data-value="{{$attendance->id}}"  class="delete_link" href="#" >
+                                                        <span class="fa fa-times"></span>
+                                                    </a>
                                             </td>
 
                                         </tr>
@@ -276,14 +276,14 @@
             </div>
         </div>
     </div>
-    <div id="deleteMyModal" role="dialog" aria-labelledby="examples ModalLabel" aria-hidden="true" class="modal fade text-left">
+    <div id="deleteMyModals" role="dialog" aria-labelledby="exampleModalLabels" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5  class="modal-title">DELETE INFORM</h5>
+                    <h5  class="modal-title">DELETE ATTENDANCE</h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
-                <div class="modal-body" id="modal-body delete-modal">
+                <div class="modal-body" id="delete">
 
                 </div>
 
@@ -368,6 +368,18 @@
                 format:'hh:mm'
             });
         });
+        $(".delete_link").on('click',function() {
+            var attendance=$(this).data("value");
+            $.get('/attendance/'+ attendance +'/',function (result) {
+                $('#delete').html("Are You Sure Delete "  +
+                    '<form class=form-inline" method="POST"  action ="/attendance/'+result+'"   enctype="multipart/form-data" >' +
+                    '{{method_field('DELETE')}}' +
+                    '{{ csrf_field()}}'+
+                    ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');
+                $('#deleteMyModals').modal();
+                console.log(result);
 
+            })
+        });
     </script>
 @endsection
