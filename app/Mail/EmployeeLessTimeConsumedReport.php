@@ -6,12 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
 
-class MailCheckIn extends Mailable
+class EmployeeLessTimeConsumedReport extends Mailable
 {
-    public $get_users;
-
+    public $names;
     use Queueable, SerializesModels;
 
     /**
@@ -19,10 +17,9 @@ class MailCheckIn extends Mailable
      *
      * @return void
      */
-    public function __construct($late_users)
+    public function __construct($names)
     {
-        $this->get_users = $late_users;
-
+        $this->names=$names;
     }
 
     /**
@@ -33,8 +30,8 @@ class MailCheckIn extends Mailable
     public function build()
     {
 
-        $users = $this->get_users;
+        $employee_names=$this->names;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('mail_checkin',compact('users'))->to($to);
+        return $this->markdown('employee_less_time_consumed_email_report',compact('employee_names'))->to($to);
     }
 }

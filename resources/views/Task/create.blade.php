@@ -75,5 +75,30 @@
     <script src="{{asset('scripts/moment.js')}}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
-    <script src="{{asset('scripts/endoanse.min.js')}}"></script>
+    <script type="text/javascript">
+        $(function() {
+            var t = new Date;
+            var time = "{{\Carbon\Carbon::now()}}";
+            var second_time ="{{\Carbon\Carbon::now()->startOfDay()->addHours(6)}}";
+            if (time < second_time) {
+                var e = new Date(t.getFullYear(), t.getMonth(), t.getDate(), -24, 0, 0, 0);
+            }
+            else
+            {e = new Date(t.getFullYear(), t.getMonth(), t.getDate(), 0, 0, 0, 0);
+            }
+
+            $("#date").datetimepicker({
+                format: "l",
+                minDate: e,
+                maxDate: new Date
+            });
+            $("#time_taken").datetimepicker({
+                format: "H:mm"
+            });
+
+        });
+        $("#button_clear").click(function() {
+            $('#task input[type="text"]').val(""), $("#task textarea").val("")
+        });
+    </script>
 @endsection

@@ -45,7 +45,7 @@ class SendReport extends Command
     {
         $start_date = Carbon::yesterday()->addHours(9)->timestamp;
         $end_date = Carbon::now()->timestamp;
-        $get_attendance = Attendance::whereBetween('check_out_time', [$start_date, $end_date])->orderByDesc('id')->get();
+        $get_attendance = Attendance::whereBetween('check_out_time', [$start_date, $end_date])->orderByDesc('user_id')->get();
         $tasks = Task::whereBetween('date',[Carbon::yesterday()->timestamp, Carbon::now()->timestamp])->orderByDesc('user_id')->get();
         $users = User::whereHas('attendance', function ($q) {
             $q->whereBetween('check_out_time',[Carbon::yesterday()->addHours(9)->timestamp, Carbon::now()->timestamp]);
