@@ -91,4 +91,8 @@ class Attendance extends Model
     public function task_report(){
         return $this->hasMany('App\Task','user_id','user_id')->whereBetween('date',[Carbon::yesterday()->timestamp, Carbon::now()->timestamp]);
     }
+    public function task_friday($start,$end){
+        return $this->hasMany('App\Task','user_id','user_id')->whereBetween('date',[$start, $end]);
+    }
+
 }
