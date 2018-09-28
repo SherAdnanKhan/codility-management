@@ -15,7 +15,7 @@ class Task extends Model
 
     public function getTimeTakeAttribute($value){
         if($value== true) {
-            return date('h:i', $value);
+            return date('H:i', $value);
         }
         else
         {

@@ -56,23 +56,20 @@ class AttendanceController extends Controller
         $this->validate($request, [
             'check_in_time'   => 'required|date',
         ]);
-//        $check=Carbon::now()->timestamp;
-//        if (Auth::user()->isEmployee() && Carbon::parse($request->check_in_time)->timestamp > $check ) {
-//            return redirect()->route('attendance.index')->with('status', 'Not allowed attendance of this day!');
-//            }
-//        if (Auth::user()->isEmployee() && Carbon::parse($request->check_in_time)->timestamp < Carbon::now()->startOfDay()->timestamp){
-//            return redirect()->route('attendance.index')->with('status', 'Not allowed attendance of this day!');
-//        }
-//        if ($request->check_out_time) {
-//            if (Auth::user()->isEmployee() && Carbon::parse($request->check_out_time)->timestamp > $check) {
-//                return redirect()->route('attendance.index')->with('status', 'Not allowed Checkout time is Incorrect!');
-//            }
-//            if (Auth::user()->isEmployee() && Carbon::parse($request->check_out_time)->timestamp < Carbon::parse($request->check_in_time)->timestamp) {
-//                return redirect()->route('attendance.index')->with('status', 'Not allowed Checkout time has been less then from Check in!');
-//            }
-//        }
+
+
             $check_in_time = Carbon::parse($request->check_in_time)->timestamp;
             $check_out_time = $request->check_out_time ? Carbon::parse($request->check_out_time)->timestamp : false;
+            if (Auth::user()->isEmployee()){
+            if ($check_in_time > Carbon::now()->timestamp || $check_in_time < Carbon::now()->startOfDay()->timestamp){
+                return redirect()->route('attendance.index')->with('status', 'Attendance Check in Incorrect Please mark Again !');
+            }elseif ($check_out_time){
+               if ($check_out_time > Carbon::now()->timestamp || $check_out_time < Carbon::yesterday()->timestamp){
+                   return redirect()->route('attendance.index')->with('status', 'Attendance Check out Incorrect Please mark Again !');
+
+               }
+           }
+            }
         $break_interval = $request->break_interval ? Carbon::parse($request->break_interval)->timestamp :false;
         $user = Auth::user()->isEmployee()?User::findOrFail(Auth::id()):User::findOrFail($request->employee);
         $default_time = Carbon::parse($user->checkInTime)->addMinutes(30);
@@ -119,7 +116,7 @@ class AttendanceController extends Controller
                 'late_informed'     => $inform ? $inform->inform_late : Null,
                 'time_spent'        => $time_spent ? $time_spent : Null
             ]);
-            return redirect()->route('attendance.index')->with('status', 'Attendance Mark For Today !');
+            return redirect()->route('attendance.index')->with('status', 'Attendance Marked !');
         }
     }
 
@@ -162,17 +159,26 @@ class AttendanceController extends Controller
             'check_out_time'   => 'required',
             'break_interval'   => 'required'
         ]);
-//        $check=Carbon::now()->timestamp;
-//        if (Auth::user()->isEmployee() && Carbon::parse($request->check_out_time)->timestamp > $check) {
-//            return redirect()->route('attendance.index')->with('status', 'Not allowed Checkout time is Incorrect!');
-//        }
-//        if (Auth::user()->isEmployee() && Carbon::parse($request->check_out_time)->timestamp < Carbon::parse($request->check_in_time)->timestamp) {
-//            return redirect()->route('attendance.index')->with('status', 'Not allowed Checkout time has been less then from Check in!');
-//        }
+        $check=Carbon::now()->timestamp;
+        if (Auth::user()->isEmployee() && Carbon::parse($request->check_out_time)->timestamp > $check) {
+            return redirect()->route('attendance.index')->with('status', 'Not allowed Checkout time is Incorrect!');
+        }
+
+
         $check_out_time = Carbon::parse($request->check_out_time);
         $break_interval = Carbon::parse($request->break_interval)->timestamp;
-
+        if (Auth::user()->isEmployee()) {
+            if (Carbon::parse($request->check_out_time)->timestamp > Carbon::now()->timestamp || Carbon::parse($request->check_out_time)->timestamp < Carbon::yesterday()->timestamp){
+                return redirect()->route('attendance.index')->with('status', 'Attendance Check out Incorrect Please mark Again !');
+            }
+        }
         $get_attendance = Attendance::whereId($id)->pluck('check_in_time')->first();
+        if(Auth::user()->isAdmin()){
+        if ($request->check_in_time){
+            $get_attendance=$request->check_in_time;
+        }
+        }
+
         $check_in_time  = Carbon::parse($get_attendance);
         $time = $request->break_interval ? Carbon::parse($request->break_interval)->format('H:i') :false;
         $explode_time = explode(':', $time);
@@ -185,6 +191,14 @@ class AttendanceController extends Controller
             'break_interval'        =>  $break_interval,
             'time_spent'            =>  $time_spent
         ]);
+        if(Auth::user()->isAdmin()){
+            $attendance = Attendance::whereId($id)->update([
+                'check_in_time'         =>  $check_in_time->timestamp,
+                'check_out_time'        =>  $check_out_time->timestamp,
+                'break_interval'        =>  $break_interval,
+                'time_spent'            =>  $time_spent
+            ]);
+        }
         return redirect()->route('attendance.index');
     }
 

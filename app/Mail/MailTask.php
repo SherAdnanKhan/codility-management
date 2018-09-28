@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MailTask extends Mailable
 {
-    public $task;
+    public $attendance;
     public $users;
     use Queueable, SerializesModels;
 
@@ -18,9 +18,9 @@ class MailTask extends Mailable
      *
      * @return void
      */
-    public function __construct($get_task,$users)
+    public function __construct($check_attendance,$users)
     {
-        $this->task = $get_task;
+        $this->attendance = $check_attendance;
         $this->users =$users;
     }
 
@@ -31,10 +31,10 @@ class MailTask extends Mailable
      */
     public function build()
     {
-        $get_tasks = $this->task;
+        $get_attendance = $this->attendance;
         $no_task   = $this->users;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
 
-        return $this->markdown('mail_task',compact('get_tasks','no_task'))->to($to);
+        return $this->markdown('mail_task',compact('get_attendance','no_task'))->to('atta.ur.rehman@codility.co');
     }
 }

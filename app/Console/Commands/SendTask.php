@@ -52,12 +52,12 @@ class SendTask extends Command
         })->whereDoesntHave('tasks', function ($q) {
             $q->whereBetween('date',[Carbon::now()->startOfDay()->timestamp, Carbon::now()->endOfDay()->timestamp]);
         })->get();
-        $check_attendance = Attendance::whereBetween('check_out_time', [$today, Carbon::now()->timestamp])->get();
-        foreach ($check_attendance as $attendance) {
-            $get_task[] = Task::whereBetween('date', [Carbon::now()->startOfDay()->timestamp, Carbon::now()->timestamp])->where('user_id', $attendance->user_id)->get();
-        }
+        $check_attendance = Attendance::whereBetween('check_out_time', [Carbon::now()->subHour(1)->timestamp, Carbon::now()->timestamp])->orderBy('user_id','asc')->get();
+//        foreach ($check_attendance as $attendance) {
+//            $get_task[] = Task::whereBetween('date', [Carbon::now()->startOfDay()->timestamp, Carbon::now()->timestamp])->where('user_id', $attendance->user_id)->get();
+//        }
         if ($check_attendance->isNotEmpty()) {
-            Mail::send(new MailTask($get_task, $users));
+            Mail::send(new MailTask($check_attendance, $users));
         }
     }
 }

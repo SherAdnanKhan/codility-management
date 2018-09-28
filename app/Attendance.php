@@ -24,11 +24,11 @@ class Attendance extends Model
         return date('H:i ',$value);}
     }
     public function getCheckInTimeAttribute($value){
-        return date('m/d/Y h:i A',$value);
+        return date('m/d/Y g:i A',$value);
     }
     public function getTimeSpentAttribute($value){
         if ($value==true) {
-            return (date('H:i' ,mktime(0,$value)).' Hours');
+            return (date('H:i' ,mktime(0,$value)));
         }
         else{
             return 'No Time Spent';
@@ -42,25 +42,25 @@ class Attendance extends Model
                     return 'On Time';
                     break;
                 case "late":
-                    return 'Late';
+                    return 'UnInformed Late';
                     break;
                 case "LeaveBySystem":
-                    return 'Informed-Leave Marked System ';
+                    return 'Informed-Leave Marked By System ';
                     break;
                 case "AbsentBySystem":
-                    return 'Absent Marked System';
+                    return 'Absent Marked By System';
                     break;
                 case "LeaveByAdmin":
-                    return 'Leave Marked Admin';
+                    return 'Leave Marked By Admin';
             case "inform":
-                return 'Inform';
+                return 'Informed';
                 default:
                     return 'No Status';
             }
     }
     public function getCheckOutTimeAttribute($value){
         if($value== true) {
-            return date('m/d/Y h:i A', $value);
+            return date('m/d/Y g:i A', $value);
         }
         else
         {
@@ -68,12 +68,27 @@ class Attendance extends Model
         }
     }
     public function getLateInformedAttribute($value){
-        if($value== true) {
+        if($value == true) {
             return 'But LATE';
         }
         else
         {
             return false;
+        }
+    }
+    public static function mktimecustom($date){
+        $timestamp=strtotime($date);
+        $time=Carbon::createFromTimestamp($timestamp)->format('H:i');
+        $explode= explode(':',$time);
+
+        if($explode[0] == '00' && $explode[1] != '00'){
+            return $explode[1].'m';
+        }elseif($explode[0] != '00' && $explode[1] == '00') {
+            return $explode[0] .'h ';
+        }elseif($explode[1] != '00' && $explode[0] != '00'){
+            return $explode[0] .'h '.$explode[1].'m';
+        }elseif ($explode[0] == '00' && $explode[1] == '00'){
+            return ' ';
         }
     }
     public function user(){

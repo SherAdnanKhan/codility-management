@@ -20,8 +20,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-//        $user=User::whereHas('role',function ($q){$q->whereIn('name',['Administrator']);})->get();
-//        dd($user);
+
         if (Auth::user()->isEmployee()) {
             $tasks = User::findOrFail(Auth::id())->tasks()->orderBy('id', 'desc')->paginate(10);
             return view('Task.index', compact('tasks'));
@@ -51,6 +50,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+
         if (Auth::user()->isAdmin()){
             $this->validate($request, [
                 'time_taken' => 'required',
@@ -66,6 +66,18 @@ class TaskController extends Controller
         }
         $consume_time = $request->time_taken?Carbon::parse($request->time_taken)->timestamp:null;
         $date = Carbon::parse($request->date)->timestamp;
+        if(Auth::user()->isEmployee()){
+            if (Carbon::now()->timestamp < Carbon::now()->startOfDay()->addHours(6)->timestamp) {
+                if ($date < Carbon::yesterday()->timestamp || $date > Carbon::yesterday()->timestamp) {
+                    return redirect()->route('task.index')->with('status','Not Allowed to add Task  in this Date');
+
+                }
+            }elseif ($date > Carbon::now()->endOfDay()->timestamp || $date < Carbon::now()->startOfDay()->timestamp){
+                return redirect()->route('task.index')->with('status','Not Allowed to add Task  in this Date');
+
+            }
+        }
+
         Task::create([
             'user_id' => Auth::user()->isEmployee()?Auth::id():$request->employee,
             'time_take' => $consume_time?$consume_time:0,

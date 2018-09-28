@@ -122,6 +122,7 @@
                                     <th>Break Interval</th>
                                     <th>Time Spent</th>
                                     <th>Status</th>
+                                    <th>Status/Leave</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -133,9 +134,26 @@
                                                 <td>{{$attendance->check_out_time?$attendance->check_out_time:'Not Inserted'}}</td>
                                                 <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
                                                 <td>{{$attendance->time_spent}}</td>
-                                                <td>{{$attendance->attendance_type}} {{$attendance->attendance_type=='Inform'? $attendance->late_informed:''}}</td>
+                                                <td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">{{$attendance->attendance_type}}
+                                                    @if($attendance->leave_comment){{$attendance->inform?$attendance->inform->inform_type =='LATE'?$attendance->inform->inform_type :'':''}}@endif
+                                                </td>
+                                                <td
+                                                        @if($attendance->leave_comment && $attendance->inform->inform_type=='LEAVE')
+                                                        style= "color:{{$attendance->inform->leaves->color_code}}"
+                                                        @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
+                                                        style= "color:{{$attendance->leave->color_code}}"
+                                                        @endif
+                                                >
+                                                    @if($attendance->leave_comment)
+                                                        {{$attendance->inform?$attendance->inform->inform_type =='LEAVE'?$attendance->inform->leaves->name :'':''}}
+                                                    @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
+                                                        {{$attendance->leave->name}}
+                                                    @else
+                                                        No Concern
+                                                    @endif
+                                                </td>
                                                 <td class="text-primary lead">
-                                                    @if($attendance->check_in_time && (!($attendance->check_out_time )) && ($attendance->attendance_type=='On Time' || $attendance->attendance_type=='Late' || $attendance->attendance_type=='Inform'))
+                                                    @if($attendance->check_in_time && (!($attendance->check_out_time )) && ($attendance->attendance_type=='On Time' || $attendance->attendance_type=='UnInformed Late' || $attendance->attendance_type=='Informed'))
                                                     <a href="{{route('attendance.edit',$attendance->id)}}"><span class="fa fa-edit"></span></a>
                                                 </td>
                                                 @endif
@@ -145,6 +163,9 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="bootstrap-iso">
+                        {{$attendances->links()}}
                     </div>
                 </div>
             </div>
