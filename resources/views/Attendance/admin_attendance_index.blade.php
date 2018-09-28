@@ -119,8 +119,8 @@
                                     <th>Break Interval</th>
                                     <th>Time Spent</th>
                                     <th>Status</th>
-                                    <th>Leave</th>
-                                    <th>Actions</th>
+                                    <th>Status/Leave</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -132,16 +132,18 @@
                                             <td>{{$attendance->check_out_time?$attendance->check_out_time:'Not Inserted'}}</td>
                                             <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
                                             <td>{{$attendance->time_spent}}</td>
-                                            <td>{{$attendance->attendance_type}}</td>
+                                            <td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">{{$attendance->attendance_type}}
+                                                @if($attendance->leave_comment){{$attendance->inform?$attendance->inform->inform_type =='LATE'?$attendance->inform->inform_type :'':''}}@endif
+                                            </td>
                                             <td
-                                            @if($attendance->leave_comment && $attendance->inform->inform_type=='leave')
+                                            @if($attendance->leave_comment && $attendance->inform->inform_type=='LEAVE')
                                                 style= "color:{{$attendance->inform->leaves->color_code}}"
                                                 @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
                                             style= "color:{{$attendance->leave->color_code}}"
                                             @endif
                                             >
                                                 @if($attendance->leave_comment)
-                                                    {{$attendance->inform?$attendance->inform->inform_type =='leave'?$attendance->inform->leaves->name :'But Late':''}}
+                                                    {{$attendance->inform?$attendance->inform->inform_type =='LEAVE'?$attendance->inform->leaves->name :'':''}}
                                                 @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
                                                     {{$attendance->leave->name}}
                                                     @else

@@ -133,7 +133,7 @@
                                                         <a href="{{route('task.edit',$task->id)}}"> <span class="fa fa-edit"></span></a>
 
                                                     @else
-                                                        Time Passed
+                                                        Time Has Spended
                                                 @endif
                                             </td>
                                         </tr>
@@ -142,6 +142,9 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="bootstrap-iso">
+                        {{$tasks->links()}}
                     </div>
                 </div>
             </div>

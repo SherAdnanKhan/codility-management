@@ -97,6 +97,7 @@
             $("#check_out_time").on("dp.change", function (e) {
                 $('#check_in_time').data("DateTimePicker").maxDate(e.date);
             });
+
         });
         $('#button_clear').click(function(){
             $('#timetable input[type="text"]').val('');

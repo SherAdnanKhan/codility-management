@@ -89,8 +89,8 @@
 
             $("#date").datetimepicker({
                 format: "l",
-                minDate: e,
-                maxDate: new Date
+                // minDate: e,
+                // maxDate: new Date
             });
             $("#time_taken").datetimepicker({
                 format: "H:mm"
