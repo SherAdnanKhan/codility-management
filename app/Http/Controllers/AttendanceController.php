@@ -1,18 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Attendance;
 use App\Inform;
 use App\User;
 use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDO;
 use phpDocumentor\Reflection\Types\Null_;
 use function PhpParser\filesInDir;
-
+use App\ZKLib;
+use COM;
 class AttendanceController extends Controller
 {
+    public $dsn;
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +23,6 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-
         if (Auth::user()->isEmployee()) {
             $attendances = Attendance::whereUserId(Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
             $get_tomorrow = Carbon::today()->endOfDay()->timestamp;
@@ -88,6 +90,7 @@ class AttendanceController extends Controller
             $add_day = $attendance->endOfDay()->timestamp;
             $status = $compare_time?'late':'check_in';
             $inform = Inform::whereBetween('attendance_date',[$attendance->startOfDay()->timestamp, $add_day])->where('user_id',Auth::user()->isEmployee()?Auth::id():$request->employee)->first();
+
         }else{$inform=false;
         $status ='check_in';
         }
@@ -103,15 +106,17 @@ class AttendanceController extends Controller
             return redirect()->route('attendance.index')->with('status', 'Attendance Mark By Admin!');
 
         }else {
-
+                if($inform){
+                    if($inform->inform_type == 'LEAVE'){
+                        return redirect()->route('attendance.index')->with('status', 'You are on Leave !');
+                    }
+                }
             $attendance = Attendance::create([
                 'check_in_time'     => $check_in_time,
                 'check_out_time'    => $check_out_time,
                 'break_interval'    => $break_interval,
                 'user_id'           => Auth::user()->isEmployee() ? Auth::user()->id : $request->employee,
                 'attendance_type'   => $inform ? 'inform' : $status,
-                'leave_id'          => $inform ? $inform->id : Null,
-                'leave_comment'     => $inform ? $inform->reason : Null,
                 'informed'          => $inform ? true : Null,
                 'late_informed'     => $inform ? $inform->inform_late : Null,
                 'time_spent'        => $time_spent ? $time_spent : Null

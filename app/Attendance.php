@@ -69,7 +69,7 @@ class Attendance extends Model
     }
     public function getLateInformedAttribute($value){
         if($value == true) {
-            return 'But LATE';
+            return "Late Notify";
         }
         else
         {
@@ -97,8 +97,8 @@ class Attendance extends Model
     public function leave(){
         return $this->hasOne('App\Leave','id','leave_id');
     }
-    public function inform(){
-        return $this->hasOne('App\Inform','user_id','user_id');
+    public function inform($start, $end){
+        return $this->hasOne('App\Inform','user_id','user_id')->whereBetween('attendance_date',[$start, $end])->first();
     }
     public function tasks(){
         return $this->hasMany('App\Task','user_id','user_id');

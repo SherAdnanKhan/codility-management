@@ -154,14 +154,22 @@ class InformController extends Controller
             $this->start_date = Carbon::parse($request->start_date)->timestamp;
             $this->end_date   = Carbon::parse($request->end_date)->timestamp;
         }else{
+
             $start_date = Carbon::now();
             $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
             $this->end_date=Carbon::now()->timestamp;
         }
         $name=$request->name?$request->name:'';
         $user=User::whereName($name)->first();
-        $informs=Inform::whereBetween('attendance_date',[$this->start_date,$this->end_date])->orWhere('user_id',$user !=null?$user->id:'')->paginate(10);
-        $informs->withPath("task?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+    if ($user) {
+    $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+
+    }else{
+    $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->paginate(10);
+
+    }
+
+        $informs->withPath("inform?filter=year&start_date=$request->start_date&end_date=$request->end_date&name=$name");
         return view('Admin.Inform.index',compact('informs'));
 
     }

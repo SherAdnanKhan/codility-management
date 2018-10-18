@@ -35,6 +35,6 @@ class MailTask extends Mailable
         $no_task   = $this->users;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
 
-        return $this->markdown('mail_task',compact('get_attendance','no_task'))->to('atta.ur.rehman@codility.co');
+        return $this->markdown('mail_task',compact('get_attendance','no_task'))->to($to);
     }
 }
