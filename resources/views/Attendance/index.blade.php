@@ -135,17 +135,24 @@
                                                 <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
                                                 <td>{{$attendance->time_spent}}</td>
                                                 <td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">{{$attendance->attendance_type}}
-                                                    @if($attendance->leave_comment){{$attendance->inform?$attendance->inform->inform_type =='LATE'?$attendance->inform->inform_type :'':''}}@endif
+                                                    @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp))
+
+                                                    {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"?'LATE':''}}
+                                                    </br><p style="color: darkgoldenrod">{{$attendance->late_informed?$attendance->late_informed:''}}</p>
+                                                    @endif
+
                                                 </td>
+
                                                 <td
-                                                        @if($attendance->leave_comment && $attendance->inform->inform_type=='LEAVE')
-                                                        style= "color:{{$attendance->inform->leaves->color_code}}"
+
+                                                        @if($attendance->leave_comment && $attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp))
+                                                        style= "color:{{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->color_code}}"
                                                         @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
                                                         style= "color:{{$attendance->leave->color_code}}"
                                                         @endif
                                                 >
-                                                    @if($attendance->leave_comment)
-                                                        {{$attendance->inform?$attendance->inform->inform_type =='LEAVE'?$attendance->inform->leaves->name :'':''}}
+                                                    @if($attendance->leave_comment != null)
+                                                        {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)?$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LEAVE"?$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->name :'':''}}
                                                     @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
                                                         {{$attendance->leave->name}}
                                                     @else

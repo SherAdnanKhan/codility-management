@@ -52,7 +52,8 @@ class SendReport extends Command
         })->whereDoesntHave('tasks', function ($q) {
             $q->whereBetween('date',[Carbon::yesterday()->addHours(9)->timestamp, Carbon::now()->endOfDay()->timestamp]);
         })->get();
-
-        Mail::send(new MailReport($get_attendance,$users,$tasks));
-    }
+        if ($get_attendance->isNotEmpty()) {
+            Mail::send(new MailReport($get_attendance, $users, $tasks));
+        }
+        }
 }
