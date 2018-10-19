@@ -73,11 +73,9 @@ class InformController extends Controller
             $compare_time =Carbon::parse($request->inform_at);
             $default_time =Carbon::parse($user);
             $late_inform =$compare_time->greaterThanOrEqualTo($default_time);
-                $check_attendance->leave_id         = $inform->id;
-                $check_attendance->leave_comment    = $request->reason;
                 $check_attendance->informed         = true;
                 $check_attendance->late_informed    = $late_inform?true:false;
-                $check_attendance->attendance_type  = $request->inform_type =='leave'?'LeaveByAdmin':'inform';
+                $check_attendance->attendance_type  = 'inform';
                 $check_attendance->update();
 
         }
