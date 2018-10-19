@@ -177,6 +177,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
+
 }
 
 .table th {
@@ -185,6 +186,7 @@ img {
 }
 
 .table td {
+    border: 1px solid #EDEFF2 !important;
     color: #74787E;
     font-size: 15px;
     line-height: 18px;

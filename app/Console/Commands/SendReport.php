@@ -43,7 +43,8 @@ class SendReport extends Command
      */
     public function handle()
     {
-        $start_date = Carbon::yesterday()->timestamp;
+        $start_date = Carbon::yesterday()->addHours(9)->timestamp;
+//        dd($start_date);
         $end_date = Carbon::now()->timestamp;
         $get_attendance = Attendance::whereBetween('check_out_time', [$start_date, $end_date])->orderBy('user_id','asc')->get();
         $tasks = Task::whereBetween('date',[Carbon::yesterday()->timestamp, Carbon::now()->timestamp])->orderBy('user_id','asc')->get();

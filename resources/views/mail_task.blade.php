@@ -1,5 +1,5 @@
 @component('mail::message')
-    # Checkout Report at {{Carbon\Carbon::now()->toDateTimeString()}}
+    # Checkout Report at {{Carbon\Carbon::yesterday()->toDateString()}}
 
 @component('mail::panel')
         Dear Admin ,
