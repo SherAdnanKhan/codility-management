@@ -1,8 +1,8 @@
 @component('mail::message')
-    # Checkout Report at {{Carbon\Carbon::yesterday()->toDateString()}}
+    # Dated {{Carbon\Carbon::yesterday()->toDateString()}}
 
 @component('mail::panel')
-        Dear Admin ,
+
         Employee status of today who checkout in last hour.
 
 @endcomponent

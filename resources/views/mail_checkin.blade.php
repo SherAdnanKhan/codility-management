@@ -2,7 +2,6 @@
 # Employees Attendance Status at {{Carbon\Carbon::now()->toDayDateTimeString()}}
 
 @component('mail::panel')
-Dear Admin ,
 These Employees are not marked CHECK IN or not present in Office Yet .
 @endcomponent
 @component('mail::table')

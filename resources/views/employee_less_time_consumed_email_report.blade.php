@@ -1,15 +1,14 @@
 @component('mail::message')
-# Report Date : {{Carbon\Carbon::yesterday()->toDateString()}}
+# Report Date : {{Carbon\Carbon::now()->startOfWeek()->format('d-m-Y')}} To {{Carbon\Carbon::now()->startOfWeek()->addDays(4)->format('d-m-Y')}}
 
 @component('mail::panel')
-Dear Admin ,
-The Following Employees have less consumed time from there actual time
+The Following are the Employee list
 @endcomponent
 @component('mail::table')
     |      Employee  Name |      Total Hours    |      Hours Logged   |      Less Hours |
     | ------------------- | ------------------- | ------------------- | ------------------- |
     @foreach($employee_names as $user)
-    |     {{$user['name']}}       |     {{$user['requiredTime']}}       |     {{$user['loggedTime']}}       |     {{$user['lessHours']}}       |
+    |     {{$user['name']}}       |     {{\App\Attendance::mktimesimple($user['requiredTime'])}}       |     {{\App\Attendance::mktimesimple($user['loggedTime'])}}       |     {{\App\Attendance::mktimesimple($user['lessHours'])}}       |
     @endforeach
 
 @endcomponent

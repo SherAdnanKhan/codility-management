@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('mail:task')->cron('*/60 * * * 1-6');
-        $schedule->command('late:employee')->cron('*/60 * * * 1-5');
+        $schedule->command('late:employee')->hourly()->weekdays();
         $schedule->command('employee:absent')->cron('55 23 * * 1-5');
         $schedule->command('mail:report')->cron('0 8 * * 2-6');
         $schedule->command('friday:report')->cron('0 9 * * 6');

@@ -2,12 +2,13 @@
 
 namespace App\Mail;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmployeeLessTimeConsumedReport extends Mailable
+class WeeklyReport extends Mailable
 {
     public $names;
     public $total_logged_time;
@@ -35,9 +36,7 @@ class EmployeeLessTimeConsumedReport extends Mailable
     {
 
         $employee_names=$this->names;
-//        $employee_total_minutes=$this->total_logged_time;
-//        $employee_required_time=$this->total_required_time;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('employee_less_time_consumed_email_report',compact('employee_names'))->to('atta.ur.rehman@codility.co');
+        return $this->markdown('employee_less_time_consumed_email_report',compact('employee_names'))->to($to)->subject("Weekly Report From ".Carbon::now()->startOfWeek()->format('d-m-Y')."  TO  ".Carbon::now()->startOfWeek()->addDays(4)->format('d-m-Y'));
     }
 }
