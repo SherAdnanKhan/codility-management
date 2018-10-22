@@ -109,5 +109,16 @@ class Attendance extends Model
     public function task_friday($start,$end){
         return $this->hasMany('App\Task','user_id','user_id')->whereBetween('date',[$start, $end]);
     }
-
+    public static function mktimesimple($date){
+        $explode= explode(':',$date);
+        if($explode[0] == '00' && $explode[1] != '00'){
+            return $explode[1].'m';
+        }elseif($explode[0] != '00' && $explode[1] == '00') {
+            return $explode[0] .'h ';
+        }elseif($explode[1] != '00' && $explode[0] != '00'){
+            return $explode[0] .'h '.$explode[1].'m';
+        }elseif ($explode[0] == '00' && $explode[1] == '00'){
+            return ' ';
+        }
+    }
 }

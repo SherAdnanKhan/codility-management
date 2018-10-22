@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\EmployeeLessTimeConsumed;
-use App\Mail\EmployeeLessTimeConsumedReport;
+use App\Mail\WeeklyReport;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -118,7 +118,7 @@ class FridayReport extends Command
             }
         }
         if (!(empty($emails) && empty($names))){
-            Mail::send(new EmployeeLessTimeConsumedReport($names));
+            Mail::send(new WeeklyReport($names));
             Mail::send(new EmployeeLessTimeConsumed($emails));
         }
 
