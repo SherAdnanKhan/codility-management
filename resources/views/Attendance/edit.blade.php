@@ -75,7 +75,7 @@
     <script src="{{asset('scripts/moment.js')}}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
-    <script type="text/javascript">
+   @if(\Auth::user()->isEmployee()) <script type="text/javascript">
         $(function () {
             var nowDate = new Date();
             var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), -24, 0, 0, 0);
@@ -103,5 +103,33 @@
             $('#timetable input[type="text"]').val('');
             $('#timetable input[type="checkbox"]').prop('checked', false);
         });
-    </script>
+    </script> @else
+       <script type="text/javascript">
+           $(function () {
+               $('#check_out_time').datetimepicker({
+                   useCurrent:false,
+                   maxDate:new Date()
+               });
+               $('#check_in_time').datetimepicker({
+                   // minDate:new Date()
+               });
+               $('#break_interval').datetimepicker({
+                   format:'H:mm',
+
+               });
+               $("#check_in_time").on("dp.change", function (e) {
+                   $('#check_out_time').data("DateTimePicker").minDate(e.date);
+               });
+               $("#check_out_time").on("dp.change", function (e) {
+                   $('#check_in_time').data("DateTimePicker").maxDate(e.date);
+               });
+
+           });
+           $('#button_clear').click(function(){
+               $('#timetable input[type="text"]').val('');
+               $('#timetable input[type="checkbox"]').prop('checked', false);
+           });
+       </script>
+
+   @endif
 @endsection

@@ -85,16 +85,36 @@ class FridayReport extends Command
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
+                $lessTime= +($compensate - $total_minutes);
                 if ($total_minutes <= $compensate){
+
+                    $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
+                    $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
+                    $lessHours=sprintf("%02d:%02d", floor($lessTime/60), $lessTime%60);
+                    $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                     $emails[]=$user_attendance->email;
-                    $names []=$user_attendance->name;
                 }
 
             }
             //Check employee if not marked attendance for whole week get thier name and email
             elseif ($check_attendance == null){
+                $default_check_in_time  = Carbon::parse($user_attendance->checkInTime);
+                $default_check_out_time = Carbon::parse($user_attendance->checkOutTime);
+                $break_time= Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("h:i");
+                $explode_break_time = explode(':', $break_time);
+                $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
+                $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes ;
+                $total_day_time =$subtract_time * 5;
+                $division = $total_day_time/100;
+                $mulitpication= $division * 10;
+                $compensate = $total_day_time - $mulitpication;
+                $lessTime= +($compensate - $total_minutes);
+                $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
+                $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
+                $lessHours=sprintf("%02d:%02d", floor($lessTime/60), $lessTime%60);
+                $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                 $emails[]=$user_attendance->email;
-                $names []=$user_attendance->name;
+
             }
         }
         if (!(empty($emails) && empty($names))){
