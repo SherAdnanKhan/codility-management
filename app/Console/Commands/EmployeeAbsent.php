@@ -51,10 +51,10 @@ class EmployeeAbsent extends Command
 
                 if(!($inform == null)){
 
-                    $user->attendance()->create(['check_in_time'=>$attendance,'check_out_time'=>$attendance,'attendance_type'=>'LeaveBySystem','leave_id'=>$inform->id,'leave_comment'=>$inform->reason,'informed'=>true,'late_informed'=>$inform->inform_late]);
+                    $user->attendance()->create(['check_in_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'check_out_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'attendance_type'=>'LeaveBySystem','leave_id'=>$inform->id,'leave_comment'=>$inform->reason,'informed'=>true,'late_informed'=>$inform->inform_late]);
                 }
                 else{
-                    $user->attendance()->create(['check_in_time'=>$attendance,'check_out_time'=>$attendance,'attendance_type'=>'AbsentBySystem',]);
+                    $user->attendance()->create(['check_in_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'check_out_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'attendance_type'=>'AbsentBySystem',]);
                 }
             }
         }

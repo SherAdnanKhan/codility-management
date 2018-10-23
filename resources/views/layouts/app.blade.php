@@ -80,10 +80,27 @@
                             <li><a href="{{route('register')}}">Employee Register</a></li>
                         </ul>
                     </li>
+                        <li><a href="#qna" aria-expanded="false" data-toggle="collapse">
+                                <i class="fa fa-question-circle"></i> Question&Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul id="qna" class="collapse list-unstyled ">
+                                <li><a href="{{route('category.index')}}">Categories</a></li>
+                                <li><a href="#exampledropdownDropdownf" aria-expanded="false" data-toggle="collapse">
+                                         Question/Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <ul id="exampledropdownDropdownf" class="collapse list-unstyled ">
+                                        <li><a href="{{route('profile.index')}}">Add/Update</a></li>
+                                        <li><a href="{{route('register')}}">Question/Answer List</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                     <li><a href="{{route('inform.index')}}"><i class="fa fa-info-circle"></i>Employee Inform</a></li>
                     <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
+                    <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
+
                     @endif
                 </ul>
             </div>

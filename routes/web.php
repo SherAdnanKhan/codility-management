@@ -39,6 +39,8 @@ Route::get('/', function () {
     Route::get('/leaves','LeaveController@leave');
     Route::get('/delete-task/{id}','TaskController@modal');
     Route::delete('/attendance/{id}','AttendanceController@destroy')->name('attendance.destroy');
+    Route::resource('/qNA/category','QNACategoryController');
+//    Route::get('/qNA/Category/{id}/edit','QNACategoryController@modal');
 
     });
     Route::group(['middleware' => ['firstLogin','auth','employee']], function () {

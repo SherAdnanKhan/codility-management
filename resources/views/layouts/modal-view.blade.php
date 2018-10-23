@@ -1,3 +1,4 @@
+@if(isset($leave))
 <form class="form-horizontal" method="POST" action= "{{ route('leave.update', $leave->id) }}">
 {{ csrf_field() }}
 {{ method_field('PATCH') }}
@@ -35,3 +36,25 @@
     </div>
     <button type="submit" class="btn btn-outline-success">Update Leaves</button>
 </form>
+@endif
+@if(isset($category))
+    <form class="form-horizontal" method="POST" action= "{{ route('category.update', $category->id) }}">
+        {{ csrf_field() }}
+        {{ method_field('PATCH') }}
+
+        <div class="form-group-material">
+            <label for="name" class="label-material">Category Name</label>
+            <div class='input-group-material ' >
+                <input type='text' id="name" name="name"   value="{{$category->name}}" class="input-material" />
+                @if ($errors->has('name'))
+                    <span class="help-block">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                @endif
+
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Update Category</button>
+    </form>
+
+@endif

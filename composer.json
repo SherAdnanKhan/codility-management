@@ -18,7 +18,7 @@
         "smalot/pdfparser": "^0.12.0",
         "snowfire/beautymail": "dev-master",
         "twbs/bootstrap": "^4.1",
-        "wnasich/php_zklib": "^1.3",
+        "wnasich/php_zklib": "^1.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
