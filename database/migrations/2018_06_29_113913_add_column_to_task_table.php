@@ -14,7 +14,7 @@ class AddColumnToTaskTable extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->bigInteger('date');
+//            $table->bigInteger('date');
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnToTaskTable extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('date');
+//            $table->dropColumn('date');
         });
     }
 }

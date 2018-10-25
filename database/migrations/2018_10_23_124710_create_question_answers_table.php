@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +20,9 @@ class CreateQuestionAnswersTable extends Migration
             $table->longText('question');
             $table->longText('answer');
             $table->integer('category_id')->unsigned();
+            $table->integer('marks');
+            $table->bigInteger('variation')->nullable();
+
             $table->timestamps();
 
         });
@@ -26,6 +30,7 @@ class CreateQuestionAnswersTable extends Migration
             $table->engine = "InnoDB";
             $table->foreign('category_id')->references('id')->on('q_n_a_categories')->onDelete('cascade');
         });
+        DB::statement('ALTER TABLE `question_answers` ADD FULLTEXT (question)');
     }
 
     /**
