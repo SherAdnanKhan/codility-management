@@ -39,6 +39,16 @@ Route::get('/', function () {
     Route::get('/leaves','LeaveController@leave');
     Route::get('/delete-task/{id}','TaskController@modal');
     Route::delete('/attendance/{id}','AttendanceController@destroy')->name('attendance.destroy');
+    Route::resource('/qNA/category','QNACategoryController');
+    Route::resource('/question-answers','QuestionAnswerController');
+    Route::get('/print','QuestionAnswerController@printView')->name('print.view');
+    Route::post('/print','QuestionAnswerController@printCreate')->name('print.create');
+    Route::get('/search/question/{id}','QuestionAnswerController@showEmployeeTestSearch')->name('question.search');
+    Route::get('/question/search','QuestionAnswerController@getPage')->name('question.page');
+
+
+
+
 
     });
     Route::group(['middleware' => ['firstLogin','auth','employee']], function () {

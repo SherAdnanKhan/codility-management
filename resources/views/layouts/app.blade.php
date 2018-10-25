@@ -71,6 +71,10 @@
                             <i class="fa fa-tasks"></i>Task Management
                         </a>
                     </li>
+                    <li><a href="{{route('question.page')}}">
+                            <i class="fa fa-search"></i>Search Question
+                        </a>
+                    </li>
                     @if (\Auth::user()->isAdmin())
                     <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
                             <i class="fa fa-users"></i> Employees &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
@@ -80,10 +84,21 @@
                             <li><a href="{{route('register')}}">Employee Register</a></li>
                         </ul>
                     </li>
+                        <li><a href="#qna" aria-expanded="false" data-toggle="collapse">
+                                <i class="fa fa-question-circle"></i> Question&Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul id="qna" class="collapse list-unstyled ">
+                                <li><a href="{{route('category.index')}}">Categories</a></li>
+                                <li><a href="{{route('question-answers.index')}}">Question Answers</a></li>
+                                <li><a href="{{route('print.view')}}"><i class="fa fa-print"></i>Print QuestionAnswer</a></li>
+                            </ul>
+                        </li>
                     <li><a href="{{route('inform.index')}}"><i class="fa fa-info-circle"></i>Employee Inform</a></li>
                     <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
+
+
                     @endif
                 </ul>
             </div>
