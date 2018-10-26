@@ -43,8 +43,7 @@ Route::get('/', function () {
     Route::resource('/question-answers','QuestionAnswerController');
     Route::get('/print','QuestionAnswerController@printView')->name('print.view');
     Route::post('/print','QuestionAnswerController@printCreate')->name('print.create');
-    Route::get('/search/question/{id}','QuestionAnswerController@showEmployeeTestSearch')->name('question.search');
-    Route::get('/question/search','QuestionAnswerController@getPage')->name('question.page');
+
 
 
 
@@ -58,7 +57,8 @@ Route::get('/', function () {
 
 });
 Route::group(['middleware' => ['auth']], function () {
-
+    Route::get('/search/question/{id}','QuestionAnswerController@showEmployeeTestSearch')->name('question.search');
+    Route::get('/question/search','QuestionAnswerController@getPage')->name('question.page');
     Route::get('/attendance/search','AttendanceController@search')->name('attendance.search');
     Route::get('/employee/task','TaskController@search')->name('task.search.employee');
     Route::get('/task/create','TaskController@create')->name('task.create');

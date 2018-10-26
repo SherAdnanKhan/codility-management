@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body">
+                        <div class="card-body unique">
 
 
 
@@ -61,9 +61,11 @@
         $(".print").on('click',function() {
             var question_answer= $('#name').val();
             $.get('/search/question/'+question_answer+'/',function (data) {
-                $('.card-body').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
-                    '<p class="card-text"><b>Question # '+data.id+' :</b>'+data.question+'</p>'+
-                    '<p class="card-text"><b>Answer :</b>'+data.answer+'</p>'+
+                var data_question=data.question;
+                var data_answer=data.answer;
+                $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
+                    '<p class="card-text"><b>Question # '+data.id+' :</b>'+ data_question.replace(new RegExp('\r?\n','g'), '<br />') +'</p>'+
+                    '<p class="card-text"><b>Answer :</b>'+data_answer.replace(new RegExp('\r?\n','g'), '<br />')+'</p>'+
                     '</div>'+
                     '</div>'+
                     '</div>');

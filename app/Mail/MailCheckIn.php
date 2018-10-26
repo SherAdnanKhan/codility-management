@@ -36,6 +36,6 @@ class MailCheckIn extends Mailable
 
         $users = $this->get_users;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('mail_checkin',compact('users'))->to($to)->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
+        return $this->markdown('mail_checkin',compact('users'))->to('atta.ur.rehman@codility.co')->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
     }
 }
