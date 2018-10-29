@@ -85,9 +85,7 @@
         <div class="form-group-material">
             <label for="question" class="select-label form-control-label ">Brief Question</label>
             <div class="col-sm-12  mb-12 ">
-                                <textarea  name="question" class="form-control">
-                                    {{$question->question}}
-                                </textarea>
+                                <textarea  name="question" class="form-control">{{$question->question}}</textarea>
             </div>
             @if ($errors->has('question'))
                 <span class="help-block">
@@ -98,9 +96,7 @@
         <div class="form-group-material">
             <label for="answer" class="select-label form-control-label ">Brief Answer of Question</label>
             <div class="col-sm-12  mb-12 ">
-                                <textarea  name="answer" class="form-control">
-                                    {{$question->answer}}
-                                </textarea>
+                                <textarea  name="answer" class="form-control">{{$question->answer}}</textarea>
             </div>
             @if ($errors->has('answer'))
                 <span class="help-block">

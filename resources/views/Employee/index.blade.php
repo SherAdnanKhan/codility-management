@@ -44,6 +44,7 @@
                                     <th>Qualification</th>
                                     <th>Phone Number</th>
                                     <th>Action</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -67,6 +68,7 @@
                                                 </button>
                                             </form>
                                         </td>
+
                                         </tr>
                                     @endforeach
                                 @endif
