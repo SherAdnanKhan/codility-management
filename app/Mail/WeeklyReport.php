@@ -20,11 +20,11 @@ class WeeklyReport extends Mailable
      *
      * @return void
      */
-    public function __construct($names)
+    public function __construct($user_name)
     {
 //        $this->total_logged_time=$total_logged_time;
 //        $total_logged_time=$total_required_time;
-        $this->names=$names;
+        $this->names=$user_name;
     }
 
     /**
@@ -37,6 +37,6 @@ class WeeklyReport extends Mailable
 
         $employee_names=$this->names;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('employee_less_time_consumed_email_report',compact('employee_names'))->to($to)->subject("Weekly Report From ".Carbon::now()->startOfWeek()->format('d-m-Y')."  TO  ".Carbon::now()->startOfWeek()->addDays(4)->format('d-m-Y'));
+        return $this->markdown('monthly',compact('employee_names'))->to('atta.ur.rehman@codility.co')->subject("Weekly Report From ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));
     }
 }

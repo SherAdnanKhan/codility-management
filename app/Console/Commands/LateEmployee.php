@@ -50,7 +50,7 @@ class LateEmployee extends Command
         $today  = $carbon->startOfDay()->timestamp;
         $late_users=array();
         $late_users_data=array();
-        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[Carbon::now()->subHours(1)->subMinutes(10)->timestamp, Carbon::now()->timestamp])->get();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[Carbon::now()->subMinutes(35)->timestamp, Carbon::now()->timestamp])->get();
 //        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[$today, Carbon::now()->timestamp])->get();
         foreach ($users as $user)
         {
@@ -64,7 +64,7 @@ class LateEmployee extends Command
             }
         }
         if (!(empty($late_users) && empty($late_users_data))) {
-            Mail::send(new MailLateEmployee($late_users_data,$late_users));
+            Mail::send(new MailLateEmployee($late_users_data));
             Mail::send(new MailCheckIn($late_users));
         }
     }
