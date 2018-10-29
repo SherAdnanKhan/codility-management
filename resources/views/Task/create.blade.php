@@ -49,9 +49,7 @@
                         <div class="form-group row">
                             <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Task</label>
                             <div class="col-sm-12  mb-12 ">
-                                <textarea cols="10" name="description" class="form-control">
-                                    {{old('description')}}
-                                </textarea>
+                                <textarea  name="description" class="form-control">{{old('description')}}</textarea>
                             </div>
                             @if ($errors->has('description'))
                                 <span class="help-block">
