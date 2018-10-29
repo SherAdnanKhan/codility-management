@@ -34,7 +34,7 @@ class InformController extends Controller
     public function create()
     {
         //
-        $user = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->get();
+        $user = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->where('abended',false)->get();
         return view('Admin.Inform.create',compact('user'));
     }
 

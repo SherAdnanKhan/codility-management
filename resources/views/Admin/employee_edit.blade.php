@@ -41,6 +41,7 @@
                                 <label for="email" class="label-material">E-Mail Address</label>
                                  </div>
                             @if ($user->isEmployee())
+
                                 <div class="form-group-material">
                                     <div class='input-group-material date' >
                                         <input type='text' id='check_in_time' name="check_in_time"   value="{{$user->checkInTime}}" class="input-material" />
@@ -59,6 +60,14 @@
                                         <label for="check_out_time" class="label-material">CheckOut Time</label>
                                     </div>
                                 </div>
+                                    <div class="form-group row of-button" >
+                                        <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Has Left</label>
+
+                                        <label class="switch" class="col-sm-offset-3 ">
+                                            <input type="checkbox" name="abended" {{$user->abended?'checked':''}}>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
                                 @endif
                                 @elseif($user->isEmployee())
 

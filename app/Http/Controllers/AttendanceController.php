@@ -32,7 +32,7 @@ class AttendanceController extends Controller
         }
         elseif(Auth::user()->isAdmin()){
             $attendances = Attendance::orderBy('id','desc')->paginate(10);
-            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get();
+            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->where('abended',false)->get();
             return view('Attendance.admin_attendance_index', compact('attendances','users'));
         }
         }

@@ -50,7 +50,7 @@ class LateEmployee extends Command
         $today  = $carbon->startOfDay()->timestamp;
         $late_users=array();
         $late_users_data=array();
-        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[Carbon::now()->subMinutes(35)->timestamp, Carbon::now()->timestamp])->get();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[Carbon::now()->subMinutes(35)->timestamp, Carbon::now()->timestamp])->where('abended',false)->get();
 //        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereBetween('checkInTime',[$today, Carbon::now()->timestamp])->get();
         foreach ($users as $user)
         {

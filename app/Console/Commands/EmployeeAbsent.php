@@ -40,7 +40,7 @@ class EmployeeAbsent extends Command
      */
     public function handle()
     {
-        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->get();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->where('abended',false)->get();
         $carbon = Carbon::today();
         $attendance  = Carbon::parse($carbon)->timestamp;
         foreach ($users as $user)
