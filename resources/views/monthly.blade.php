@@ -1,5 +1,5 @@
 @component('mail::message')
-# Report Date : {{Carbon\Carbon::now()->startOfWeek()->format('d-m-Y')}} To {{Carbon\Carbon::now()->startOfWeek()->addDays(4)->format('d-m-Y')}}
+# Report Date : {{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}} To {{Carbon\Carbon::now()->endOfWeek()->subDays(1)->subHours(16)->format('d-m-Y')}}
 
 @component('mail::panel')
 The Following are the Employee list
