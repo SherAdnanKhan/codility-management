@@ -15,10 +15,11 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //Employee Mark Absent OR Leave
         'App\Console\Commands\EmployeeAbsent',
-        'App\Console\Commands\LateEmployee',
         'App\Console\Commands\SendTask',
         'App\Console\Commands\SendReport',
-        'App\Console\Commands\FridayReport'
+        'App\Console\Commands\FridayReport',
+        'App\Console\Commands\SendLateReport'
+
     ];
 
     /**

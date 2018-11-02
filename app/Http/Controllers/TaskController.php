@@ -186,13 +186,21 @@ class TaskController extends Controller
         $name=$request->name?$request->name:'';
         if (Auth::user()->isAdmin()) {
             $user = User::whereName($name)->first();
-            $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->orWhere('user_id', $user != null ? $user->id : '')->paginate(10);
-            $tasks->withPath("task?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+
+            if ($user) {
+                $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+
+            }else{
+                $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->paginate(10);
+
+            }
+
+            $tasks->withPath("task?filter=year&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             return view('Task.admin_index', compact('tasks'));
         }
         else{
             $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orWhere('description',$request->description)->paginate(10);
-            $tasks->withPath("task?filter=year&start_date=$request->start_date=&end_date=$request->end_date&name=$name");
+            $tasks->withPath("task?filter=year&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             return view('Task.index', compact('tasks'));
         }
 
