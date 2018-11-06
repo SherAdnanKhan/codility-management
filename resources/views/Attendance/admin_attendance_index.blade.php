@@ -40,7 +40,7 @@
                                     <div class="form-group-material col-sm-2 ">
                                         <label for="inform_type" class="select-label form-control-label ">Search Attendance By</label>
                                         <select name="filter" id="filter" class="form-control filters ">
-                                            <option>Please Choose</option>
+                                            <option value="">Please Choose</option>
 
                                             <option {{\Request::get('filter')=='today'?'selected ':''}}value="today">Today</option>
                                             <option {{\Request::get('filter')=='week'?'selected ':''}}value="week">This Week</option>

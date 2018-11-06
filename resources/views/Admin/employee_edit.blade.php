@@ -60,6 +60,16 @@
                                         <label for="check_out_time" class="label-material">CheckOut Time</label>
                                     </div>
                                 </div>
+                                    <div class="form-group-material">
+
+                                        <input type='number' id="opening_balance" name="opening_balance"   value="" class="input-material" />
+                                        @if ($errors->has('opening_balance'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('opening_balance') }}</strong>
+                                    </span>
+                                        @endif
+                                        <label for="name" class="label-material">Opening Balance</label>
+                                    </div>
                                     <div class="form-group row of-button" >
                                         <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Has Left</label>
 
@@ -68,6 +78,7 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
+
                                 @endif
                                 @elseif($user->isEmployee())
 

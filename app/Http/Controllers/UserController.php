@@ -160,11 +160,12 @@ class UserController extends Controller
             $check_in_time = Carbon::parse($request->check_in_time )->timestamp;
             $check_out_time = Carbon::parse( $request->check_out_time )->timestamp;
             $update= User::whereId($id)->update([
-                'abended'       =>$request->abended?true:false,
-                'email'         => $request->email,
-                'name'          => $request->name,
-                'checkInTime'   =>$check_in_time,
-                'checkOutTime'  =>$check_out_time
+                'abended'           =>$request->abended?true:false,
+                'email'             => $request->email,
+                'name'              => $request->name,
+                'checkInTime'       =>$check_in_time,
+                'checkOutTime'      =>$check_out_time,
+                'opening_balance'   =>$request->opening_balance?$request->opening_balance:false
             ]);
         } else{
             $update= User::whereId($id)->update([
