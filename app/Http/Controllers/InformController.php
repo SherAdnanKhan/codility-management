@@ -167,7 +167,7 @@ class InformController extends Controller
 
     }
 
-        $informs->withPath("inform?filter=$request->filter?$request->filter:''&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+        $informs->withPath("inform?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
         return view('Admin.Inform.index',compact('informs'));
 
     }

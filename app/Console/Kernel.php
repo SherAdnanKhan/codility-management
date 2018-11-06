@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SendTask',
         'App\Console\Commands\SendReport',
         'App\Console\Commands\FridayReport',
+        'App\Console\Commands\YearlyReport',
         'App\Console\Commands\SendLateReport'
 
     ];
@@ -37,6 +38,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('employee:absent')->cron('55 23 * * 1-5');
         $schedule->command('mail:report')->cron('0 8 * * 2-6');
         $schedule->command('friday:report')->cron('0 9 * * 6');
+        $schedule->command('yearly:report')->at('23:59')->when(function () {
+            return \Carbon\Carbon::now()->endOfMonth()->isToday();
+        });
     }
 
     /**

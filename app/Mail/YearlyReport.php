@@ -8,11 +8,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class WeeklyReport extends Mailable
+class YearlyReport extends Mailable
 {
-    public $names;
-    public $total_logged_time;
-    public $total_required_time;
+    public $user_details;
     use Queueable, SerializesModels;
 
     /**
@@ -20,11 +18,9 @@ class WeeklyReport extends Mailable
      *
      * @return void
      */
-    public function __construct($user_name)
+    public function __construct($user_details)
     {
-//        $this->total_logged_time=$total_logged_time;
-//        $total_logged_time=$total_required_time;
-        $this->names=$user_name;
+        $this->user_details=$user_details;
     }
 
     /**
@@ -34,10 +30,9 @@ class WeeklyReport extends Mailable
      */
     public function build()
     {
-
-
-        $employee_names=$this->names;
+        $user_details=$this->user_details;
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('monthly',compact('employee_names'))->to($to)->subject("Weekly Report From ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));
+        return $this->markdown('year',compact('user_details'))->to($to)->subject("Yearly Evaluation Report Till ".Carbon::now()->endOfMonth()->format('d-m-Y'));
+
     }
 }

@@ -15,6 +15,8 @@ use App\ZKLib;
 use COM;
 class AttendanceController extends Controller
 {
+    public $get_employement_month;
+
     public $dsn;
     /**
      * Display a listing of the resource.
@@ -241,13 +243,13 @@ class AttendanceController extends Controller
                 $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
 
             }
-            $attendances->withPath("?filter=$request->filter?$request->filter:''&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+            $attendances->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get();
             return view('Attendance.admin_attendance_index', compact('attendances','users'));
         }
         else{
             $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->paginate(10);
-            $attendances->withPath("?filter=$request->filter?$request->filter:''&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+            $attendances->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             return view('Attendance.index', compact('attendances'));
         }
 
