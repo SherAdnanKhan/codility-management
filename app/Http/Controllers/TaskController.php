@@ -195,12 +195,12 @@ class TaskController extends Controller
 
             }
 
-            $tasks->withPath("task?filter=$request->filter?$request->filter:''&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+            $tasks->withPath("task?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             return view('Task.admin_index', compact('tasks'));
         }
         else{
             $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orWhere('description',$request->description)->paginate(10);
-            $tasks->withPath("task?filter=$request->filter?$request->filter:''&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+            $tasks->withPath("task?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             return view('Task.index', compact('tasks'));
         }
 

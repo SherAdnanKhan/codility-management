@@ -140,7 +140,8 @@ class FridayReport extends Command
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
-                $lessTime= +($compensate - $total_minutes);
+                $getlessTime= +($compensate - $total_minutes);
+                $lessTime=abs($getlessTime);
                 if ($total_minutes <= $compensate){
                     $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
                     $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
