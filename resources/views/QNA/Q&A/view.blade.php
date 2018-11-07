@@ -43,7 +43,7 @@
     <tr>
         <td>Interview start & end time:</td>
         <td>&nbsp;</td>
-        <td>Notes Taken By:</td>
+        <td>Test Checked By:</td>
         <td>&nbsp;</td>
 
     </tr>
@@ -70,14 +70,14 @@
 <h3> {{$item->name}}</h3>
 <br>
 <br>
-@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->limit(1)->get();
+@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->limit(3)->get();
 $collection=collect($question);
 $unique=$collection->uniqueStrict('variation');
 
 @endphp
 
 @foreach($unique->values()->all() as $print_question)
-<span style="">Q# {{$print_question->id}} &nbsp; &nbsp;</span>{!! nl2br(e($print_question->question)) !!} <p style="margin-left: 90%; margin-top: -20px"> ({{$print_question->marks}}) </p>
+<span style="">Q# {{$print_question->id}} &nbsp; &nbsp;</span>{!! html_entity_decode(nl2br(e($print_question->question))) !!} <p style="margin-left: 90%; margin-top: -20px"> ({{$print_question->marks}}) </p>
 <br><br><br><br><br><br><br><br><br>
 @endforeach
 @endforeach
