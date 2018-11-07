@@ -26,7 +26,7 @@
                         @if(\Auth::user()->isAdmin())
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='date' name="date"   value="{{$task->date}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='date' name="date"   value="{{$task->date}}" class="input-material" />
 
                                 <label for="date" class="label-material">Task Date</label>
                             </div>
@@ -39,7 +39,7 @@
                         @endif
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='time_taken' name="time_taken"   value="{{$task->time_take}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='time_taken' name="time_taken"   value="{{$task->time_take}}" class="input-material" />
 
                                 <label for="time_taken" class="label-material">Time Taken For Task </label>
                             </div>

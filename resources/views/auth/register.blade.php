@@ -14,7 +14,7 @@
                         <form class="form-horizontal" id="register" method="POST" action="{{ route('register') }}">
                             {{ csrf_field() }}
                             <div class="form-group-material">
-                                <input id="name" type="text"  class="input-material" name="name" value="{{ old('name') }}" required autofocus>
+                                <input autocomplete="off" id="name" type="text"  class="input-material" name="name" value="{{ old('name') }}" required autofocus>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -23,7 +23,7 @@
                                 <label for="name" class="label-material">Name</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="email" type="email"  class="input-material" name="email" value="{{ old('email') }}" required>
+                                <input autocomplete="off" id="email" type="email"  class="input-material" name="email" value="{{ old('email') }}" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -33,7 +33,7 @@
                                 <label for="email" class="label-material">E-Mail Address</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
+                                <input autocomplete="off" id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
                                 @if ($errors->has('designation'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('designation') }}</strong>
@@ -42,7 +42,7 @@
                                 <label for="email" class="label-material ">Designation</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="joiningDate" type="date"  class="input-material" name="joiningDate" value="{{ old('joiningDate') }}" required autofocus>
+                                <input autocomplete="off" id="joiningDate" type="date"  class="input-material" name="joiningDate" value="{{ old('joiningDate') }}" required autofocus>
                                 @if ($errors->has('joiningDate'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('joiningDate') }}</strong>
@@ -69,7 +69,7 @@
                                 <label for="confirm_password" class="label-material">Confirm Password</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="address" type="text"  class="input-material" name="address" value="{{ old('address') }}" required autofocus>
+                                <input autocomplete="off" id="address" type="text"  class="input-material" name="address" value="{{ old('address') }}" required autofocus>
                                 @if ($errors->has('address'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
@@ -78,7 +78,7 @@
                                 <label for="address" class="label-material">Address</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="qualification" type="text"  class="input-material" name="qualification" value="{{ old('qualification') }}" required autofocus>
+                                <input autocomplete="off" id="qualification" type="text"  class="input-material" name="qualification" value="{{ old('qualification') }}" required autofocus>
                                 @if ($errors->has('qualification'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('qualification') }}</strong>
@@ -87,7 +87,7 @@
                                 <label for="qualification" class="label-material">Qualification</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="phoneNumber" type="text"  class="input-material" name="phoneNumber" value="{{ old('phoneNumber') }}" required autofocus>
+                                <input autocomplete="off" id="phoneNumber" type="text"  class="input-material" name="phoneNumber" value="{{ old('phoneNumber') }}" required autofocus>
                                 @if ($errors->has('phoneNumber'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('phoneNumber') }}</strong>

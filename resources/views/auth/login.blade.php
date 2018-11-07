@@ -11,7 +11,7 @@
                     <form  class="text-left form-validate align-items-center" method="POST" action="{{ route('login.success') }}">
                         {{ csrf_field() }}
                         <div class="form-group-material ">
-                            <input id="email" type="email" value="{{ old('email') }}"  name="email" required data-msg="Please enter your Email" class="input-material">
+                            <input autocomplete="off" id="email" type="email" value="{{ old('email') }}"  name="email" required data-msg="Please enter your Email" class="input-material">
                             <label for="email" class="label-material">Email</label>
                             @if ($errors->has('email'))
                                 <span class="help-block">

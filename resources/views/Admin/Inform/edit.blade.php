@@ -27,7 +27,7 @@
                         @if($inform)
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='attendance_date' name="attendance_date"   value="{{$inform->attendance_date}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='attendance_date' name="attendance_date"   value="{{$inform->attendance_date}}" class="input-material" />
 
                                 <label for="attendance_date" class="label-material">Attendance Date </label>
                             </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='inform_at' name="inform_at"   value="{{$inform->inform_at}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='inform_at' name="inform_at"   value="{{$inform->inform_at}}" class="input-material" />
 
                                 <label for="attendance_date" class="label-material">Inform Time </label>
                             </div>

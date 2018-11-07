@@ -23,7 +23,7 @@
                         {{--@foreach($timetable as $time)--}}
                             <div class="form-group-material">
                             <div class='input-group-material ' >
-                                <input type='text' id="name" name="name"   value="" class="input-material" />
+                                <input autocomplete="off" type='text' id="name" name="name"   value="" class="input-material" />
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>

@@ -24,7 +24,7 @@
                         {{ csrf_field() }}
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='date' name="date"   value="{{old('date')}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='date' name="date"   value="{{old('date')}}" class="input-material" />
 
                                 <label for="date" class="label-material">Task Date</label>
                             </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='time_taken' name="time_taken"   value="{{old('time_taken')}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='time_taken' name="time_taken"   value="{{old('time_taken')}}" class="input-material" />
 
                                 <label for="time_taken" class="label-material">Time Taken For Task </label>
                             </div>

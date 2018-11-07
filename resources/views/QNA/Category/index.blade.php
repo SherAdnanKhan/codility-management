@@ -84,7 +84,7 @@
 
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='name' name="name"   value="" class="input-material" />
+                                <input autocomplete="off" type='text' id='name' name="name"   value="" class="input-material" />
 
                                 <label for="name" class="label-material">Category Name</label>
                             </div>

@@ -22,7 +22,7 @@
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
                             <div class="form-group-material">
-                                 <input id="name" type="text" class="input-material" name="name" value="{{ $user->name }}" required autofocus>
+                                 <input autocomplete="off" id="name" type="text" class="input-material" name="name" value="{{ $user->name }}" required autofocus>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -32,7 +32,7 @@
                             </div>
                             @if(\Auth::user()->isAdmin())
                                 <div class="form-group-material">
-                                    <input id="email" type="email" class="input-material" name="email" value="{{ $user->email }}" required>
+                                    <input autocomplete="off" id="email" type="email" class="input-material" name="email" value="{{ $user->email }}" required>
                                     @if ($errors->has('email'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -44,7 +44,7 @@
 
                                 <div class="form-group-material">
                                     <div class='input-group-material date' >
-                                        <input type='text' id='check_in_time' name="check_in_time"   value="{{$user->checkInTime}}" class="input-material" />
+                                        <input autocomplete="off" type='text' id='check_in_time' name="check_in_time"   value="{{$user->checkInTime}}" class="input-material" />
                                         <span class="input-group-addon">
                                         <span class="fa fa-clock-o"></span>
                                     </span>
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="form-group-material">
                                     <div class='input-group-material date' >
-                                        <input type='text' id='check_out_time' value="{{$user->checkOutTime}}" name="check_out_time" class="input-material" />
+                                        <input autocomplete="off" type='text' id='check_out_time' value="{{$user->checkOutTime}}" name="check_out_time" class="input-material" />
                                         <span class="input-group-addon">
                                         <span class="fa fa-clock-o"></span>
                                     </span>
@@ -62,7 +62,7 @@
                                 </div>
                                     <div class="form-group-material">
 
-                                        <input type='number' id="opening_balance" name="opening_balance"   value="" class="input-material" />
+                                        <input autocomplete="off" type='number' id="opening_balance" name="opening_balance"   value="" class="input-material" />
                                         @if ($errors->has('opening_balance'))
                                             <span class="help-block">
                                         <strong>{{ $errors->first('opening_balance') }}</strong>
@@ -83,7 +83,7 @@
                                 @elseif($user->isEmployee())
 
                                 <div class="form-group-material">
-                                    <input id="designation" type="text" class="input-material" name="designation" value="{{ $user->designation }}" required>
+                                    <input autocomplete="off" id="designation" type="text" class="input-material" name="designation" value="{{ $user->designation }}" required>
                                     @if ($errors->has('designation'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('designation') }}</strong>
@@ -92,7 +92,7 @@
                                     <label for="email" class="label-material">Designation</label>
                                 </div>
                                 <div class="form-group-material">
-                                    <input id="address" type="text" class="input-material" name="address" value="{{ $user->address }}" required autofocus>
+                                    <input autocomplete="off" id="address" type="text" class="input-material" name="address" value="{{ $user->address }}" required autofocus>
                                     @if ($errors->has('address'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
@@ -101,7 +101,7 @@
                                 <label for="address" class="label-material">Address</label>
                                  </div>
                                 <div class="form-group-material">
-                                    <input id="qualification" type="text" class="input-material" name="qualification" value="{{ $user->qualification }}" required autofocus>
+                                    <input autocomplete="off" id="qualification" type="text" class="input-material" name="qualification" value="{{ $user->qualification }}" required autofocus>
                                     @if ($errors->has('qualification'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('qualification') }}</strong>
@@ -110,7 +110,7 @@
                                     <label for="qualification" class="label-material">Qualification</label>
                                 </div>
                                 <div class="form-group-material">
-                                    <input id="contact" type="text" class="input-material" name="contact" value="{{ $user->phoneNumber }}" required autofocus>
+                                    <input autocomplete="off" id="contact" type="text" class="input-material" name="contact" value="{{ $user->phoneNumber }}" required autofocus>
                                     @if ($errors->has('contact'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('contact') }}</strong>

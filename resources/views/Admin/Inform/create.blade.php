@@ -26,7 +26,7 @@
                         {{--@foreach($timetable as $time)--}}
                             <div class="form-group-material">
                                 <div class=' bootstrap-iso input-group-material date' >
-                                    <input type='text' id='attendance_date' name="attendance_date"   value="{{old('attendance_date')}}" class="input-material" />
+                                    <input type='text' id='attendance_date' name="attendance_date" autocomplete="off"  value="{{old('attendance_date')}}" class="input-material" />
 
                                     <label for="attendance_date" class="label-material">Attendance Date </label>
                                 </div>
@@ -38,7 +38,7 @@
                             </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='inform_at' name="inform_at"   value="{{old('inform_at')}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='inform_at' name="inform_at"   value="{{old('inform_at')}}" class="input-material" />
 
                                 <label for="attendance_date" class="label-material">Inform Time </label>
                             </div>

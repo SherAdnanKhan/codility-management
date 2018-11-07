@@ -6,7 +6,7 @@
     <div class="form-group-material">
         <label for="name" class="label-material">Leave Type</label>
         <div class='input-group-material ' >
-            <input type='text' id="name" name="name"   value="{{$leave->name}}" class="input-material" />
+            <input autocomplete="off" type='text' id="name" name="name"   value="{{$leave->name}}" class="input-material" />
             @if ($errors->has('name'))
                 <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -45,7 +45,7 @@
         <div class="form-group-material">
             <label for="name" class="label-material">Category Name</label>
             <div class='input-group-material ' >
-                <input type='text' id="name" name="name"   value="{{$category->name}}" class="input-material" />
+                <input autocomplete="off" type='text' id="name" name="name"   value="{{$category->name}}" class="input-material" />
                 @if ($errors->has('name'))
                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
