@@ -60,7 +60,7 @@
                                     <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
 
                                         <div class='bootstrap-iso input-group-material' >
-                                            <input type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+                                            <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
 
                                             <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
                                         </div>
@@ -74,7 +74,7 @@
                                     <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
 
                                         <div class=' bootstrap-iso input-group-material date' >
-                                            <input type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+                                            <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
 
                                             <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
                                         </div>
@@ -199,7 +199,7 @@
 
                             <div class="form-group-material">
                                 <div class=' bootstrap-iso input-group-material date' >
-                                    <input type='text' id='check_in_time' name="check_in_time"   value="" class="input-material" />
+                                    <input autocomplete="off" type='text' id='check_in_time' name="check_in_time"   value="" class="input-material" />
 
                                     <label for="attendance" class="label-material">Attendance Date Time</label>
                                 </div>
@@ -252,7 +252,7 @@
                         </div>
                         <div class="form-group-material checkout" style="display: none">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='check_out_time' name="check_out_time"   value="" class="input-material" />
+                                <input autocomplete="off" type='text' id='check_out_time' name="check_out_time"   value="" class="input-material" />
 
                                 <label for="check_out_time" class="label-material">Check Out </label>
                             </div>
@@ -264,7 +264,7 @@
                         </div>
                         <div class="form-group-material checkout" style="display: none">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='break_interval' name="break_interval"   value="" class="input-material" />
+                                <input autocomplete="off" type='text' id='break_interval' name="break_interval"   value="" class="input-material" />
 
                                 <label for="break_interval" class="label-material">Break Interval </label>
                             </div>

@@ -61,7 +61,7 @@
                                         <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
 
                                             <div class='bootstrap-iso input-group-material' >
-                                                <input type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
 
                                                 <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
                                             </div>
@@ -75,7 +75,7 @@
                                         <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
 
                                             <div class=' bootstrap-iso input-group-material date' >
-                                                <input type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
 
                                                 <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
                                             </div>
@@ -89,7 +89,7 @@
 
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
-                                                <input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
 
                                                 <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
                                             </div>

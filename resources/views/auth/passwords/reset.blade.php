@@ -17,7 +17,7 @@
                             {{ csrf_field() }}
                             <input type="hidden" name="token" value="{{ $token }}">
                             <div class="form-group-material">
-                                <input id="email" type="email" class="input-material" name="email" value="{{ $email or old('email') }}" required autofocus>
+                                <input autocomplete="off" id="email" type="email" class="input-material" name="email" value="{{ $email or old('email') }}" required autofocus>
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>

@@ -13,7 +13,7 @@
                         <form class="form-horizontal" id="register" method="POST" action="{{ route('admin.register') }}">
                             {{ csrf_field() }}
                             <div class="form-group-material">
-                                <input id="name" type="text" class="input-material" name="name" value="{{ old('name') }}" required autofocus>
+                                <input autocomplete="off" id="name" type="text" class="input-material" name="name" value="{{ old('name') }}" required autofocus>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -22,7 +22,7 @@
                                     <label for="name" class="label-material">Name</label>
                             </div>
                             <div class="form-group-material">
-                                <input id="email" type="email" class="input-material" name="email" value="{{ old('email') }}" required>
+                                <input autocomplete="off" id="email" type="email" class="input-material" name="email" value="{{ old('email') }}" required>
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -32,7 +32,7 @@
 
                             </div>
                             <div class="form-group-material">
-                                <input id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
+                                <input autocomplete="off" id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
                                 @if ($errors->has('designation'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('designation') }}</strong>

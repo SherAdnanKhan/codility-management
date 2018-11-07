@@ -27,7 +27,7 @@
                         @foreach($timetable as $time)
                             <div class="form-group-material">
                             <div class='input-group-material date' >
-                                <input type='text' id='start_time' name="start_time"   value="{{$time->start_time}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='start_time' name="start_time"   value="{{$time->start_time}}" class="input-material" />
                                 @if ($errors->has('start_time'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('start_time') }}</strong>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
-                                <input type='text' id='end_time' value="{{$time->end_time}}" name="end_time" class="input-material" />
+                                <input autocomplete="off" type='text' id='end_time' value="{{$time->end_time}}" name="end_time" class="input-material" />
                                 @if ($errors->has('end_time'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('end_time') }}</strong>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
-                                <input type='text' id='working_hour' value="{{$time->working_hour}}" name ="working_hour" class="input-material" />
+                                <input autocomplete="off" type='text' id='working_hour' value="{{$time->working_hour}}" name ="working_hour" class="input-material" />
                                 @if ($errors->has('working_hour'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('working_hour') }}</strong>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
-                                <input type='text' id='non_working_hour' value="{{$time->non_working_hour}}" name ="non_working_hour" class="input-material" />
+                                <input autocomplete="off" type='text' id='non_working_hour' value="{{$time->non_working_hour}}" name ="non_working_hour" class="input-material" />
                                 @if ($errors->has('non_working_hour'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('non_working_hour') }}</strong>

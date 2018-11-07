@@ -24,9 +24,12 @@
                     <form class="form-horizontal" id ="timetable" method="POST" action="{{route('attendance.update',$attendance->id)}}" >
                       {{method_field('PATCH')}}
                         {{ csrf_field() }}
+
+                       @if(\Auth::user()->isAdmin())
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='check_in_time' name="check_in_time" {!! \Auth::user()->isAdmin()?"":"disabled ='disabled'"!!}  value="{{$attendance->check_in_time}}" class="input-material" />
+
+                                <input autocomplete="off" type='text' id='check_in_time' name="check_in_time"   value="{{$attendance->check_in_time}}" class="input-material" />
 
                                 <label for="check_in_time" class="label-material">Check In </label>
                             </div>
@@ -36,9 +39,12 @@
                                     </span>
                             @endif
                         </div>
+                        @else
+                          <p><u>Check In Time : {{$attendance->check_in_time}} </u></p>
+                        @endif
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='check_out_time' name="check_out_time"   value="{{$attendance->check_out_time == false?'': $attendance->check_out_time}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='check_out_time' name="check_out_time" autocomplete="off"  value="{{$attendance->check_out_time == false?'': $attendance->check_out_time}}" class="input-material" />
 
                                 <label for="check_out_time" class="label-material">Check Out </label>
                             </div>
@@ -50,7 +56,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input type='text' id='break_interval' name="break_interval"   value="{{$attendance->break_interval == false?'': $attendance->break_interval}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='break_interval' name="break_interval"   value="{{$attendance->break_interval == false?'': $attendance->break_interval}}" class="input-material" />
 
                                 <label for="break_interval" class="label-material">Break Interval </label>
                             </div>
@@ -117,9 +123,7 @@
                    format:'H:mm',
 
                });
-               $("#check_in_time").on("dp.change", function (e) {
-                   $('#check_out_time').data("DateTimePicker").minDate(e.date);
-               });
+
                $("#check_out_time").on("dp.change", function (e) {
                    $('#check_in_time').data("DateTimePicker").maxDate(e.date);
                });
