@@ -67,41 +67,44 @@ class QuestionAnswerController extends Controller
             'answer'    => 'required',
             'category'  => 'required|exists:q_n_a_categories,id',
             'question'  => 'required',
-            'marks'     => 'required|integer'
+            'marks'     => 'required|integer|max:5'
 
         ]);
         $category=QNACategory::whereId($request->category)->first();
         if ($category){
+            $questions=str_replace( "*", "&#42;", $request->question);
             $qna=$category->qNA()->create([
-                'question'  =>  $request->question,
+                'question'  =>  $questions,
                 'answer'    =>  $request->answer,
                 'marks'     =>  $request->marks
             ]);
 
+
             $question=QuestionAnswer::whereId($qna->id)->update(['variation'=>$qna->id]);
-            $remove[] = "'";
-            $remove[] = '"';
-            $remove[] = "-";
-            $remove[] = ".";
-            $remove[] = "is";
-            $remove[] = "am";
-            $remove[] = "are";
-            $remove[] = "the";
-            $remove[] = "they";
-            $remove[] = "there";
-            $remove[] = "?";// just as another example
 
-            $findQuesiton = str_replace( $remove, "", $qna->question);
-            $question_answers=QuestionAnswer::WhereRaw(" MATCH(question) Against('".$findQuesiton."')")->paginate(10);
+            $remove[] = "*";// just as another example
+
+            $findQuesiton = str_replace( $remove, "&#42;", $qna->question);
+            $remove_charachter[]="is";
+            $remove_charachter[]="the";
+            $remove_charachter[]="am";
+            $remove_charachter[]="are";
+            $remove_charachter[]="they";
+            $remove_charachter[]="?";
+            $remove_charachter[]="no";
+            $remove_charachter[]="what";
+            $remove_charachter[]="why";
+            $remove_charachter[]="how";
+            $remove_charachter[]="can";
+            $findQuesiton = str_replace( $remove_charachter, " ", $findQuesiton);
+
+            $question_answers=QuestionAnswer::WhereRaw(" MATCH(question) Against('".$findQuesiton."')")->paginate(30);
             if($question_answers){
-                return view('QNA.Q&A.index', compact('question_answers'))->with('status','Some of related Question are following.');
+                return redirect()->route('question-answers.index',compact('question_answers'))->with('status','Question with Created  Successfully.The Following Question and Answer are belongs to newly created Question. Please edit VARIATION TYPE according to same to question');
             }else{
-                return redirect()->route('question-answers.index');
+                return redirect()->route('question-answers.index',compact('question_answers'))->with('status','Question with Created  Successfully.');
             }
 
-            if($qna){
-                return redirect()->route('question-answers.index')->with('status','Question with Created  Successfully.');
-            }
 
         }
 
