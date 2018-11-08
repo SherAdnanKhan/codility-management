@@ -100,7 +100,7 @@ class QuestionAnswerController extends Controller
 
             $question_answers=QuestionAnswer::WhereRaw(" MATCH(question) Against('".$findQuesiton."')")->paginate(30);
             if($question_answers){
-                return redirect()->route('question-answers.index',compact('question_answers'))->with('status','Question with Created  Successfully.The Following Question and Answer are belongs to newly created Question. Please edit VARIATION TYPE according to same to question');
+                return redirect()->route('question-answers.index',compact('question_answers'))->with('status','Question Created  Successfully.The Following Question and Answers are sorted by relevancy to newly created Question. Please edit "VARIATION TYPE" according to relevant question');
             }else{
                 return redirect()->route('question-answers.index',compact('question_answers'))->with('status','Question with Created  Successfully.');
             }

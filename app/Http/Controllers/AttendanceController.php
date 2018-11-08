@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\Types\Null_;
 use function PhpParser\filesInDir;
 use App\ZKLib;
 use COM;
+use Session;
 class AttendanceController extends Controller
 {
     public $get_employement_month;
@@ -218,7 +219,7 @@ class AttendanceController extends Controller
     public function destroy($id)
     {
         $attendance= Attendance::whereId($id)->delete();
-        return redirect()->route('attendance.index')->with('status','Employee Attendance Deleted !');
+        return redirect()->back()->with('status','Employee Attendance Deleted !');
     }
     public function search(Request $request){
         $this->validate($request,[
@@ -254,4 +255,64 @@ class AttendanceController extends Controller
         }
 
     }
+    public function getViewAdminReportPage(){
+
+        return view('Report.report')->with('status','This page is for getting report on your requirements');
+    }
+    public function makeReportByAdmin(Request $request){
+        $this->validate($request,[
+            'start_date' =>'required',
+            'end_date'  =>'required',
+
+        ]);
+            $start_date = Carbon::parse($request->start_date);
+            $end_date   = Carbon::parse($request->end_date);
+            $get_user=User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->where('abended',false)->get();
+
+
+        foreach($get_user as $user) {
+            $start_search_date = $start_date->startOfDay();
+            $end_search_date = $end_date->endOfDay();
+
+            $total_absent = $user->abended ? $user->abended : 0;
+            $current_month_absent = 0;
+            $names = array('name' => $user->name);
+            $collection = collect($names);
+            $user_attendance = $user->attendance()->whereBetween('check_in_time', [$start_search_date->timestamp, $end_search_date->timestamp])->orderBy('id', 'desc')->get();
+            if ($user_attendance != null) {
+                foreach ($user_attendance as $attendance) {
+                    if (($attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
+                        $total_absent += 1;
+
+                    }
+                    if ($attendance->attendance_type == 'Absent Marked By System') {
+                        $total_absent += 1;
+                    }
+
+                }
+            }
+            $collection->put('total_absent', $total_absent + $user->abended);
+            $now_month = Carbon::now()->month;
+            if (!((Carbon::parse($user->joiningDate)->month == $now_month) && (Carbon::parse($user->joiningDate)->year == Carbon::now()->year))) {
+                $this->get_employement_month = (Carbon::parse($user->joiningDate)->month - $now_month);
+            }
+            if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
+                $this->get_employement_month = 1;
+            }
+            $allowed_absent = abs($this->get_employement_month) * 1.5;
+            $collection->put('allowed_absent', $allowed_absent);
+            $user_details[] = array($collection->all());
+
+        }
+        if (!empty($user_details)) {
+            Session::flash('status', 'Employee Detail of required ERA ');
+
+            return  view('Report.report',compact('user_details'));
+        }
+        else{
+            return redirect()->route('view.admin.report')->with('status', 'Please make sure you have entered correct detail');
+
+        }
+    }
+
 }

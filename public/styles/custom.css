@@ -127,6 +127,13 @@ header > .h3
         width: 100%;
     }
 }
-/*.input .input-material :focus {*/
-    /*border-color: #3669cc !important;*/
-/*}*/
+@media print {
+    .hidden-print {
+        display: none !important;
+    }
+}
+@media print {
+    .right-print {
+        margin-left: 64% !important;
+    }
+}

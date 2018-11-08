@@ -15,7 +15,7 @@ class QNACategoryController extends Controller
     public function index()
     {
         $categories = QNACategory::orderBy('id','desc')->paginate(10);
-        return view('QNA.Category.index',compact('categories'));
+        return view('QNA.Category.index',compact('categories'))->with('status','Please Select Categories For Questionare! Three Question will be selected randomly from each of your selected category');
     }
 
     /**
