@@ -16,6 +16,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
     Route::group(['middleware' => ['auth','admin']], function () {
+
     Route::get('/applicants/lists', 'ApplicantsController@home')->name('applicant_list');
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
@@ -43,6 +44,8 @@ Route::get('/', function () {
     Route::resource('/question-answers','QuestionAnswerController');
     Route::get('/print','QuestionAnswerController@printView')->name('print.view');
     Route::post('/print','QuestionAnswerController@printCreate')->name('print.create');
+    Route::get('/search/report','AttendanceController@getViewAdminReportPage')->name('view.admin.report');
+    Route::get('/generate/report','AttendanceController@makeReportByAdmin')->name('admin.report.search');
 
 
 

@@ -108,8 +108,19 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::whereId($id)->first();
-        return view('Task.edit',compact('task'));
+        if (Auth::user()->isEmployee()) {
+            $task = Task::whereId($id)->where('user_id', Auth::id())->first();
+
+        }
+        if (Auth::user()->isAdmin()) {
+            $task = Task::whereId($id)->first();
+        }
+        if ($task != null) {
+            return view('Task.edit', compact('task'));
+        }else{
+            return redirect()->back()->with('Please Make you this is your task');
+
+        }
     }
 
     /**
@@ -136,18 +147,22 @@ class TaskController extends Controller
                 'description' => $request->description
             ]);
             return redirect()->route('task.index');
-        }elseif(Auth::user()->isEmployee()){
+        }elseif(Auth::user()->isEmployee()) {
             $this->validate($request, [
                 'time_taken' => 'required',
             ]);
             $consume_time = Carbon::parse($request->time_taken)->timestamp;
             $date = Carbon::parse($request->date)->timestamp;
 
-            Task::whereId($id)->update([
+            $task = Task::whereId($id)->where('user_id', Auth::id())->update([
                 'time_take' => $consume_time,
 
             ]);
-            return redirect()->route('task.index');
+            if ($task) {
+                return redirect()->route('task.index');
+            }else{
+                return redirect()->back()->with('Please Make you this is your task');
+            }
         }
         }
 
@@ -166,7 +181,7 @@ class TaskController extends Controller
     public function destroy($id)
     {
         Task::whereId($id)->delete();
-        return redirect()->route('task.index');
+        return redirect()->back();
     }
     public function search(Request $request){
 

@@ -61,7 +61,7 @@ class SendLateReport extends Command
             if($user->checkInTime){
                 $get_user_time=Carbon::parse($user->checkInTime)->format('H:i');
                 $user_date=Carbon::parse($get_user_time)->timestamp;
-                $half_past_hour =Carbon::now()->subMinutes(350)->format('H:i');
+                $half_past_hour =Carbon::now()->subMinutes(45)->format('H:i');
                 $now_time=Carbon::now()->format('H:i');
                     if ($get_user_time > $half_past_hour){
                         if($get_user_time < $now_time){
