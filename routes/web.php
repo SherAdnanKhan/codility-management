@@ -15,8 +15,9 @@
 Route::get('/', function () {
     return view('auth.login');
 });
-    Route::group(['middleware' => ['auth','admin']], function () {
-
+    Route::group(['middleware' => ['auth:web','admin']], function () {
+        Route::get('/screen/capture/change/','UserController@screenCapturePage')->name('screen.capture.page');
+        Route::patch('/screen/capture/update/{id}','UserController@screenCaptureUpdate')->name('screen.capture.update');
     Route::get('/applicants/lists', 'ApplicantsController@home')->name('applicant_list');
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register','UserController@showRegisterForm')->name('register.admin.form');
@@ -46,7 +47,7 @@ Route::get('/', function () {
     Route::post('/print','QuestionAnswerController@printCreate')->name('print.create');
     Route::get('/search/report','AttendanceController@getViewAdminReportPage')->name('view.admin.report');
     Route::get('/generate/report','AttendanceController@makeReportByAdmin')->name('admin.report.search');
-
+    Route::get('/screen/capture/{id}','UserController@screenCapture')->name('screen.capture.get');
 
 
 

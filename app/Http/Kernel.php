@@ -59,5 +59,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'firstLogin'=>\App\Http\Middleware\FirstLoginMiddleware::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verify-token' => \App\Http\Middleware\VerifyToken::class,
+
     ];
 }

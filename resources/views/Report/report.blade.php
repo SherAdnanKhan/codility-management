@@ -12,7 +12,7 @@
     <div class="container">
         <!-- Page Header-->
         <header class="page-header">
-            <h1 class="h3 display">Employee Report Detail</h1>
+            <h1 class="h3 display">Employee Absents Report</h1>
         </header>
         @if (session('status'))
             <div class="alert alert-success hidden-print">
@@ -83,7 +83,7 @@
                                 <tr>
                                     <th>Employee Name</th>
                                     <th>Total Absent(Including leaves)</th>
-                                    <th>Task Allowed absent</th>
+                                    <th>Total Allowed absent</th>
                                 </tr>
                                 </thead>
                                 <tbody>

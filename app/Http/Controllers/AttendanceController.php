@@ -14,6 +14,10 @@ use function PhpParser\filesInDir;
 use App\ZKLib;
 use COM;
 use Session;
+use JWTFactory;
+
+use Tymon\JWTAuth\JWTAuth;
+
 class AttendanceController extends Controller
 {
     public $get_employement_month;

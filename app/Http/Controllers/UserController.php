@@ -49,7 +49,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::orderByDesc('id')->paginate(10);
+        $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->orderByDesc('id')->paginate(10);
+
         return view('Employee.index', compact('users'));
     }
 
@@ -214,4 +215,39 @@ class UserController extends Controller
         }
         return redirect()->route('profile.index');
         }
+
+    public function screenCapture($id){
+        if (Auth::user()->isAdmin()) {
+            $data = User::whereId($id)->first();
+            return \response()->json($data);
+        }
+    }
+
+     public function screenCapturePage(){
+
+        if (Auth::user()->isAdmin()) {
+            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->orderByDesc('id')->paginate(10);
+            return view('CaptureTime.index', compact('users'));
+        }
+    }
+    public function screenCaptureUpdate(Request $request ,$id){
+
+        if (Auth::user()->isAdmin()) {
+
+            $time= $request->time_capture_duration?$request->time_capture_duration:null;
+            if ($time > '8:00'){
+                return redirect()->back()->with('status','Select time below 8 hours');
+            }
+
+            if($time != null){
+                $get_time=Carbon::parse($time)->timestamp;
+                $users = User::whereId($id)->update(['capture_duration'=>$time]);
+                return redirect()->route('screen.capture.page');
+            }
+            if($time == null){
+                return redirect()->back()->with('status','Incorrect Duration');
+            }
+            }
+    }
 }
+
