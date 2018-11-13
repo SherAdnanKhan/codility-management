@@ -130,6 +130,7 @@
                                 </a>
                                 <ul aria-labelledby="notifications" class="dropdown-menu">
                                     @if (\Auth::user()->isAdmin())
+                                        <li><a rel="nofollow" href="{{route('screen.capture.page')}}" class="dropdown-item d-flex">Manage Screen Capture</a></li>
                                     <li><a rel="nofollow" href="{{route('leave.index')}}" class="dropdown-item d-flex">Manage Leaves</a></li>
                                     <li><a  rel="nofollow" href="{{route('timetable.index')}}" class="dropdown-item d-flex">Manage TimeTable</a></li>
                                     @endif

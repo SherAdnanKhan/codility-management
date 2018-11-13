@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title> {{config('app.name')}} | Add Informs</title>
+    <title> {{config('app.name')}} |Update Attendance</title>
 @endsection
 @section('page_styles')
 
@@ -25,12 +25,10 @@
                       {{method_field('PATCH')}}
                         {{ csrf_field() }}
 
-                       @if(\Auth::user()->isAdmin())
-                        <div class="form-group-material">
+
+                        <div class="form-group-material ">
                             <div class=' bootstrap-iso input-group-material date' >
-
-                                <input autocomplete="off" type='text' id='check_in_time' name="check_in_time"   value="{{$attendance->check_in_time}}" class="input-material" />
-
+                                    <input  type='text' id='check_in_time' name="check_in_time"   {!! \Auth::user()->isAdmin()?' ':'disabled' !!} value="{{$attendance->check_in_time}}" class="input-material" />
                                 <label for="check_in_time" class="label-material">Check In </label>
                             </div>
                             @if ($errors->has('check_in_time'))
@@ -39,12 +37,10 @@
                                     </span>
                             @endif
                         </div>
-                        @else
-                          <p><u>Check In Time : {{$attendance->check_in_time}} </u></p>
-                        @endif
+
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
-                                <input autocomplete="off" type='text' id='check_out_time' name="check_out_time" autocomplete="off"  value="{{$attendance->check_out_time == false?'': $attendance->check_out_time}}" class="input-material" />
+                                <input autocomplete="off" type='text' id='check_out_time' name="check_out_time"   value="{{$attendance->check_out_time == false?'': $attendance->check_out_time}}" class="input-material" />
 
                                 <label for="check_out_time" class="label-material">Check Out </label>
                             </div>
@@ -82,29 +78,42 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
    @if(\Auth::user()->isEmployee()) <script type="text/javascript">
-        $(function () {
-            var nowDate = new Date();
-            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), -24, 0, 0, 0);
-            $('#check_out_time').datetimepicker({
-                useCurrent:false,
-                minDate:today ,
-                maxDate:new Date()
-            });
-            $('#check_in_time').datetimepicker({
-                // minDate:new Date()
-            });
-            $('#break_interval').datetimepicker({
-                format:'H:mm',
 
-            });
-            $("#check_in_time").on("dp.change", function (e) {
-                $('#check_out_time').data("DateTimePicker").minDate(e.date);
-            });
-            $("#check_out_time").on("dp.change", function (e) {
-                $('#check_in_time').data("DateTimePicker").maxDate(e.date);
-            });
+           <?php
+           $now=\Carbon\Carbon::yesterday()->timestamp;
+           $time=\Carbon\Carbon::parse($attendance->check_in_time)->timestamp;
 
-        });
+           if ($time < $now){
+           ?>
+           var nowDate=new Date();
+           var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), -24, 0, 0, 0);
+           <?php
+           }else{
+           ?>
+       var today= $('#check_in_time').val();
+       <?php
+       }
+       ?>
+       $(function () {
+           $('#check_out_time').datetimepicker({
+               useCurrent: false,
+               minDate:today,
+               maxDate: new Date()
+           });
+           $('#check_in_time').datetimepicker({
+               // minDate:new Date()
+           });
+           $('#break_interval').datetimepicker({
+               format:'H:mm',
+
+           });
+           $("#check_in_time").on("dp.change", function (e) {
+               $('#check_out_time').data("DateTimePicker").minDate(e.date);
+           });
+           $("#check_out_time").on("dp.change", function (e) {
+               $('#check_in_time').data("DateTimePicker").maxDate(e.date);
+           });
+       });
         $('#button_clear').click(function(){
             $('#timetable input[type="text"]').val('');
             $('#timetable input[type="checkbox"]').prop('checked', false);
