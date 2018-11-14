@@ -84,7 +84,7 @@
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <form class="form-horizontal" id ="question-answer" method="POST" action="{{route('question-answers.store')}}" >
+                    <form class="form-horizontal" id ="question-answer" method="POST" action="{{route('question-answers.store')}}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group-material  ">
                             <label for="category" class="select-label form-control-label ">Category Type</label>
@@ -137,6 +137,14 @@
                                     </span>
                             @endif
                             <label for="name" class="label-material">Marks of Question</label>
+                        </div>
+                        <div class="form-group-material">
+                            <input id="image" type="file" class="input-material" name="image" accept="image/x-png,image/gif,image/jpeg">
+                            @if ($errors->has('image'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('image') }}</strong>
+                                        </span>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-outline-success">Submit Question</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
