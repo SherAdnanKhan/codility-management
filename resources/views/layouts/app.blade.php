@@ -97,7 +97,8 @@
                     <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
-                    <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Report</a></li>
+                    <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Absent Report</a></li>
+                    <li><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Report</a></li>
 
 
                     @endif
