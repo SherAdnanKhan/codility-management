@@ -47,8 +47,8 @@ class FridayReport extends Command
     {
         $emails=array();
         $names=array();
-        $start_week=Carbon::now()->startOfMonth()->timestamp;
-        $end_week=Carbon::now()->timestamp;
+        $start_date=Carbon::now()->startOfMonth()->timestamp;
+        $end_date=Carbon::now()->timestamp;
         //Get All Employee
         $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
         foreach ($users as $user_attendance){
@@ -82,7 +82,7 @@ class FridayReport extends Command
                         }
                         if($attendance->attendance_type =='Informed'){
                             if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"){
-                             $informed_late+=1;
+                                $informed_late+=1;
                             }
                         }
                         //check employee if have schedule task during their attendance check in and checkout time
@@ -105,6 +105,9 @@ class FridayReport extends Command
                 $concatinate=$collection->put('leave',$sum_leaves);
                 $concatinate=$collection->put('informed_late',$informed_late);
                 $concatinate=$collection->put('absent',$absent);
+                $concatinate=$collection->put('email',$user_attendance->email);
+                $concatinate=$collection->put('user_id',$user_attendance->id);
+
                 $default_check_in_time  = Carbon::parse($user_attendance->checkInTime);
                 $default_check_out_time = Carbon::parse($user_attendance->checkOutTime);
                 $break_time= Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("h:i");
@@ -136,7 +139,8 @@ class FridayReport extends Command
                         $this->total_days_form=$key;
                     }
                 });
-                $total_day_time =$subtract_time * $this->total_days_form;
+                $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
+                $total_day_time =$subtract_time * $subtract_absent_days;
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
@@ -144,14 +148,17 @@ class FridayReport extends Command
                 $lessTime=abs($getlessTime);
                 if ($total_minutes <= $compensate){
                     $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
+                    $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($total_day_time/60), $total_day_time%60);
                     $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
                     $lessHours=sprintf("%02d:%02d", floor($lessTime/60), $lessTime%60);
                     $concatinate=$collection->put('loggedTime',$loggedTime);
                     $concatinate=$collection->put('requiredTime',$requiredTime);
                     $concatinate=$collection->put('lessHours',$lessHours);
+                    $concatinate=$collection->put('requiredWithoutCompansetionTime',$requiredWithoutCompansetionTime);
+                    $concatinate=$collection->put('user_id',$user_attendance->id);
 
                     $user_name[]=array($concatinate->all());
-
+//dd($user_name);
 //                    $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                     $emails[]=$user_attendance->email;
                 }
@@ -173,7 +180,7 @@ class FridayReport extends Command
                 $year = date('Y'); // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
 
-            //loop through all days
+                //loop through all days
                 for ($i = 1; $i <= $day_count; $i++) {
 
                     $date = $year.'/'.$month.'/'.$i; //format date
@@ -192,20 +199,25 @@ class FridayReport extends Command
                         $this->total_days_form=$key;
                     }
                 });
-                $total_day_time =$subtract_time * $this->total_days_form;
-
+                $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
+                $total_day_time =$subtract_time * $subtract_absent_days;
+                dd($total_day_time);
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
                 $lessTime= +($compensate - $total_minutes);
                 $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
                 $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
+                $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($total_day_time/60), $total_day_time%60);
                 $lessHours=sprintf("%02d:%02d", floor($lessTime/60), $lessTime%60);
                 $absent= $this->days;
                 $concatinate=$collection->put('absent',$absent);
                 $concatinate=$collection->put('loggedTime',$loggedTime);
                 $concatinate=$collection->put('requiredTime',$requiredTime);
                 $concatinate=$collection->put('lessHours',$lessHours);
+                $concatinate=$collection->put('email',$user_attendance->email);
+                $concatinate=$collection->put('requiredWithoutCompansetionTime',$requiredWithoutCompansetionTime);
+                $concatinate=$collection->put('user_id',$user_attendance->id);
                 $user_name[]=array($concatinate->all());
                 // $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                 $emails[]=$user_attendance->email;
@@ -214,8 +226,14 @@ class FridayReport extends Command
         }
 
         if (!(empty($emails) && empty($user_name))){
-            Mail::send(new WeeklyReport($user_name));
-            Mail::send(new EmployeeLessTimeConsumed($emails));
+//            Mail::send(new WeeklyReport($user_name));
+            foreach ($user_name as $get_user_detail){
+                foreach ($get_user_detail as $item) {
+                    Mail::send(new EmployeeLessTimeConsumed($item,$emails));
+
+                }
+            }
+
         }
 
     }

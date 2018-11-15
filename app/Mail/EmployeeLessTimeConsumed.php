@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class EmployeeLessTimeConsumed extends Mailable
 {
     public $emails;
+    public $names;
     use Queueable, SerializesModels;
 
     /**
@@ -17,9 +18,9 @@ class EmployeeLessTimeConsumed extends Mailable
      *
      * @return void
      */
-    public function __construct($emails)
+    public function __construct($item)
     {
-        $this->emails=$emails;
+        $this->names=$item;
     }
 
     /**
@@ -29,7 +30,9 @@ class EmployeeLessTimeConsumed extends Mailable
      */
     public function build()
     {
+
         $employee_emails=$this->emails;
-        return $this->markdown('mail_employee_less_time_consumed')->to($employee_emails)->subject("Weekly Evaluation Alert ! From  ".Carbon::now()->startOfWeek()->format('d-m-Y')."  TO  ".Carbon::now()->startOfWeek()->addDays(4)->format('d-m-Y'));
+        $user_detail=$this->names;
+            return $this->markdown('mail_employee_less_time_consumed',compact('user_detail'))->to($user_detail['email'])->subject("Monthly Assessment Alert ! From  ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->format('d-m-Y'));
     }
 }

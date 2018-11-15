@@ -48,6 +48,8 @@ Route::get('/', function () {
     Route::get('/search/report','AttendanceController@getViewAdminReportPage')->name('view.admin.report');
     Route::get('/generate/report','AttendanceController@makeReportByAdmin')->name('admin.report.search');
     Route::get('/screen/capture/{id}','UserController@screenCapture')->name('screen.capture.get');
+    Route::get('/generate/monthly/report','AttendanceController@monthlyAdminReportPage')->name('view.admin..monthly.report');
+    Route::get('/search/monthly/report','AttendanceController@makeMonthlyReportByAdmin')->name('admin.monthly.report.search');
 
 
 
