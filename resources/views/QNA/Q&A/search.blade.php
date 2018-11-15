@@ -63,8 +63,15 @@
             $.get('/search/question/'+question_answer+'/',function (data) {
                 var data_question=data.question;
                 var data_answer=data.answer;
-                $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
+                if (data.image != null){
+                    var data_image= "{!! asset('images/question') !!}"+'/'+data.image;
+                }else {
+                    var data_image='';
+                }
+;                $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
                     '<p class="card-text"><b>Question # '+data.id+' :</b>'+ data_question.replace(new RegExp('\r?\n','g'), '<br />') +'</p>'+
+                    '<img style="width: 100px;height: 100px" class="img-responsive " src='+data_image+' alt='+data_question+'>'+
+
                     '<p class="card-text"><b>Answer :</b>'+data_answer.replace(new RegExp('\r?\n','g'), '<br />')+'</p>'+
                     '</div>'+
                     '</div>'+

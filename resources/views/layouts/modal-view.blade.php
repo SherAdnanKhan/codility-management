@@ -59,7 +59,7 @@
 
 @endif
 @if(isset($question))
-    <form class="form-horizontal" id ="question-answer" method="POST" action="{{route('question-answers.update',$question->id)}}" >
+    <form class="form-horizontal" id ="question-answer" method="POST" action="{{route('question-answers.update',$question->id)}}" enctype="multipart/form-data" >
         {{ csrf_field() }}
         {{ method_field('PATCH') }}
         <div class="form-group-material">
@@ -124,7 +124,15 @@
             @endif
             <label for="name" class="label-material active">Variation of Question</label>
         </div>
-
+        <div class="form-group-material">
+            <input id="image" type="file" class="input-material" name="image" accept="image/x-png,image/gif,image/jpeg">
+            <label for="image" class="label-material active">Image Of Question</label>
+            @if ($errors->has('image'))
+                <span class="help-block">
+                                        <strong>{{ $errors->first('image') }}</strong>
+                                        </span>
+            @endif
+        </div>
         <button type="submit" class="btn btn-outline-success">Update Question</button>
         <button type="button" id="button_clear" class="btn btn-outline-danger">
             Reset

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use PDF;
+use Symfony\Component\Console\Question\Question;
 
 
 class QuestionAnswerController extends Controller
@@ -67,7 +68,7 @@ class QuestionAnswerController extends Controller
             'answer'    => 'required',
             'category'  => 'required|exists:q_n_a_categories,id',
             'question'  => 'required',
-            'marks'     => 'required|integer|max:5'
+            'marks'     => 'required|integer|max:5',
 
         ]);
         $category=QNACategory::whereId($request->category)->first();
@@ -78,7 +79,18 @@ class QuestionAnswerController extends Controller
                 'answer'    =>  $request->answer,
                 'marks'     =>  $request->marks
             ]);
+            if ($file = $request->file('image')) {
+                $name = $qna->id . time() . $file->getClientOriginalName();
+                $file->move('images/question', $name);
 
+                if ($qna->image != null) {
+                    unlink(public_path('/images/question/' . $qna->image));
+                    $qna->update(['image' => $name]);
+                } else {
+                    $qna->update(['image' => $name]);
+
+                }
+            }
 
             $question=QuestionAnswer::whereId($qna->id)->update(['variation'=>$qna->id]);
 
@@ -159,7 +171,18 @@ class QuestionAnswerController extends Controller
             'marks'     =>  $request->marks,
             'variation' =>  $request->variation
         ]);
+        if ($file = $request->file('image')) {
+            $questions=QuestionAnswer::whereId($id)->first();
+            $name = $questions->id . time() . $file->getClientOriginalName();
+            $file->move('images/question', $name);
+            if ($questions->image != null) {
+                unlink(public_path('/images/question/' . $questions->image));
+                $questions->update(['image' => $name]);
+            } else {
+                $questions->update(['image' => $name]);
 
+            }
+        }
         if ($question ==true){
             return redirect()->route('question-answers.index')->with('status','Question and Answer  Updated !');
 

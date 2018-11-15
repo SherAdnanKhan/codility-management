@@ -2,7 +2,7 @@
 # Hey ! <br>
 
  
-The purpose of this email, is to notify you that you are not reached at Office  yet and (an hour been passed). <br>
+The purpose of this email, is to notify you that you are not reached at Office  yet and (an half hour been passed). <br>
 Please inform the HR Department  Whether you are Late OR on Leave, Otherwise System will mark you as absent for Today. <br>
 
 
