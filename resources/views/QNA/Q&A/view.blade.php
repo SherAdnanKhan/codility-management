@@ -71,7 +71,7 @@
 <h3> {{$item->name}}</h3>
 <br>
 <br>
-@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->limit(3)->get();
+@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->get();
 $collection=collect($question);
 $unique=$collection->uniqueStrict('variation');
 
@@ -82,7 +82,7 @@ $unique=$collection->uniqueStrict('variation');
 
 @if($print_question->image !=null)
 
-<img style="height:100px;width: 100px" class="img-responsive " src="file:///<?= base_path()?>/public/images/question/{{$print_question->image}}" alt="{{env('APP_NAME')}}">
+<img style="max-width: 90%" class="img-responsive " src="file:///<?= base_path()?>/public/images/question/{{$print_question->image}}" alt="{{env('APP_NAME')}}">
 @else
 
 @endif

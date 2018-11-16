@@ -75,23 +75,26 @@
                                     <th>Total Informed Late</th>
                                     <th>Total Leaves</th>
                                     <th>Total Absent</th>
-                                    <th>Total Allowed absent</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {{--@if(isset($user_details))--}}
+                                @if(isset($user_detail))
+                                    @foreach($user_detail as $item)
+                                        @foreach($item as $user)
+                                        <tr>
+                                            <td>{{$user['name']}}</td>
+                                            <td>{{$user['requiredWithoutCompansetionTime']?$user['requiredWithoutCompansetionTime']:''}}</td>
+                                            <td>{{$user['loggedTime']?$user['loggedTime']:''}}</td>
+                                            <td>{{$user['lessHours']?$user['loggedTime']:''}}</td>
+                                            <td>{{isset($user['late'])?$user['late']:''}}</td>
+                                            <td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>
+                                            <td>{{isset($user['leave'])?$user['leave']:''}}</td>
+                                            <td>{{isset($user['absent'])?$user['absent']:''}}</td>
+                                        </tr>
+                                            @endforeach
+                                    @endforeach
 
-                                    {{--@foreach($user_details as $item)--}}
-                                        {{--@foreach($item as $user)--}}
-                                        {{--<tr>--}}
-                                            {{--<td>{{$user['name']}}</td>--}}
-                                            {{--<td>{{$user['total_absent']}}</td>--}}
-                                            {{--<td>{{$user['allowed_absent']}}</td>--}}
-                                        {{--</tr>--}}
-                                            {{--@endforeach--}}
-                                    {{--@endforeach--}}
-
-                                {{--@endif--}}
+                                @endif
                                 </tbody>
                             </table>
 
