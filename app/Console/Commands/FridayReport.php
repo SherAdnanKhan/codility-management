@@ -59,8 +59,8 @@ class FridayReport extends Command
             $absent=0;
             $names=array('name'=>$user_attendance->name);
             $collection=collect($names);
-            $check_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[$start_week,$end_week])->first();
-            $get_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[$start_week,$end_week])->orderBy('id','desc')->get();
+            $check_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[Carbon::now()->startOfMonth()->timestamp,Carbon::now()->timestamp])->first();
+            $get_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[Carbon::now()->startOfMonth()->timestamp,Carbon::now()->timestamp])->orderBy('id','desc')->get();
             //Check employee marked attendance at least one in a  whole week
             if ($check_attendance != null){
                 foreach ($get_attendance as $attendance){
@@ -201,7 +201,6 @@ class FridayReport extends Command
                 });
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
                 $total_day_time =$subtract_time * $subtract_absent_days;
-                dd($total_day_time);
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
@@ -224,9 +223,9 @@ class FridayReport extends Command
 
             }
         }
-
+dd($user_name);
         if (!(empty($emails) && empty($user_name))){
-//            Mail::send(new WeeklyReport($user_name));
+            Mail::send(new WeeklyReport($user_name));
             foreach ($user_name as $get_user_detail){
                 foreach ($get_user_detail as $item) {
                     Mail::send(new EmployeeLessTimeConsumed($item,$emails));
