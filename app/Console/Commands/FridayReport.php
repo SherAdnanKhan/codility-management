@@ -50,7 +50,7 @@ class FridayReport extends Command
         $start_date=Carbon::now()->startOfMonth()->timestamp;
         $end_date=Carbon::now()->timestamp;
         //Get All Employee
-        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('name','Saleh Mahmood')->get();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
         foreach ($users as $user_attendance){
             $total_minutes = 0;
             $sum_lates=0;
