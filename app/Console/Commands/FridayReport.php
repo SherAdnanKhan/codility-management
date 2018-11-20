@@ -50,7 +50,7 @@ class FridayReport extends Command
         $start_date=Carbon::now()->startOfMonth()->timestamp;
         $end_date=Carbon::now()->timestamp;
         //Get All Employee
-        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('name','Saleh Mahmood')->get();
         foreach ($users as $user_attendance){
             $total_minutes = 0;
             $sum_lates=0;
@@ -115,7 +115,7 @@ class FridayReport extends Command
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
                 //edit
-                $this->days=Carbon::now()->day;
+                $this->days=Carbon::now()->day -1;
                 $workdays = array();
                 $type = CAL_GREGORIAN;
                 $month = date('n'); // Month ID, 1 through to 12.
@@ -134,13 +134,15 @@ class FridayReport extends Command
 
                 }
                 $collect=collect($workdays);
+
                 $collect->each(function ($item, $key) {
                     if ($item == $this->days) {
                         $this->total_days_form=$key;
                     }
                 });
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
-                $total_day_time =$subtract_time * $subtract_absent_days;
+                $total_day_time =$subtract_time * abs($subtract_absent_days);
+                $asdf=$total_day_time;
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
@@ -148,7 +150,7 @@ class FridayReport extends Command
                 $lessTime=abs($getlessTime);
                 if ($total_minutes <= $compensate){
                     $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
-                    $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($total_day_time/60), $total_day_time%60);
+                    $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($asdf/60), $asdf%60);
                     $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
                     $lessHours=sprintf("%02d:%02d", floor($lessTime/60), $lessTime%60);
                     $concatinate=$collection->put('loggedTime',$loggedTime);
@@ -158,8 +160,8 @@ class FridayReport extends Command
                     $concatinate=$collection->put('user_id',$user_attendance->id);
 
                     $user_name[]=array($concatinate->all());
-//dd($user_name);
-//                    $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
+
+                    $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                     $emails[]=$user_attendance->email;
                 }
 
@@ -200,7 +202,7 @@ class FridayReport extends Command
                     }
                 });
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
-                $total_day_time =$subtract_time * $subtract_absent_days;
+                $total_day_time =$subtract_time * abs($subtract_absent_days);
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
@@ -223,10 +225,9 @@ class FridayReport extends Command
 
             }
         }
-dd($user_name);
         if (!(empty($emails) && empty($user_name))){
             Mail::send(new WeeklyReport($user_name));
-            foreach ($user_name as $get_user_detail){
+            foreach ($user_name as $get_user_detail){;
                 foreach ($get_user_detail as $item) {
                     Mail::send(new EmployeeLessTimeConsumed($item,$emails));
 

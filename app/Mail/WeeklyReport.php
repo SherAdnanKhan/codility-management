@@ -37,7 +37,7 @@ class WeeklyReport extends Mailable
 
 
         $employee_names=$this->names;
-        $to = array('atta.ur.rehman@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('monthly',compact('employee_names'))->to($to)->subject("Weekly Report From ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));
+        $to = array('atta.ur.rehman@codility.co','hussnain.raza@codility.co','amir@codility.co');
+        return $this->markdown('monthly',compact('employee_names'))->to($to)->subject("Monthly Assessment Report From ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));
     }
 }

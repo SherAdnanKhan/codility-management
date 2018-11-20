@@ -82,7 +82,7 @@ $unique=$collection->uniqueStrict('variation');
 
 @if($print_question->image !=null)
 
-<img style="max-width: 90%" class="img-responsive " src="file:///<?= base_path()?>/public/images/question/{{$print_question->image}}" alt="{{env('APP_NAME')}}">
+<img  class="img-responsive " src="file:///<?= base_path()?>/public/images/question/{{$print_question->image}}" alt="{{env('APP_NAME')}}">
 @else
 
 @endif

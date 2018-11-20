@@ -50,6 +50,9 @@ Route::get('/', function () {
     Route::get('/screen/capture/{id}','UserController@screenCapture')->name('screen.capture.get');
     Route::get('/generate/monthly/report','AttendanceController@monthlyAdminReportPage')->name('view.admin..monthly.report');
     Route::get('/search/monthly/report','AttendanceController@makeMonthlyReportByAdmin')->name('admin.monthly.report.search');
+    Route::get('/generate/inaccuracy/report','AttendanceController@taskInaccuracyReportPage')->name('view.admin.inaccuracy.report');
+    Route::get('/search/inaccuracy/report','AttendanceController@makeInaccuracyReportByAdmin')->name('admin.monthly.inaccuracy.search');
+
 
 
 
