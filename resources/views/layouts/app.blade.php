@@ -99,6 +99,7 @@
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
                     <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Absent Report</a></li>
                     <li><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Report</a></li>
+                    <li><a href="{{route('view.admin.inaccuracy.report')}}">Monthly Inaccuracy Report </a></li>
 
 
                     @endif
