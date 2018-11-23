@@ -43,8 +43,7 @@ class AuthController extends Controller
             'exp' => Carbon::now()->endOfMonth()->timestamp
         ];
 
-
-        return JWT::encode($payload, env('JWT_SECRET'));
+        return JWT::encode($payload, config('jwt.secret'));
     }
 
     /**
@@ -58,7 +57,6 @@ class AuthController extends Controller
             'email'     => 'required|email',
             'password'  => 'required'
         ]);
-
         // Find the user by email
         $user = User::where('email', $this->request->input('email'))->first();
         if (!$user)
@@ -77,10 +75,11 @@ class AuthController extends Controller
             ]);
 
             if ($update){
-                $users =User::select('name','capture_duration')->whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get()->toArray();
+//                $users =User::select('name','capture_duration')->whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->get()->toArray();
+                $users=User::whereId($user->id)->first();
             }
             return response()->json([
-                'employee'=> collect($users),
+                'screen_capture_duration'=> $users->capture_duration,
                 'token' => $token,
                 'email' => $user->email,
             ], 200);

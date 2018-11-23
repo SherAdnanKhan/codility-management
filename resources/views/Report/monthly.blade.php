@@ -71,10 +71,10 @@
                                     <th>Total Hours</th>
                                     <th>Hours Logged</th>
                                     <th>Less Hours</th>
-                                    <th>Total UnInformed Late</th>
-                                    <th>Total Informed Late</th>
-                                    <th>Total Leaves</th>
-                                    <th>Total Absent</th>
+                                    {{--<th>Total UnInformed Late</th>--}}
+                                    {{--<th>Total Informed Late</th>--}}
+                                    {{--<th>Total Leaves</th>--}}
+                                    {{--<th>Total Absent</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -85,11 +85,11 @@
                                             <td>{{$user['name']}}</td>
                                             <td>{{$user['requiredWithoutCompansetionTime']?$user['requiredWithoutCompansetionTime']:''}}</td>
                                             <td>{{$user['loggedTime']?$user['loggedTime']:''}}</td>
-                                            <td>{{$user['lessHours']?$user['loggedTime']:''}}</td>
-                                            <td>{{isset($user['late'])?$user['late']:''}}</td>
-                                            <td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>
-                                            <td>{{isset($user['leave'])?$user['leave']:''}}</td>
-                                            <td>{{isset($user['absent'])?$user['absent']:''}}</td>
+                                            <td>{{$user['lessHours']?$user['lessHours']:''}}</td>
+                                            {{--<td>{{isset($user['late'])?$user['late']:''}}</td>--}}
+                                            {{--<td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>--}}
+                                            {{--<td>{{isset($user['leave'])?$user['leave']:''}}</td>--}}
+                                            {{--<td>{{isset($user['absent'])?$user['absent']:''}}</td>--}}
                                         </tr>
                                             @endforeach
                                     @endforeach
