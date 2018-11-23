@@ -13,7 +13,7 @@ class VerifyToken
     public function handle($request, Closure $next, $guard = null)
     {
         $token = $request->header('Authorization');
-        $user  = User::where(['api-token'=>$token])->first();
+        $user  = User::where(['token'=>$token])->first();
 
         if(!$token)
         {
@@ -25,7 +25,7 @@ class VerifyToken
         {
             try
             {
-                $credentials = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+                $credentials = JWT::decode($token, config('jwt.secret'), ['HS256']);
             }
             catch (ExpiredException $e) {
 
@@ -35,8 +35,9 @@ class VerifyToken
 
             } catch (Exception $e) {
 
+
                 return response()->json([
-                    'error' => 'Incorrect Token.'
+                    'error' => 'Incorrecst Token.'
                 ], 400);
 
             }
