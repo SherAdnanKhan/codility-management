@@ -88,5 +88,13 @@ class User extends Authenticatable
     public function tasks(){
         return $this->hasMany('App\Task');
     }
+    public function get_tracker_attendance(){
+
+        return $this->hasOne('App\TrackerAttendance','user_id','id');
+    }
+    public function user_tracker_calculation($date){
+
+        return $this->hasMany('App\TrackerCalculation','user_id','id')->where('date',$date);
+    }
 
 }

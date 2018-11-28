@@ -17,5 +17,8 @@ Route::group(['middleware' => ['api'],'prefix' => 'auth'], function () {
 });
 Route::group(['middleware' => ['api','verify-token'],'prefix' => 'auth'], function () {
     Route::post('logout', 'Api\AuthController@logout');
-    Route::post('employee/checkin', 'Api\AttendanceController@check_in_time');
+    Route::post('employee/checkin', 'Api\AttendanceController@check_in');
+    Route::post('employee/checkout', 'Api\AttendanceController@check_out');
+    Route::post('employee/timetracker', 'Api\TimeTrakerController@insertTimeTraker');
+
 });
