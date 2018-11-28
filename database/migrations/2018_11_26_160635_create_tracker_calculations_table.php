@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimeTrakersTable extends Migration
+class CreateTrackerCalculationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateTimeTrakersTable extends Migration
      */
     public function up()
     {
-        Schema::create('time_trakers', function (Blueprint $table) {
+        Schema::create('tracker_calculations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('start_time');
-            $table->string('end_time');
-            $table->string('check_in_time')->nullable();
-            $table->string('check_out_time')->nullable();
-            $table->string('url')->nullable();
-            $table->string('slots')->nullable();
+            $table->string('time_logged')->nullable();
+            $table->string('time_spent')->nullable();
+            $table->string('date')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+
         });
     }
 
@@ -33,6 +32,6 @@ class CreateTimeTrakersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('time_trakers');
+        Schema::dropIfExists('tracker_calculations');
     }
 }
