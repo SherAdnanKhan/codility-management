@@ -47,6 +47,7 @@
                                     <th>Employee Name</th>
                                     <th>Employee Email</th>
                                     <th>Employee Screen Capture Duration</th>
+                                    <th>Employee Imperative Minutes</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -57,6 +58,7 @@
                                             <td>{{$user->name}}</td>
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->capture_duration}}</td>
+                                            <td>{{$user->imperative_minutes?$user->imperative_minutes:''}}</td>
                                             <td><a  style="color:green "data-value="{{$user->id}}"  class="edit_link" href="#" >
                                                     <span class="fa fa-edit"></span>
                                                 </a>
@@ -101,8 +103,14 @@
             $.get('/screen/capture/' + user, function (data) {
                 if (data.capture_duration != null){
                     var capture_duration = data.capture_duration
+
                 }else {
-                    var capture_duration ='00::00'
+                    var capture_duration ="0:00"
+                }
+                if (data.imperative_minutes !=null){
+                    var imperative_minutes = data.imperative_minutes
+                }else {
+                    var imperative_minutes ="0:00"
                 }
                 $('.modal-body').html(' <div class="heading"> ' +
                     '<p >Employee Name :  ' + data.name + '</p>' +
@@ -116,9 +124,16 @@
                     '                                <label for="time_capture_duration" class="label-material active">Screen Capture Duration</label>' +
                     '                            </div>' +
                     '                        </div>'+
+                    ' <div class="form-group-material">' +
+                    '                            <div class="input-group-material  date" >' +
+                    '                                <input  type="text" id="imperative_minutes" value='+imperative_minutes+' name ="imperative_minutes" class="input-material" />' +
+                    '                                <label for="imperative_minutes" class="label-material active">Imperative Minutes</label>' +
+                    '                            </div>' +
+                    '                        </div>'+
                     ' <button class="form-submit  btn btn-outline-success" type="submit" > Schedule </button> </form>');
                 $(function () {
-                    $('#time_capture_duration').datetimepicker({format: 'LT', format: 'H:mm',disabledHours: [9,10,11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24]});
+                    $('#time_capture_duration').datetimepicker({format: 'LT', format: 'H:mm',disabledHours: [9,10,11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24],defaultDate:new Date()});
+                    $('#imperative_minutes').datetimepicker({format: 'LT', format: 'H',disabledHours: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24]});
 
                 });
                 $('#updateModal').modal();
