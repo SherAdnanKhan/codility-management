@@ -235,17 +235,22 @@ class UserController extends Controller
         if (Auth::user()->isAdmin()) {
 
             $time= $request->time_capture_duration?$request->time_capture_duration:null;
+            $imperative_minutes=$request->imperative_minutes?$request->imperative_minutes:null;
+
             if ($time > '8:00'){
                 return redirect()->back()->with('status','Select time below 8 hours');
             }
 
-            if($time != null){
+            if($time != null  && $imperative_minutes != null){
                 $get_time=Carbon::parse($time)->timestamp;
-                $users = User::whereId($id)->update(['capture_duration'=>$time]);
+                $users = User::whereId($id)->update([
+                    'capture_duration'      => $time,
+                    'imperative_minutes'    => $imperative_minutes
+                    ]);
                 return redirect()->route('screen.capture.page');
             }
-            if($time == null){
-                return redirect()->back()->with('status','Incorrect Duration');
+            if($time == null || $imperative_minutes == null){
+                return redirect()->back()->with('status','Incorrect Duration/Imperative Minutes');
             }
             }
     }
