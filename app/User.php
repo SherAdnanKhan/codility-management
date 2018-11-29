@@ -112,5 +112,9 @@ class User extends Authenticatable
 
         return $this->hasMany('App\TrackerCalculation','user_id','id')->where('date',$date);
     }
+    public function user_tracker_status(){
+
+        return $this->hasMany('App\TrackerStatus','user_id','id');
+    }
 
 }
