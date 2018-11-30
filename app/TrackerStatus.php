@@ -13,7 +13,12 @@ class TrackerStatus extends Model
         'report_start_time',
         'report_end_time',
         'tracker_attendance_id',
-        'date'
+        'date',
+        'url_image_time'
     ];
+    public function status_tracker_detail(){
+
+        return $this->hasMany('App\TrackerDetail','tracker_status_id','id');
+    }
 
 }

@@ -59,6 +59,7 @@ class AttendanceController extends Controller
         if ($get_date != null) {
 
             $convert_date = Carbon::createFromTimestamp($get_date->date)->startOfDay();
+
             //check if have same day check in and check out
             if ($check_out_time->equalTo($convert_date)) {
                 $user = $request->auth;
