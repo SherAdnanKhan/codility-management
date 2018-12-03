@@ -45,7 +45,14 @@ class LeaveController extends Controller
             'allowed'   =>'required'
 
         ]);
-        $leave = Leave::create($request->all());
+        $public_holiday=$request->public_holiday== null ?false:true;
+        $leave = Leave::create([
+            'name'  =>  $request->name,
+            'color_code'  => $request->color_code,
+            'allowed'  => $request->allowed,
+            'public_holiday'  => $public_holiday,
+
+        ]);
         return redirect()->route('leave.index');
     }
 
@@ -85,7 +92,13 @@ class LeaveController extends Controller
     public function update(Request $request, $id)
     {
         $leave = Leave::whereId($id)->first();
-        $leave->update($request->all());
+        $public_holiday=$request->public_holiday== null ?false:true;
+        $leave->update([
+            'name'  =>  $request->name,
+            'color_code'  => $request->color_code,
+            'allowed'  => $request->allowed,
+            'public_holiday'  => $public_holiday,
+        ]);
         return redirect()->route('leave.index');
     }
 

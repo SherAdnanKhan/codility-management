@@ -25,6 +25,13 @@
         @endif
 
     </div>
+    <div class="form-group row of-button" >
+        <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label " >Is Public Holiday</label>
+        <label class="switch col-sm-offset-3 " style="position: absolute ;margin-left: 79%;margin-top: -2%;"  >
+            <input type="checkbox" name="public_holiday" {{$leave->public_holiday == true ?'checked':''}}>
+            <span class="slider round"></span>
+        </label>
+    </div>
     <div class="form-group-material">
         <label for="color" class="label-material">Color</label>
         <input type="color" name="color_code" class=" col-2" value="{{$leave->color_code}}"/>
