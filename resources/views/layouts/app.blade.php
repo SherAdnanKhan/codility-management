@@ -75,7 +75,10 @@
                             <i class="fa fa-search"></i>Search Question
                         </a>
                     </li>
-                    @if (\Auth::user()->isAdmin())
+                    @if (\Auth::user()->isEmployee())
+                    <li><a href="{{route('view.time.tracking')}}">Time Tracking </a></li>
+                    @endif
+                @if (\Auth::user()->isAdmin())
                     <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
                             <i class="fa fa-users"></i> Employees &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                         </a>
@@ -97,10 +100,18 @@
                     <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
                     <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
-                    <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Absent Report</a></li>
-                    <li><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Report</a></li>
-                    <li><a href="{{route('view.admin.inaccuracy.report')}}">Monthly Inaccuracy Report </a></li>
 
+                        <li><a href="#exampledropdownDropdowns" aria-expanded="true" data-toggle="collapse" class="active">
+                                <i class="fa fa-users"></i> Reports &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul id="exampledropdownDropdowns" class="collapse list-unstyled ">
+                                <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Absent </a></li>
+                                <li><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Hours Detail</a></li>
+                                <li><a href="{{route('view.admin.inaccuracy.report')}}"><i class="fa fa-file"></i>Monthly Inaccuracy  </a></li>
+                                <li><a href="{{route('view.time.tracking')}}"><i class="fa fa-file"></i>Time Tracking </a></li>
+
+                            </ul>
+                        </li>
 
                     @endif
                 </ul>
