@@ -71,10 +71,13 @@
                                     <th>Total Hours</th>
                                     <th>Hours Logged</th>
                                     <th>Less Hours</th>
-                                    {{--<th>Total UnInformed Late</th>--}}
-                                    {{--<th>Total Informed Late</th>--}}
-                                    {{--<th>Total Leaves</th>--}}
-                                    {{--<th>Total Absent</th>--}}
+                                    <th>Total UnInformed Late</th>
+                                    <th>Total Informed Late</th>
+                                    <th>Total Late</th>
+                                    <th>Total UnInformed Absent</th>
+                                    <th>Total Informed Absent</th>
+                                    <th>Total Absent</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -86,10 +89,25 @@
                                             <td>{{$user['requiredWithoutCompansetionTime']?$user['requiredWithoutCompansetionTime']:''}}</td>
                                             <td>{{$user['loggedTime']?$user['loggedTime']:''}}</td>
                                             <td>{{$user['lessHours']?$user['lessHours']:''}}</td>
-                                            {{--<td>{{isset($user['late'])?$user['late']:''}}</td>--}}
-                                            {{--<td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>--}}
-                                            {{--<td>{{isset($user['leave'])?$user['leave']:''}}</td>--}}
-                                            {{--<td>{{isset($user['absent'])?$user['absent']:''}}</td>--}}
+                                            <td>{{isset($user['late'])?$user['late']:''}}</td>
+                                            <td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>
+                                            <td><?php $uninformedLate=isset($user['informed_late'])?$user['informed_late']:0;
+                                            $late=isset($user['late'])?$user['late']:0;
+                                            echo $late + $uninformedLate;
+
+                                            ?>
+
+                                            </td>
+
+                                            <td>{{isset($user['leave'])?$user['leave']:''}}</td>
+                                            <td>{{isset($user['absent'])?$user['absent']:''}}</td>
+                                            <td>
+                                                <?php $uninformedabsent=isset($user['absent'])?$user['absent']:0;
+                                                $informabsent=isset($user['leave'])?$user['leave']:0;
+                                                echo $informabsent + $uninformedabsent;
+
+                                                ?>
+                                            </td>
                                         </tr>
                                             @endforeach
                                     @endforeach

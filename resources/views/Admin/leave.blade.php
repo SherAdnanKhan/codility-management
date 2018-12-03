@@ -42,6 +42,13 @@
                             @endif
                                 <label for="name" class="label-material">Leave Allowed</label>
                         </div>
+                        <div class="form-group row of-button" >
+                            <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label " >Is Public Holiday</label>
+                            <label class="switch" class="col-sm-offset-3 " style="position: absolute ;margin-left: 79%;margin-top: -2%;">
+                                <input type="checkbox" name="public_holiday" >
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                         <div class="form-group-material">
                             <label for="color" class="label-material">Color</label>
                             <input type="color" name="color_code" class=" col-2" value="#ffffff"/>
@@ -75,6 +82,7 @@
                         <th>Color</th>
                         <th>Leave Type</th>
                         <th>Days Allowed</th>
+                        <th>Public Holiday</th>
                         <th>Edit</th>
                         <th>Delete</th>
 
@@ -87,6 +95,8 @@
                         <td style="background-color: {{$leave->color_code?$leave->color_code:'yellow'}}"></td>
                         <td>{{$leave->name}}</td>
                         <td>{{$leave->allowed}}</td>
+                        <td>{{$leave->public_holiday == true ? 'Yes':'No'}}</td>
+
                         <td>
                             <a  style="color: {{$leave->color_code?$leave->color_code:'yellow'}}" data-value="{{$leave->id}}"  class="edit_link" href="#" >
                                 <span class="fa fa-edit"></span>

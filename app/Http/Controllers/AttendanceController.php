@@ -25,7 +25,7 @@ class AttendanceController extends Controller
     public $days;
     public $total_days_form;
     public $dsn;
-
+    public $public_holiday;
     /**
      * Display a listing of the resource.
      *
@@ -295,6 +295,7 @@ class AttendanceController extends Controller
 
             $total_absent = $user->abended ? $user->abended : 0;
             $current_month_absent = 0;
+            $this->public_holiday=0;
             $names = array('name' => $user->name);
             $collection = collect($names);
             $user_attendance = $user->attendance()->whereBetween('check_in_time', [$start_search_date->timestamp, $end_search_date->timestamp])->orderBy('id', 'desc')->get();
@@ -307,18 +308,28 @@ class AttendanceController extends Controller
                     if ($attendance->attendance_type == 'Absent Marked By System') {
                         $total_absent += 1;
                     }
+                    $inform_get =$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp);
+                        if ($inform_get != null){
+                            if ($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LEAVE")
+                            {
+                                $public_holiday_get=$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->public_holiday;
+                                $this->public_holiday+=$public_holiday_get== true?1:0;
+                            }
+
+            }
 
                 }
             }
-            $collection->put('total_absent', $total_absent + $user->abended);
+            $sub_of_public_holiday=abs($this->public_holiday - $total_absent);
+            $collection->put('total_absent', $sub_of_public_holiday + $user->abended);
             $now_month = Carbon::now()->month;
             if (!((Carbon::parse($user->joiningDate)->month == $now_month) && (Carbon::parse($user->joiningDate)->year == Carbon::now()->year))) {
-                $this->get_employement_month = (Carbon::parse($user->joiningDate)->month - $now_month);
+                $this->get_employement_month = ((Carbon::parse($user->joiningDate)->month - 1) - $now_month);
             }
             if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month = 1;
             }
-            $allowed_absent = abs($this->get_employement_month) * 1.5;
+            $allowed_absent = abs($this->get_employement_month) * 1.5  ;
             $collection->put('allowed_absent', $allowed_absent);
             $user_details[] = array($collection->all());
 
@@ -392,7 +403,6 @@ class AttendanceController extends Controller
                             foreach ($get_task as $task) {
                                 // check if employee task have time
                                 if ($task->time_take) {
-
                                     $explode = explode(':', $task->time_take);
                                     $total_minutes += ($explode[0] * 60) + ($explode[1]);
 
@@ -418,8 +428,8 @@ class AttendanceController extends Controller
                 $this->days = Carbon::parse($request->month . '/1')->endOfMonth()->day;
                 $workdays = array();
                 $type = CAL_GREGORIAN;
-                $month = date('n'); // Month ID, 1 through to 12.
-                $year = date('Y'); // Year in 4 digit 2018 format.
+                $month =Carbon::parse($request->month . '/1')->endOfMonth()->month; // Month ID, 1 through to 12.
+                $year = Carbon::parse($request->month . '/1')->endOfMonth()->year; // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
                 for ($i = 1; $i <= $day_count; $i++) {
 
@@ -434,7 +444,8 @@ class AttendanceController extends Controller
 
                 }
                 $collect = collect($workdays);
-                $collect->each(function ($item, $key) {
+
+                $collect->each(function ($item, $key) {;
                     if ($item == $this->days) {
                         $this->total_days_form = $key;
                     }
@@ -442,15 +453,17 @@ class AttendanceController extends Controller
 
                 $subtract_absent_days = $this->total_days_form + 1 - ($absent + $sum_leaves);
                 $total_day_time = $subtract_time * $subtract_absent_days;
-                $division = $total_day_time / 100;
-                $mulitpication = $division * 10;
-                $compensate = $total_day_time - $mulitpication;
-                $getlessTime = +($compensate - $total_minutes);
+                $total_minutes_display=$total_day_time;
+//                $division = $total_day_time / 100;
+//                $mulitpication = $division * 10;
+//                $compensate = $total_day_time - $mulitpication;
+                $getlessTime = +($total_day_time - $total_minutes);
                 $lessTime = abs($getlessTime);
-                if ($total_minutes <= $compensate) {
+//                if ($total_minutes <= $compensate) {
+
                     $loggedTime = sprintf("%02d:%02d", floor($total_minutes / 60), $total_minutes % 60);
-                    $requiredWithoutCompansetionTime = sprintf("%02d:%02d", floor($total_day_time / 60), $total_day_time % 60);
-                    $requiredTime = sprintf("%02d:%02d", floor($compensate / 60), $compensate % 60);
+                    $requiredWithoutCompansetionTime = sprintf("%02d:%02d", floor($total_minutes_display / 60), $total_minutes_display % 60);
+                    $requiredTime = sprintf("%02d:%02d", floor($total_day_time / 60), $total_day_time % 60);
                     $lessHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
                     $concatinate = $collection->put('loggedTime', $loggedTime);
                     $concatinate = $collection->put('requiredTime', $requiredTime);
@@ -460,7 +473,7 @@ class AttendanceController extends Controller
                     $user_name[] = array($concatinate->all());
 //                    $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                     $emails[] = $user_attendance->email;
-                }
+//                }
 
             } //Check employee if not marked attendance for whole week get their name and email
             elseif ($check_attendance == null) {
