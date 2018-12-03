@@ -57,6 +57,7 @@ class TimeTrakerController extends Controller
                         'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                         'date'                  => $date,
                         'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
+                        'task'                  => $request->task?$request->task:null
                     ]);
 
 
@@ -72,7 +73,9 @@ class TimeTrakerController extends Controller
                      'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                      'date'                  => $date,
                      'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
-                ]);
+                     'task'                  => $request->task?$request->task:null
+
+                 ]);
             }
                 $minutes_less=abs($whole_slots_count-$get_minutes_user_screen[0]);
                 $last_time=Carbon::parse($end_report_time);
@@ -121,6 +124,8 @@ class TimeTrakerController extends Controller
                         'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                         'date'                  => $date,
                         'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
+                        'task'                  => $request->task?$request->task:null
+
                     ]);
 
 
@@ -134,6 +139,8 @@ class TimeTrakerController extends Controller
                         'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                         'date'                  => $date,
                         'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
+                        'task'                  => $request->task?$request->task:null
+
                     ]);
                 }
 
