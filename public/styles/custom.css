@@ -282,40 +282,65 @@ button:focus {outline:0;}
 }
 
 .tracker_image {
-    margin-left: 2%;
+    margin-left: 1%;
+
+}
+.tracker_image img{
+    width: 200px;
+    height: 150px;
+
 }
 .bit_on
 {
     display: block;
     height: 18px;
-    width: 4px;
+    width: 6px;
     background: #39bd2c;
     margin-top: 5px;
     margin-right: 5px;
-    border-radius: 3px;
-
+    border-radius: 2px;
+    display: -webkit-inline-box;
 }
 .bit-default
 {
     display: block;
     height: 18px;
-    width: 4px;
-    background: red;
+    width: 6px;
+    background: #6c757dba;
     margin-top: 5px;
     margin-right: 5px;
-    border-radius: 3px;
+    border-radius: 2px;
+    display: -webkit-inline-box;
 }
 .bit-off{
     display: block;
     height: 18px;
-    width: 4px;
-    background: #3c3b393d;
+    width: 6px;
+    background: red;
     margin-top: 5px;
     margin-right: 5px;
-    border-radius: 3px;
+    border-radius: 2px;
+    display: -webkit-inline-box;
+
 }
 .tracker_time {
-    font-size: 11px;
+    font-size: 14px;
     color: black;
-    font-weight: bolder
+    font-weight: bolder;
+    text-decoration: none;
+    margin-bottom: 0px;
+}
+.layer-off {
+    background-color: #dc354526;
+    position: absolute;
+    width: 200px;
+    height: 151px;
+    margin-top: -150px;
+}
+.layer-default {
+    background-color: #6c757d4f;
+    position: absolute;
+    width: 200px;
+    height: 151px;
+    margin-top: -150px;
 }

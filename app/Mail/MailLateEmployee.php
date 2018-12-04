@@ -30,7 +30,7 @@ class MailLateEmployee extends Mailable
     public function build()
     {
 
-        $email=$this->late_users_date;
-        return $this->markdown('mail_late_employee')->to($email)->subject('Late Employee Warning');
+        $user=$this->late_users_date;
+        return $this->markdown('mail_late_employee',compact('user'))->to($user['email'])->subject('Late Employee Warning');
     }
 }

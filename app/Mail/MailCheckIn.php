@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -35,7 +36,8 @@ class MailCheckIn extends Mailable
     {
 
         $users = $this->get_users;
+        $get_users_collection = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereIn('name',$users)->get();
         $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
-        return $this->markdown('mail_checkin',compact('users'))->to($to)->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
+        return $this->markdown('mail_checkin',compact('users' ,'get_users_collection'))->to($to)->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
     }
 }

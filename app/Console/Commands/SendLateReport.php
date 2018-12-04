@@ -68,20 +68,29 @@ class SendLateReport extends Command
 
 
             $check_attendance = $user->attendance()->whereBetween('check_in_time', [$today, Carbon::now()->timestamp])->where('user_id',$user->id)->first();
-
             $informs=$user->informs()->whereBetween('attendance_date', [$today, Carbon::now()->timestamp])->first();
-            if ($check_attendance== null && $informs == null)
+            if ($check_attendance == null && $informs == null)
             {
+                $late_users_data[]=array('email'=>$user->email,'name'=>$user->name);
+            }
+            if ($check_attendance ==  null){
+
                 $late_users[] = $user->name;
-                $late_users_data[]=$user->email;
             }
                         }
                     }
             }
         }
-        if (!(empty($late_users) && empty($late_users_data))) {
-            Mail::send(new MailLateEmployee($late_users_data));
+
+        if (!(empty($late_users))) {
             Mail::send(new MailCheckIn($late_users));
         }
+        if (!(empty($late_users) && empty($late_users_data))) {
+            foreach ($late_users_data as $late_users_detail) {
+                Mail::send(new MailLateEmployee($late_users_detail));
+
+            }
+        }
+
     }
 }

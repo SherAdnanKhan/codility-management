@@ -62,7 +62,7 @@
                                 </div>
                                     <div class="form-group-material">
 
-                                        <input autocomplete="off" type='number' id="opening_balance" name="opening_balance"   value="" class="input-material" />
+                                        <input autocomplete="off" type='number' id="opening_balance" name="opening_balance"   value="{{$user->opening_balance?$user->opening_balance:''}}" class="input-material" />
                                         @if ($errors->has('opening_balance'))
                                             <span class="help-block">
                                         <strong>{{ $errors->first('opening_balance') }}</strong>
