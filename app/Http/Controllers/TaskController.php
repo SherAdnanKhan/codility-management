@@ -161,7 +161,7 @@ class TaskController extends Controller
             if ($task) {
                 return redirect()->route('task.index');
             }else{
-                return redirect()->back()->with('Please Make you this is your task');
+                return redirect()->back()->with('Please Make sure this is your task');
             }
         }
         }

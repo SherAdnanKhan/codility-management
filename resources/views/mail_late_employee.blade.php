@@ -1,5 +1,5 @@
 @component('mail::message')
-# Hey ! <br>
+# Hey {{$user['name']}} ! <br>
 
  
 The purpose of this email, is to notify you that you are not reached at Office  yet and (an half hour been passed). <br>

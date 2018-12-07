@@ -9,7 +9,7 @@
 @endsection
 @section('body')
 
-    <div class="container">
+    <div class="container-fluid">
         <!-- Page Header-->
         <header class="page-header">
             <h1 class="h3 display">Employee Time Tracker </h1>
@@ -27,7 +27,6 @@
 
                                 <div class="col-md-4 " style="margin-top: 10px">
 
-
                                     <form class="previous" id ="previous" method="GET" action="{{route('time.tracking.search')}}" >
                                         <button class="paginate left" type="submit"><i></i><i></i></button>
 
@@ -43,8 +42,10 @@
                                         <button class="paginate right" type="submit"><i></i><i></i></button>
 
                                     </form>
+
                                 </div>
                                 <div class="col-md-4">
+
                                 </div>
                                 <div class="col-md-4">
                                 </div>
@@ -66,67 +67,68 @@
                             <div class="row ">
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
+                                    </a>
+                                </div>
+                                <div class="tracker_image ">
+                                    <a class="img-thumbnail" href="#" style="text-decoration: none">
+                                        <img class="img-responsive " src="http://placehold.it/200x150" alt="">
+                                        <div class="layer"></div>
+                                        <p class="tracker_time">{{\Carbon\Carbon::now()->toTimeString()}}</p><span class="bit_on"></span><span class="bit_on"></span><span class="bit_on"></span><span class="bit_on"></span><span class="bit-off"></span><span class="bit-default"></span><span class="bit_on"></span>
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
-                                        <p class="tracker_time">{{\Carbon\Carbon::now()->toTimeString()}}</p><span class="bit_on"></span>
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
-                                    </a>
-                                </div>
-                                <div class="tracker_image ">
-                                    <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div><div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
                                 <div class="tracker_image ">
                                     <a class="img-thumbnail" href="#">
-                                        <img class="img-responsive" src="http://placehold.it/100x100" alt="">
+                                        <img class="img-responsive" src="http://placehold.it/200x150" alt="">
                                     </a>
                                 </div>
 

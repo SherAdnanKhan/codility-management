@@ -293,7 +293,7 @@ class AttendanceController extends Controller
             $start_search_date = $start_date->startOfDay();
             $end_search_date = $end_date->endOfDay();
 
-            $total_absent = $user->abended ? $user->abended : 0;
+            $total_absent = $user->opening_balance ? $user->opening_balance : 0;
             $current_month_absent = 0;
             $this->public_holiday=0;
             $names = array('name' => $user->name);
@@ -371,6 +371,7 @@ class AttendanceController extends Controller
             $absent = 0;
             $names = array('name' => $user_attendance->name);
             $collection = collect($names);
+            $this->public_holiday=0;
             $check_attendance = $user_attendance->attendance()->whereBetween('check_in_time', [Carbon::parse($request->month . '/1')->startOfMonth()->timestamp, Carbon::parse($request->month . '/1')->endOfMonth()->timestamp])->first();
             $get_attendance = $user_attendance->attendance()->whereBetween('check_in_time', [Carbon::parse($request->month . '/1')->startOfMonth()->timestamp, Carbon::parse($request->month . '/1')->endOfMonth()->timestamp])->orderBy('id', 'desc')->get();
             //Check employee marked attendance at least one in a  whole week
@@ -397,6 +398,15 @@ class AttendanceController extends Controller
                                 $informed_late += 1;
                             }
                         }
+                        $inform_get =$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp);
+                        if ($inform_get != null){
+                            if ($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LEAVE")
+                            {
+                                $public_holiday_get=$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->public_holiday;
+                                $this->public_holiday+=$public_holiday_get== true?1:0;
+                            }
+
+                        }
                         //check employee if have schedule task during their attendance check in and checkout time
                         if ($attendance->task_friday(Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp, Carbon::parse($attendance->check_out_time)->timestamp)->first() != null) {
                             $get_task = $attendance->task_friday(Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp, Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->get();
@@ -412,8 +422,9 @@ class AttendanceController extends Controller
                     }
                 }
 
+                $sub_of_public_holiday=abs($this->public_holiday - $sum_leaves);
                 $concatinate = $collection->put('late', $sum_lates);
-                $concatinate = $collection->put('leave', $sum_leaves);
+                $concatinate = $collection->put('leave', $sub_of_public_holiday);
                 $concatinate = $collection->put('informed_late', $informed_late);
                 $concatinate = $collection->put('absent', $absent);
                 $concatinate = $collection->put('email', $user_attendance->email);
@@ -431,7 +442,15 @@ class AttendanceController extends Controller
                 $month =Carbon::parse($request->month . '/1')->endOfMonth()->month; // Month ID, 1 through to 12.
                 $year = Carbon::parse($request->month . '/1')->endOfMonth()->year; // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
-                for ($i = 1; $i <= $day_count; $i++) {
+                $get_date=Carbon::parse($user_attendance->joiningDate)->month;
+                if ($get_date == $month){
+                    $start_date=Carbon::parse($user_attendance->joiningDate)->day;
+                }else
+                {
+                    $start_date =1;
+                }
+
+                for ($i = $start_date; $i <= $day_count; $i++) {
 
                     $date = $year . '/' . $month . '/' . $i; //format date
                     $get_name = date('l', strtotime($date)); //get week day
@@ -444,7 +463,6 @@ class AttendanceController extends Controller
 
                 }
                 $collect = collect($workdays);
-
                 $collect->each(function ($item, $key) {;
                     if ($item == $this->days) {
                         $this->total_days_form = $key;
@@ -459,15 +477,24 @@ class AttendanceController extends Controller
 //                $compensate = $total_day_time - $mulitpication;
                 $getlessTime = +($total_day_time - $total_minutes);
                 $lessTime = abs($getlessTime);
-//                if ($total_minutes <= $compensate) {
+                if ($total_minutes <=  $total_day_time) {
+                    $lessHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
+                    $extraHours = '';
 
+                }else
+                {
+                    $extraHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
+
+                    $lessHours = '00:00';
+
+                }
                     $loggedTime = sprintf("%02d:%02d", floor($total_minutes / 60), $total_minutes % 60);
                     $requiredWithoutCompansetionTime = sprintf("%02d:%02d", floor($total_minutes_display / 60), $total_minutes_display % 60);
                     $requiredTime = sprintf("%02d:%02d", floor($total_day_time / 60), $total_day_time % 60);
-                    $lessHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
                     $concatinate = $collection->put('loggedTime', $loggedTime);
                     $concatinate = $collection->put('requiredTime', $requiredTime);
                     $concatinate = $collection->put('lessHours', $lessHours);
+                    $concatinate = $collection->put('extraHours', $extraHours);
                     $concatinate = $collection->put('requiredWithoutCompansetionTime', $requiredWithoutCompansetionTime);
                     $concatinate = $collection->put('user_id', $user_attendance->id);
                     $user_name[] = array($concatinate->all());

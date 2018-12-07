@@ -5,10 +5,10 @@
 These Employees are not marked CHECK IN or not present in Office Yet .
 @endcomponent
 @component('mail::table')
-    | Late Employee  Name |
-    | ------------------- |
-    @foreach($users as $user)
-    |     {{$user}}       |
+    |  Employee  Name     | Informed At                                                                                                                                                                                                                                     |        Informed Type                                                                            |   Inform status                               | Informed Reason              |
+    | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------- | ---------------------------- |
+    @foreach($get_users_collection as $user)
+        |     {{$user->name}}       |@php $inform=$user->informs()->whereBetween('attendance_date', [\Carbon\Carbon::now()->startOfDay()->timestamp, \Carbon\Carbon::now()->timestamp])->first(); @endphp {{$inform?$inform->inform_at:''}}|{{$inform?$inform->inform_type:''}}  {{$inform?($inform->leaves?' ON '.$inform->leaves->name:''):''}} | {{$inform?($inform->inform_late?'Yes Late Informed':'No Late Informed'):''}} | @php $reason=str_replace("<br />", "\n",$inform?$inform->reason:''); echo $reason; @endphp |
     @endforeach
 
 @endcomponent

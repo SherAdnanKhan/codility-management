@@ -71,11 +71,12 @@
                                     <th>Total Hours</th>
                                     <th>Hours Logged</th>
                                     <th>Less Hours</th>
+                                    <th>Extra Hours</th>
                                     <th>Total UnInformed Late</th>
                                     <th>Total Informed Late</th>
                                     <th>Total Late</th>
-                                    <th>Total UnInformed Absent</th>
                                     <th>Total Informed Absent</th>
+                                    <th>Total UnInformed Absent</th>
                                     <th>Total Absent</th>
 
                                 </tr>
@@ -89,6 +90,7 @@
                                             <td>{{$user['requiredWithoutCompansetionTime']?$user['requiredWithoutCompansetionTime']:''}}</td>
                                             <td>{{$user['loggedTime']?$user['loggedTime']:''}}</td>
                                             <td>{{$user['lessHours']?$user['lessHours']:''}}</td>
+                                            <td>{{$user['extraHours']?$user['extraHours']:''}}</td>
                                             <td>{{isset($user['late'])?$user['late']:''}}</td>
                                             <td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>
                                             <td><?php $uninformedLate=isset($user['informed_late'])?$user['informed_late']:0;
