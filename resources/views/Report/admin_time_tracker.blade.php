@@ -26,7 +26,7 @@
                                 <form class="time_tracker_search" id ="time_tracker_search" method="POST" action="{{route('time.tracking.search')}}" >
                                     {{ csrf_field() }}
                                     <div class="row">
-                                        <div class="col-md-6 ">
+                                        <div class="col-md-6 date_show">
                                             <button class="paginate left previous" value="previous"><i></i><i></i></button>
                                             <input type="hidden"  name="date" value="{{isset($date_coming)?\Carbon\Carbon::createFromTimestamp($date_coming)->toDayDateTimeString():\Carbon\Carbon::now()->toDayDateTimeString()}}">
                                             <input type="hidden" name="check" class="check"  value="">
@@ -46,7 +46,7 @@
                                                     <select name="employee"  class="form-control">
                                                         <option value="" >Select Employee</option>
                                                         @foreach($users as $user)
-                                                            {{$user_id}}
+                                                            
                                                             <option {{isset($user_id)?($user_id == $user->id?"selected ":''):''}}value="{{$user->id}}" >{{$user->name}}</option>
                                                         @endforeach
                                                     </select>
@@ -90,7 +90,7 @@
                             $end_length=15;
                             $total_loop	=	'50';$allow_char	=	'15';
                             $previous_report_actual_time=null;
-                            $user=\App\User::whereId($user_id)->first();
+                            $user=\App\User::whereId(isset($user_id)?$user_id:'')->first();
                             ?>
                             @foreach($status as $tracker_status)
 
@@ -270,9 +270,10 @@
     </div>
 @endsection
 @section('page_scripts')
-    <script>
-        // $(document).ready(function(e){var nav_width=$('.mCustomScrollbar').width();var header_height=$('header.header').height()+10;$('body').append('<div style="width:19px; height:100vh; background:#fff; position:fixed; top:' + header_height + 'px; left:' + nav_width + 'px; z-index:34;">&nbsp;</div>'); });
-    </script>
+    <style>
+        .date_show{
+            display: none;}
+    </style>
     <script>
         $(function(){
             $('.previous').click(function () {
@@ -283,6 +284,11 @@
                 $('.check').val('next');
                 $( "#time_tracker_search" ).submit();
             });
+        });
+        $(document).ready(function(){
+            setTimeout(function(){
+                $('.date_show').show();
+            }, 100);
         });
     </script>
     <script src="{{asset('scripts/moment.js')}}"></script>

@@ -86,6 +86,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('task/{id}','TaskController@show')->name('task.show');
     Route::post('tracking','TimeTrackerController@makeTimeTrackReport')->name('time.tracking.search');
     Route::get('tracking/report','TimeTrackerController@index')->name('view.time.tracking');
+    Route::post('/search/categories/questions','QuestionAnswerController@searchQuestionByCategory')->name('searchQuestionByCategory');
+
 });
 
     Route::resource('profile','UserController');

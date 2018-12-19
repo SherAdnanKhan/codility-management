@@ -40,6 +40,7 @@
                                 <tr>
                                     <th>Question No</th>
                                     <th>Category Name</th>
+                                    <th>Approved</th>
                                     <th>Variation type </th>
                                     <th>Question</th>
                                     <th>Answer</th>
@@ -52,6 +53,7 @@
                                         <tr>
                                             <td>{{$question_answer->id}}</td>
                                             <td>{{$question_answer->category?$question_answer->category->name:'Without Category'}}</td>
+                                            <td>{{$question_answer->proved?'Yes':'No'}}</td>
                                             <td>{{$question_answer->variation}}</td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->question}}</textarea></td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->answer}}</textarea></td>
@@ -145,6 +147,14 @@
                                         <strong>{{ $errors->first('image') }}</strong>
                                         </span>
                             @endif
+                        </div>
+                        <div class="form-group row of-button  " >
+                            <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Approved</label>
+        
+                            <label class="switch" class="col-sm-offset-3 ">
+                                <input type="checkbox" name="proved" >
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                         <button type="submit" class="btn btn-outline-success">Submit Question</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">

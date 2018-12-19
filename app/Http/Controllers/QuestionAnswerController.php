@@ -20,7 +20,7 @@ class QuestionAnswerController extends Controller
      */
     public function index()
     {
-        $question_answers = QuestionAnswer::orderBy('id','desc')->paginate(10);
+        $question_answers = QuestionAnswer::orderBy('id','desc')->paginate(50);
         return view('QNA.Q&A.index',compact('question_answers'));
     }
 
@@ -77,7 +77,8 @@ class QuestionAnswerController extends Controller
             $qna=$category->qNA()->create([
                 'question'  =>  $questions,
                 'answer'    =>  $request->answer,
-                'marks'     =>  $request->marks
+                'marks'     =>  $request->marks,
+                'proved'    =>  $request->proved?true:false
             ]);
             if ($file = $request->file('image')) {
                 $name = $qna->id . time() . $file->getClientOriginalName();
@@ -110,7 +111,7 @@ class QuestionAnswerController extends Controller
             $remove_charachter[]="can";
             $findQuesiton = str_replace( $remove_charachter, " ", $findQuesiton);
 
-            $question_answers=QuestionAnswer::WhereRaw(" MATCH(question) Against('".$findQuesiton."')")->paginate(30);
+            $question_answers=QuestionAnswer::WhereRaw(" MATCH(question) Against('".$findQuesiton."')")->paginate(50);
             if($question_answers){
                 return redirect()->route('question-answers.index',compact('question_answers'))->with('status','Question Created  Successfully.The Following Question and Answers are sorted by relevancy to newly created Question. Please edit "VARIATION TYPE" according to relevant question');
             }else{
@@ -169,7 +170,9 @@ class QuestionAnswerController extends Controller
             'question'  =>  $request->question,
             'answer'    =>  $request->answer,
             'marks'     =>  $request->marks,
-            'variation' =>  $request->variation
+            'variation' =>  $request->variation,
+            'proved'    =>  $request->proved?true:false
+
         ]);
         if ($file = $request->file('image')) {
             $questions=QuestionAnswer::whereId($id)->first();
@@ -215,6 +218,13 @@ class QuestionAnswerController extends Controller
     {
         return view('QNA.Q&A.search')->with('status','You Can Search Question!');
     }
-
-
+    public function searchQuestionByCategory(Request $request)
+    {
+        $this->validate($request, [
+            'category' => 'required|exists:q_n_a_categories,id',
+        ]);
+        $category=QNACategory::whereId($request->category)->first();
+        $question_answers=$category->qnA()->paginate(50);
+        return view('QNA.Q&A.search',compact('question_answers'));
+    }
 }
