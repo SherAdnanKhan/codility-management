@@ -31,6 +31,29 @@
 
                                 </div>
                                 <div class="col-lg-3 ">
+                                    <form class="form-horizontal" id ="searchByCategory" method="POST" action="{{route('searchQuestionByCategory')}}" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
+                                        <div class="form-group-material  ">
+                                            <label for="category" class="select-label form-control-label ">Category Type</label>
+                                            <select name="category" id="category" class="form-control filters ">
+                                                <option>Please Choose</option>
+                                                @php
+                                                    $categories=\App\QNACategory::all()->sortByDesc('id');
+                                                @endphp
+                                                @if(isset($categories))
+                                                    @foreach($categories as $category)
+                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+            
+                                            @if ($errors->has('category'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('category') }}</strong>
+                                    </span>
+                                            @endif
+                                        </div>
+                                    </form>
 
                                 </div>
                             </div>
@@ -47,7 +70,49 @@
 
 
                         </div>
-
+                    @if(isset($question_answers))
+                    <div class="card-body table_show">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Question No</th>
+                                    <th>Category Name</th>
+                                    <th>Approved</th>
+                                    <th>Variation type </th>
+                                    <th>Question</th>
+                                    <th>Answer</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    @foreach($question_answers as $question_answer)
+                                        <tr>
+                                            <td>{{$question_answer->id}}</td>
+                                            <td>{{$question_answer->category?$question_answer->category->name:'Without Category'}}</td>
+                                            <td>{{$question_answer->proved?'Yes':'No'}}</td>
+                                            <td>{{$question_answer->variation}}</td>
+                                            <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->question}}</textarea></td>
+                                            <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->answer}}</textarea></td>
+                            
+                                            <td><a  style="color:green "data-value="{{$question_answer->id}}"  class="edit_link" href="#" >
+                                                    <span class="fa fa-edit"></span>
+                                                </a>
+                                                <a   style="color:red;" data-value="{{$question_answer->id}}"  class="delete_link" href="#" >
+                                                    <span class="fa fa-times"></span></a></td>
+                        
+                                        </tr>
+                                    @endforeach
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bootstrap-iso">
+                        {{$question_answers->links()}}
+                    </div>
+                    @endif
                 </div>
 
             </div>
@@ -57,7 +122,11 @@
 @endsection
 @section('page_scripts')
     <script>
-
+        $("#category").on('change',function() {
+            $('#searchByCategory').submit();
+            $('.unique').hide();
+            
+        });
         $(".print").on('click',function() {
             var question_answer= $('#name').val();
             $.get('/search/question/'+question_answer+'/',function (data) {
@@ -68,7 +137,9 @@
                 }else {
                     var data_image='';
                 }
-;                $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
+                $('.unique').show();
+                $('.table_show').hide();
+                $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
                     '<p class="card-text"><b>Question # '+data.id+' :</b>'+ data_question.replace(new RegExp('\r?\n','g'), '<br />') +'</p>'+
                     '<img style="width: 100px;height: 100px" class="img-responsive " src='+data_image+' alt='+data_question+'>'+
 

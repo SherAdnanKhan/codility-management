@@ -63,43 +63,53 @@
                             <i class="fa fa-home"></i>Dashboard
                         </a>
                     </li>
-                    <li><a href="{{route('attendance.index')}}">
-                            <i class="fa fa-user-tie"></i>Attendance
-                        </a>
-                    </li>
-                    <li><a href="{{route('task.index')}}">
-                            <i class="fa fa-tasks"></i>Task Management
-                        </a>
-                    </li>
-                    <li><a href="{{route('question.page')}}">
-                            <i class="fa fa-search"></i>Search Question
-                        </a>
-                    </li>
+                    
+                    
+                    
                     @if (\Auth::user()->isEmployee())
+                        <li><a href="{{route('task.index')}}">
+                                <i class="fa fa-tasks"></i>Task Management
+                            </a>
+                        </li>
+                        <li><a href="{{route('attendance.index')}}">
+                                <i class="fa fa-user-tie"></i>Attendance
+                            </a>
+                        </li>
                     <li><a href="{{route('view.time.tracking')}}">Time Tracking </a></li>
                     @endif
                 @if (\Auth::user()->isAdmin())
                     <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
-                            <i class="fa fa-users"></i> Employees &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            <i class="fa fa-users"></i> Admin &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                         </a>
                         <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                            <li><a href="{{route('profile.index')}}">Employee Lists</a></li>
-                            <li><a href="{{route('register')}}">Employee Register</a></li>
+                            <li><a href="{{route('profile.index')}}"><i class="fa fa-users"></i>Employee Lists</a></li>
+                            <li><a href="{{route('register')}}"><i class="fa fa-user"></i>Employee Register</a></li>
+                            <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
+
                         </ul>
                     </li>
+                        <li><a href="#exampledropdownDropdownAttendance" aria-expanded="false" data-toggle="collapse">
+                                <i class="fa fa-users"></i> Attendance &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul id="exampledropdownDropdownAttendance" class="collapse list-unstyled ">
+                                <li><a href="{{route('attendance.index')}}"><i class="fa fa-user-tie"></i>Attendance</a></li>
+                                <li><a href="{{route('inform.index')}}"><i class="fa fa-info-circle"></i>Employee Inform</a></li>
+                                <li><a href="{{route('task.index')}}"><i class="fa fa-tasks"></i>Task Management</a></li>
+                                <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
+
+                            </ul>
+                        </li>
                         <li><a href="#qna" aria-expanded="false" data-toggle="collapse">
                                 <i class="fa fa-question-circle"></i> Question&Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                             </a>
                             <ul id="qna" class="collapse list-unstyled ">
-                                <li><a href="{{route('category.index')}}">Categories</a></li>
-                                <li><a href="{{route('question-answers.index')}}">Question Answers</a></li>
+                                <li><a href="{{route('category.index')}}"><i class="fa fa-list-alt"></i>Categories</a></li>
+                                <li><a href="{{route('question-answers.index')}}"><i class="fa fa-question-circle"></i>Question Answers</a></li>
                                 <li><a href="{{route('print.view')}}"><i class="fa fa-print"></i>Print QuestionAnswer</a></li>
+                                <li><a href="{{route('question.page')}}"><i class="fa fa-search"></i>Search Question</a></li>
                             </ul>
                         </li>
-                    <li><a href="{{route('inform.index')}}"><i class="fa fa-info-circle"></i>Employee Inform</a></li>
-                    <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
-                    <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
 
                         <li><a href="#exampledropdownDropdowns" aria-expanded="true" data-toggle="collapse" class="active">
                                 <i class="fa fa-users"></i> Reports &nbsp;&nbsp;<i class="fa fa-caret-down"></i>

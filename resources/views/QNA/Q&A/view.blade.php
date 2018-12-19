@@ -71,7 +71,7 @@
 <h3> {{$item->name}}</h3>
 <br>
 <br>
-@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->limit(3)->get();
+@php        $question=$item->qNA()->where(['category_id'=>$item->id,'proved'=>true])->inRandomOrder()->limit(3)->get();
 $collection=collect($question);
 $unique=$collection->uniqueStrict('variation');
 
