@@ -1,5 +1,7 @@
 /* your styles go here */
-
+.clear{
+    clear: both;
+}
 
 td>form.form-horizontal {
     display: inline; !important;
@@ -154,9 +156,9 @@ header > .h3
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     position: absolute;
-    top: 50%;
-    margin-top: -20px;
-    -webkit-filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.2)); }
+    top: 10%;
+    margin-top: 0px;
+    -webkit-filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.2));}
 .slide .paginate i {
     position: absolute;
     top: 40%;
@@ -279,6 +281,7 @@ button:focus {outline:0;}
     font-size: 1.2rem;
     color: #0000009e;
     text-align: center;
+    margin-top: 16px;
 }
 
 .tracker_image {
@@ -286,42 +289,29 @@ button:focus {outline:0;}
 
 }
 .tracker_image img{
-    width: 200px;
+    width: 150px;
     height: 150px;
 
 }
-.bit_on
-{
-    display: block;
-    height: 18px;
-    width: 6px;
-    background: #39bd2c;
+.bit-on, .bit-default, .bit-off{
+    height: 20px;
+    width: 7px;
     margin-top: 5px;
-    margin-right: 5px;
-    border-radius: 2px;
-    display: -webkit-inline-box;
+    margin-right: 0px;
+    border-radius:1px;
+    display: inline-block;
+    margin-bottom: 25px;
+}
+.bit-on
+{
+    background: #39bd2c;
 }
 .bit-default
 {
-    display: block;
-    height: 18px;
-    width: 6px;
     background: #6c757dba;
-    margin-top: 5px;
-    margin-right: 5px;
-    border-radius: 2px;
-    display: -webkit-inline-box;
 }
 .bit-off{
-    display: block;
-    height: 18px;
-    width: 6px;
     background: red;
-    margin-top: 5px;
-    margin-right: 5px;
-    border-radius: 2px;
-    display: -webkit-inline-box;
-
 }
 .tracker_time {
     font-size: 14px;
@@ -330,17 +320,116 @@ button:focus {outline:0;}
     text-decoration: none;
     margin-bottom: 0px;
 }
-.layer-off {
-    background-color: #dc354526;
+.layer-off, .layer-on{
     position: absolute;
-    width: 200px;
-    height: 151px;
-    margin-top: -150px;
+    height: auto;
+
+}
+.layer-off {
+    background-color: #ff00183d;
+
+
 }
 .layer-default {
-    background-color: #6c757d4f;
+    background-color: #75808a70;
+
+
+}
+.time_tracker_bits{
+    margin: auto;
+    text-align: center;
+}
+.status-off{
+    height: 8px;
+    width: 30px;
+    background-color: #ff00183d;
+
+}
+.status-on{
+    height: 8px;
+    width: 30px;
+    background-color:#4bbf2a;
+
+}
+.status-default{
+    height: 8px;
+    width: 30px;
+    background-color: #75808a70;
+
+}
+.tracker_description {
+    text-align: center;
+    margin-left: 15px;
+    color: #31708f;
+    background-color: #d9edf7;
+    /* border-color: #bce8f1; */
+    border: 1px solid #bce8f1;
+    border-radius: 16px;
+    padding: 13px 10px 0px 10px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+.combine_imgs{
+    float: left; width: 150px;
+    margin: 31px 0 0 0;
+
+}
+@media only screen and (max-width: 768px){
+.selecttracker {
+    margin-top:46px;
+}
+}
+.task_description_margin{
+    margin: 0 0 0 -4px;
+    /*word-spacing: 3px;*/
+}
+.default_task_show{
+    overflow: hidden;
+    background:  #3669cc;
+    padding:5px 0;
+    letter-spacing: 2px;
+    height: 35px;
+    text-align: justify;
+    text-align-last: justify;
+}
+.end_task_show{
+    border-radius: 0px 5px 5px 0px;
+}
+.start_task_show{
+    border-radius: 5px 0px 0px 5px;
+}
+.single_task_show{
+    border-radius: 5px;
+}
+.task_block img{
+    /*margin: 5px auto;*/
+}
+.time_tracker_timing{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 100px;
+    font-weight: bold;
+    text-align: center;
+    margin-right: 10px;
+    line-height: 16px;
+    color: #676767;
+}
+.screen_img {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border: 1px dashed #ccc;
+    margin-top: 10px;
+}
+.screen_img img {
+    width: 100%;
+    height: 150px;
+}
+.empty_screen {
+    vertical-align: top;
+    margin-top: 37px;
+}
+.set_up{
+    margin-top:-238px ;
     position: absolute;
-    width: 200px;
-    height: 151px;
-    margin-top: -150px;
 }

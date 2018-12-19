@@ -84,7 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/task/{id}','TaskController@update')->name('task.update');
     Route::get('/task/{id}/edit','TaskController@edit')->name('task.edit');
     Route::get('task/{id}','TaskController@show')->name('task.show');
-    Route::get('tracking','TimeTrackerController@makeTimeTrackReport')->name('time.tracking.search');
+    Route::post('tracking','TimeTrackerController@makeTimeTrackReport')->name('time.tracking.search');
     Route::get('tracking/report','TimeTrackerController@index')->name('view.time.tracking');
 });
 

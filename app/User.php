@@ -116,5 +116,9 @@ class User extends Authenticatable
 
         return $this->hasMany('App\TrackerStatus','user_id','id');
     }
+    public function user_tracker_task(){
+
+        return $this->hasMany('App\TrackerTask','user_id','id');
+    }
 
 }
