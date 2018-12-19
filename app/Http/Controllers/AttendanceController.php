@@ -541,15 +541,27 @@ class AttendanceController extends Controller
                 });
                 $subtract_absent_days = $this->total_days_form + 1 - ($absent + $sum_leaves);
                 $total_day_time = $subtract_time * $subtract_absent_days;
-                $division = $total_day_time / 100;
-                $mulitpication = $division * 10;
-                $compensate = $total_day_time - $mulitpication;
-                $lessTime = +($compensate - $total_minutes);
+                $total_minutes_display=$total_day_time;
+//                $division = $total_day_time / 100;
+//                $mulitpication = $division * 10;
+//                $compensate = $total_day_time - $mulitpication;
+                $getlessTime = +($total_day_time - $total_minutes);
+                $lessTime = abs($getlessTime);
+                if ($total_minutes <=  $total_day_time) {
+                    $lessHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
+                    $extraHours = '';
+
+                }else
+                {
+                    $extraHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
+
+                    $lessHours = '00:00';
+
+                }
                 $loggedTime = sprintf("%02d:%02d", floor($total_minutes / 60), $total_minutes % 60);
-                $requiredTime = sprintf("%02d:%02d", floor($compensate / 60), $compensate % 60);
-                $requiredWithoutCompansetionTime = sprintf("%02d:%02d", floor($total_day_time / 60), $total_day_time % 60);
-                $lessHours = sprintf("%02d:%02d", floor($lessTime / 60), $lessTime % 60);
-                $absent = $this->total_days_form + 1;
+                $requiredWithoutCompansetionTime = sprintf("%02d:%02d", floor($total_minutes_display / 60), $total_minutes_display % 60);
+                $requiredTime = sprintf("%02d:%02d", floor($total_day_time / 60), $total_day_time % 60);
+                $absent = 0;
                 $concatinate = $collection->put('absent', $absent);
                 $concatinate = $collection->put('loggedTime', $loggedTime);
                 $concatinate = $collection->put('requiredTime', $requiredTime);

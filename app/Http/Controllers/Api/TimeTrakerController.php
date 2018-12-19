@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\TimeTraker;
+use App\TrackerCalculation;
 use App\TrackerStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,11 +16,17 @@ class TimeTrakerController extends Controller
 {
     public function imperativeMinutes(Request $request){
 
-
+//        if ($request->task != null) {
+//            $str_limit = strlen($request->task);
+//            if ($str_limit > 70){
+//                return response()->json([
+//                    'error' => 'Your Description Length is greater then 70 ,Make Sure Task Length is less than form 70'
+//                ]);
+//            }
+//        }
             $get_time_start_time_report = array_first($request->slots);
             $get_time_end_time_report   = last($request->slots);
             $start_report_time =$get_time_start_time_report['time'];
-
             $end_report_time = $get_time_end_time_report['time'];
             $get_slots=collect($request->slots);
             $date=Carbon::parse($get_time_end_time_report['time'])->startOfDay()->timestamp;
@@ -30,15 +37,31 @@ class TimeTrakerController extends Controller
                 return $value['status'] == true;
             });
             $user=$request->auth;
+            $user_have_task=$user->user_tracker_task()->first();
+            if ($user_have_task == null){
+                $task_create = $user->user_tracker_task()->create([
+                    'task' => null,
+                    'date' => $date
+
+                ]);
+            }
             $user_imperative_minutes=$user->imperative_minutes;
             $user_screen_capture_time=$user->capture_duration;
             $get_minutes_user_screen=explode(":", $user_screen_capture_time);
             $whole_slots_count=count($request->slots);
             $time_calulation=$user->user_tracker_calculation($date)->first();
+
             if ($time_calulation !=null){
-                $previous_time=$time_calulation->time_logged?$time_calulation->time_logged:0;
+                $previous_time=$time_calulation->time_logged;
                 $time_calulation->update([
                     'time_logged'=> $previous_time + $whole_slots_count
+                ]);
+            }
+            if($time_calulation == null){
+                $time_calulation=TrackerCalculation::create([
+                    'time_spent'=> $whole_slots_count,
+                    'user_id'       => $request->auth->id,
+                    'date'      =>$date
                 ]);
             }
             $check_time=abs($whole_slots_count-$get_minutes_user_screen[0]);
@@ -47,7 +70,17 @@ class TimeTrakerController extends Controller
                 $count_of_on_bits = count($check_bits_on->all());
                 if ($count_of_on_bits >= $user_imperative_minutes) {
                     //if user count bits greater then form the setting allowed
+                    if ($request->task != null) {
+                        $task_create = $user->user_tracker_task()->create([
+                            'task' => $request->task,
+                            'date' => $date
 
+                        ]);
+
+                    }
+                    if ($request->task == null){
+                        $last_task=$user->user_tracker_task->last();
+                    }
                     $marked_status = $user->user_tracker_status()->create([
                         'tracker_attendance'    => $request->tracker_id,
                         'status'                => 'ON',
@@ -57,13 +90,24 @@ class TimeTrakerController extends Controller
                         'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                         'date'                  => $date,
                         'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
-                        'task'                  => $request->task?$request->task:null
+                        'task_id'               => $request->task != null?$task_create->id:(isset($last_task)?$last_task->id:null)
                     ]);
 
 
                 }
 
              else{
+                 if ($request->task != null) {
+                     $task_create = $user->user_tracker_task()->create([
+                         'task' => $request->task,
+                         'date' => $date
+
+                     ]);
+
+                 }
+                 if ($request->task == null){
+                     $last_task=$user->user_tracker_task->last();
+                 }
                  $marked_status = $user->user_tracker_status()->create([
                      'tracker_attendance' => $request->tracker_id,
                      'status' => 'DEFAULT',
@@ -73,7 +117,8 @@ class TimeTrakerController extends Controller
                      'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                      'date'                  => $date,
                      'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
-                     'task'                  => $request->task?$request->task:null
+                     'task_id'               => $request->task != null?$task_create->id:(isset($last_task)?$last_task->id:null)
+
 
                  ]);
             }
@@ -113,7 +158,16 @@ class TimeTrakerController extends Controller
                 $count_of_on_bits = count($check_bits_on->all());
                 if ($count_of_on_bits >= $user_imperative_minutes) {
                     //if user count bits greater then form the setting allowed
+                    if ($request->task != null) {
+                        $task_create = $user->user_tracker_task()->create([
+                            'task' => $request->task,
+                            'date' => $date
+                        ]);
 
+                    }
+                    if ($request->task == null){
+                        $last_task=$user->user_tracker_task->last();
+                    }
                     //get the user tracker last attendance
                     $marked_status = $user->user_tracker_status()->create([
                         'tracker_attendance'    => $request->tracker_id,
@@ -124,12 +178,26 @@ class TimeTrakerController extends Controller
                         'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                         'date'                  => $date,
                         'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
-                        'task'                  => $request->task?$request->task:null
+                        'task_id'               => $request->task != null?$task_create->id:(isset($last_task)?$last_task->id:null)
+
+
+
 
                     ]);
 
 
                 } else {
+                    if ($request->task != null) {
+                        $task_create = $user->user_tracker_task()->create([
+                            'task' => $request->task,
+                            'date' => $date
+
+                        ]);
+
+                    }
+                    if ($request->task == null){
+                        $last_task=$user->user_tracker_task->last();
+                    }
                     $marked_status = $user->user_tracker_status()->create([
                         'tracker_attendance' => $request->tracker_id,
                         'status' => 'OFF',
@@ -139,7 +207,10 @@ class TimeTrakerController extends Controller
                         'tracker_attendance_id' => $request->tracker_id ? $request->tracker_id : null,
                         'date'                  => $date,
                         'url_image_time'        => $request->capture_time ? Carbon::parse($request->capture_time)->timestamp : null,
-                        'task'                  => $request->task?$request->task:null
+                        'task_id'               => $request->task != null?$task_create->id:(isset($last_task)?$last_task->id:null)
+
+
+
 
                     ]);
                 }

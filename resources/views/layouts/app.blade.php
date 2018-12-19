@@ -108,8 +108,7 @@
                                 <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Absent </a></li>
                                 <li><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Hours Detail</a></li>
                                 <li><a href="{{route('view.admin.inaccuracy.report')}}"><i class="fa fa-file"></i>Monthly Inaccuracy  </a></li>
-                                <li><a href="{{route('view.time.tracking')}}"><i class="fa fa-file"></i>Time Tracking </a></li>
-
+                                <li><a href="{{route('view.time.tracking')}}"><i class="fa fa-clock"></i>Time Tracking </a></li>
                             </ul>
                         </li>
 

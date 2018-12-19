@@ -42,7 +42,7 @@
 
     </tr>
     <tr>
-        <td>Interview start & end time:</td>
+        <td>Test start & end time:</td>
         <td>&nbsp;</td>
         <td>Test Checked By:</td>
         <td>&nbsp;</td>
@@ -71,7 +71,7 @@
 <h3> {{$item->name}}</h3>
 <br>
 <br>
-@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->get();
+@php        $question=$item->qNA()->where('category_id',$item->id)->inRandomOrder()->limit(3)->get();
 $collection=collect($question);
 $unique=$collection->uniqueStrict('variation');
 

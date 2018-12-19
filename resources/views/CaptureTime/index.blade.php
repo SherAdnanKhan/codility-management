@@ -132,7 +132,7 @@
                     '                        </div>'+
                     ' <button class="form-submit  btn btn-outline-success" type="submit" > Schedule </button> </form>');
                 $(function () {
-                    $('#time_capture_duration').datetimepicker({format: 'LT', format: 'H:mm',disabledHours: [9,10,11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24],defaultDate:new Date()});
+                    $('#time_capture_duration').datetimepicker({format: 'LT', format: 'H:mm',disabledHours: [11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24],defaultDate:new Date()});
                     $('#imperative_minutes').datetimepicker({format: 'LT', format: 'H',disabledHours: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24]});
 
                 });
