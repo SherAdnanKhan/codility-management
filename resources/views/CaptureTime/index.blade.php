@@ -104,9 +104,8 @@
                 if (data.capture_duration != null){
                     var capture_duration = data.capture_duration
 
-                }else {
-                    var capture_duration ="0:00"
                 }
+                
                 if (data.imperative_minutes !=null){
                     var imperative_minutes = data.imperative_minutes
                 }else {
@@ -120,19 +119,19 @@
                     '{{ csrf_field()}}'+
                      ' <div class="form-group-material">' +
                     '                            <div class="input-group-material  date" >' +
-                    '                                <input  type="text" id="time_capture_duration" value='+capture_duration+' name ="time_capture_duration" class="input-material" />' +
+                    '                                <input  type="text" id="time_capture_duration" value='+data.capture_duration+' name ="time_capture_duration" class="input-material" />' +
                     '                                <label for="time_capture_duration" class="label-material active">Screen Capture Duration</label>' +
                     '                            </div>' +
                     '                        </div>'+
                     ' <div class="form-group-material">' +
                     '                            <div class="input-group-material  date" >' +
-                    '                                <input  type="text" id="imperative_minutes" value='+imperative_minutes+' name ="imperative_minutes" class="input-material" />' +
+                    '                                <input  type="text" id="imperative_minutes" value='+data.imperative_minutes+' name ="imperative_minutes" class="input-material" />' +
                     '                                <label for="imperative_minutes" class="label-material active">Imperative Minutes</label>' +
                     '                            </div>' +
                     '                        </div>'+
                     ' <button class="form-submit  btn btn-outline-success" type="submit" > Schedule </button> </form>');
                 $(function () {
-                    $('#time_capture_duration').datetimepicker({format: 'LT', format: 'H:mm',disabledHours: [11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24],defaultDate:new Date()});
+                    $('#time_capture_duration').datetimepicker({format: 'LT', format: 'H',disabledHours: [11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24],defaultDate:new Date()});
                     $('#imperative_minutes').datetimepicker({format: 'LT', format: 'H',disabledHours: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 19, 20, 21, 22, 23, 24]});
 
                 });

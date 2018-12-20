@@ -90,6 +90,8 @@
                             $total_loop	=	'50';$allow_char	=	'15';
                             $previous_report_actual_time=null;
                             $user=\App\User::whereId(\Auth::user()->id)->first();
+                            $user_screen_capture_duration=$user->capture_duration;
+
                             ?>
                             @foreach($status as $tracker_status)
 
@@ -110,9 +112,9 @@
                             {
                             echo "<div class='time_tracker_timing'>" . str_replace(' ','<br />', \Carbon\Carbon::createFromTimestamp($tracker_status->report_start_time)->startOfHour()->format('h A')) . "</div>";
                             $get_actual_next_time=\Carbon\Carbon::createFromTimestamp($tracker_status->report_start_time)->format('i');
-                                if ($get_actual_next_time >= (\Carbon\Carbon::parse($user->capture_duration)->format('h')))
+                                if ($get_actual_next_time >= ($user_screen_capture_duration))
                                 {
-                                $get_start_how_div_empty=intval($get_actual_next_time / (\Carbon\Carbon::parse($user->capture_duration)->format('h')));
+                                $get_start_how_div_empty=intval($get_actual_next_time / ($user_screen_capture_duration));
                                     while($get_start_how_div_empty > 0)
                                     {
                                     echo "<div class= ' image_box empty_screen' style='display: inline-block; width: 160px; color: #fff; '><div class='screen_img' ></div></div>";
@@ -125,10 +127,11 @@
                             {
                             $user_screen_capture_duration=$user->capture_duration;
                              $check_diff_in_hours=$previous_report_start_time->equalTo($next_report_start_time);
+                            
                              $add_time_for_add_time_to_start_report_time=$previous_report_actual_time->addMinute($user_screen_capture_duration);
                             $next_report_actual_time=\Carbon\Carbon::createFromTimestamp($tracker_status->report_start_time);
                             $get_diff_in_time=$next_report_actual_time->diffInMinutes($add_time_for_add_time_to_start_report_time);
-                             $get_total_null_screen=intval(abs($get_diff_in_time / (\Carbon\Carbon::parse($user_screen_capture_duration)->format('h'))));
+                             $get_total_null_screen=intval(abs($get_diff_in_time / ($user_screen_capture_duration)));
                              $get_screen=$get_total_null_screen;
                         if ($check_diff_in_hours == true ){
                             if ($previous_report_actual_time != null){
@@ -149,9 +152,9 @@
                                     if ($start_hour->greaterThan($last_task)){
                                 
                                     $get_last_scren_time= $add_time_for_add_time_to_start_report_time->format('i');
-                                    if ($get_last_scren_time >= (\Carbon\Carbon::parse($user_screen_capture_duration)->format('h')) ){
+                                    if ($get_last_scren_time >= ($user_screen_capture_duration) ){
                                     $get_remaining_hours=60 - $get_last_scren_time;
-                                    $get_required_screen=intval($get_remaining_hours / (\Carbon\Carbon::parse($user_screen_capture_duration)->format('h')));
+                                    $get_required_screen=intval($get_remaining_hours / ($user_screen_capture_duration));
                                 }
                                     }
                                 
@@ -165,7 +168,7 @@
 
                                     <div class="task_block">
                                         @if($tracker_status->status_tracker_task->task == null )
-                                            <div class="default_task_show single_task_show" >
+                                            <div class="default_task_show single_task_show_null" >
                                                 &nbsp;
                                             </div>
                                         @endif
@@ -184,7 +187,7 @@
                                                     $i	=	 '';
                                                 @endphp
                                             @endif
-                                            @if($tracker_status->status_tracker_task->id == $previous_task)
+                                            @if($tracker_status->status_tracker_task->id == $previous_task && $tracker_status->status_tracker_task->task != null)
                                                 <div  class="task_description_margin default_task_show <?= ($last_status_get == $tracker_status->id)? 'end_task_show':''?>">
                                                     @php
                                                         $i++;

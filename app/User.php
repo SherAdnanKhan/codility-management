@@ -2,6 +2,7 @@
 
 namespace App;
 use App\Role;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -120,5 +121,15 @@ class User extends Authenticatable
 
         return $this->hasMany('App\TrackerTask','user_id','id');
     }
+    public function getCaptureDurationAttribute($value){
 
+        if ($value > 0 ) {
+            return Carbon::parse($value)->format('h');
+        }
+        else{
+            return 0;
+        }
+
+
+    }
 }

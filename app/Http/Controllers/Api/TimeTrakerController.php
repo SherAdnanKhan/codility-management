@@ -16,14 +16,6 @@ class TimeTrakerController extends Controller
 {
     public function imperativeMinutes(Request $request){
 
-//        if ($request->task != null) {
-//            $str_limit = strlen($request->task);
-//            if ($str_limit > 70){
-//                return response()->json([
-//                    'error' => 'Your Description Length is greater then 70 ,Make Sure Task Length is less than form 70'
-//                ]);
-//            }
-//        }
             $get_time_start_time_report = array_first($request->slots);
             $get_time_end_time_report   = last($request->slots);
             $start_report_time =$get_time_start_time_report['time'];
