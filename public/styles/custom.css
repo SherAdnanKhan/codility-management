@@ -380,7 +380,7 @@ button:focus {outline:0;}
 }
 }
 .task_description_margin{
-    margin: 0 0 0 -4px;
+    margin: 0 0 0 -15px;
     /*word-spacing: 3px;*/
 }
 .default_task_show{
@@ -400,6 +400,11 @@ button:focus {outline:0;}
 }
 .single_task_show{
     border-radius: 5px;
+}
+.single_task_show_null{
+    margin: 0 0 0 -11px;
+    border-radius: 5px;
+
 }
 .task_block img{
     /*margin: 5px auto;*/
