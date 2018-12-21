@@ -21,7 +21,7 @@
                         <div class="card-header">
 
                             <div class="row" style="margin-bottom: 30px">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <div class="input-group input-group-md">
                                         <input class="form-control" placeholder="Search by Question No" id="name" type="number" name="name">
                                         <div class="input-group-append">
@@ -30,13 +30,13 @@
                                     </div>
 
                                 </div>
-                                <div class="col-lg-3 ">
-                                    <form class="form-horizontal" id ="searchByCategory" method="POST" action="{{route('searchQuestionByCategory')}}" enctype="multipart/form-data">
+                                <div class="col-lg-8 ">
+                                    <form class="form-horizontal form-inline" id ="searchByCategory" method="POST" action="{{route('searchQuestionByCategory')}}" enctype="multipart/form-data">
                                         {{ csrf_field() }}
-                                        <div class="form-group-material  ">
-                                            <label for="category" class="select-label form-control-label ">Category Type</label>
+                                        <div class="form-group-material">
+                                            
                                             <select name="category" id="category" class="form-control filters ">
-                                                <option>Please Choose</option>
+                                                <option value="">Search By Category Type</option>
                                                 @php
                                                     $categories=\App\QNACategory::all()->sortByDesc('id');
                                                 @endphp
@@ -52,6 +52,12 @@
                                         <strong>{{ $errors->first('category') }}</strong>
                                     </span>
                                             @endif
+                                        </div>
+                                        <div class="form-group-material input-group input-group-md searchByText">
+                                            <input class="form-control" placeholder="Search by Text" id="text" type="text" name="text">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="print btn btn-outline-success ">Search</button>
+                                            </div>
                                         </div>
                                     </form>
 
@@ -118,10 +124,64 @@
             </div>
         </div>
     </div>
+    <div id="updateModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5  class="modal-title">Update Question with their Answer</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="update-modal-body">
+            
+            
+                </div>
+        
+            </div>
+        </div>
+    </div>
 
+    <div id="deleteMyModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5  class="modal-title">DELETE QUESTION</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="delete-modal-body">
+            
+                </div>
+        
+            </div>
+        </div>
+    </div>
 @endsection
 @section('page_scripts')
     <script>
+        $(".delete_link").on('click',function() {
+            var question_answer=$(this).data("value");
+            $.get('/question-answers/'+ question_answer +'/',function (result) {
+                $('#delete-modal-body').html("Are You Sure Delete ("  +result.question+ ") QUESTION."+
+                    '<form class=form-inline" method="POST"  action ="/question-answers/'+result.id+'"   enctype="multipart/form-data" >' +
+                    '{{method_field('DELETE')}}' +
+                    '{{ csrf_field()}}'+
+                    ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');
+                $('#deleteMyModal').modal();
+                console.log(result);
+
+            })
+        });
+        $(".edit_link").on('click',function() {
+            var question_answer=$(this).data("value");
+
+            $.get('/question-answers/'+question_answer+'/edit',function (data) {
+                // $.each(data,function (index,state) {
+                $('#update-modal-body').html(data);
+                $('#updateModal').modal();
+                console.log(data);
+
+            })
+
+        });
         $("#category").on('change',function() {
             $('#searchByCategory').submit();
             $('.unique').hide();

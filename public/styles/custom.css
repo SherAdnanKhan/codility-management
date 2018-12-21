@@ -446,3 +446,6 @@ button:focus {outline:0;}
 .align_center_question_input{
     margin-top: 25px;
 }
+.searchByText{
+    margin: -29px 0px 0px 5%;
+}

@@ -28,8 +28,13 @@
                                 <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
                                    href="#createMyModal"><span class="fa fa-plus"></span> Employee Task</a>
                             </div>
-                            <div class="col-lg-9">
-
+                            <div class="col-lg-9 hidden-print">
+                                    <div class="" style=" float: right;margin-bottom: -30px">
+                                        <button type="button" class="btn btn-outline-dark  download"><span class="fa fa-print"></span> Download Csv</button>
+                                    </div>
+                                </form>
+    
+                                
                             </div>
                         </div>
                         <div class="row">
@@ -40,7 +45,7 @@
                                 <div class="form-group-material col-sm-2 ">
                                     <label for="inform_type" class="select-label form-control-label ">Search Task By</label>
                                         <select name="filter" id="filter" class="form-control filters ">
-                                            <option>Please Choose</option>
+                                            <option value="">Please Choose</option>
 
                                             <option {{\Request::get('filter')=='today'?'selected ':''}}value="today">Today</option>
                                             <option {{\Request::get('filter')=='week'?'selected ':''}}value="week">This Week</option>
@@ -57,10 +62,10 @@
                                     @endif
                                 </div>
 
-                                    <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+                                    <div class="form-group-material date_search col-sm-2" style="margin-top: 23px; <?= \Request::get('filter')=='custom'? 'display:block':''?>">
 
                                             <div class='bootstrap-iso input-group-material' >
-                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{\Request::get('start_date')?\Request::get('start_date'):''}}" class="input-material" />
 
                                                 <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
                                             </div>
@@ -71,10 +76,10 @@
                                             @endif
 
                                     </div>
-                                    <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+                                    <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;<?= \Request::get('filter')=='custom'? 'display:block':''?>">
 
                                         <div class=' bootstrap-iso input-group-material date' >
-                                            <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+                                            <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{\Request::get('end_date')?\Request::get('end_date'):''}}" class="input-material" />
 
                                             <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
                                         </div>
@@ -85,10 +90,12 @@
                                         @endif
 
                                     </div>
-
+                                    <div class="appendDownloadCsv">
+                                    
+                                    </div>
                                 <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                     <div class='input-group-material'>
-                                        <input type='text' id='name' name="name"   value="" class="input-material" />
+                                        <input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
 
                                         <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
                                     </div>
@@ -99,7 +106,7 @@
                                     @endif
                                 </div>
                                     <div class="col-sm-1 " style="margin-top: 27px;">
-                                    <button type="submit" class="btn btn-outline-success">Search Task</button>
+                                    <button type="submit" class="btn btn-outline-success search_task">Search Task</button>
                                     </div>
 
                                 </div>
@@ -257,6 +264,17 @@
 @endsection
 @section('page_scripts')
     <script>
+
+        $(".download").on('click',function() {
+            
+            $('.appendDownloadCsv').html("<input type='hidden' class='download_display_none' id='download' name='download'   value='download'  />");
+            $('.filter_form').submit();
+        });
+        $(".search_task").on('click',function() {
+
+            $('.download_display_none').val('');
+            $('.filter_form').submit();
+        });
         $(".delete_link").on('click',function() {
             var task=$(this).data("value");
             $.get('/delete-task/'+ task +'/',function (result) {

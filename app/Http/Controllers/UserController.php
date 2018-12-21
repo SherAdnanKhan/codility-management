@@ -236,13 +236,13 @@ class UserController extends Controller
 
             $time= $request->time_capture_duration?$request->time_capture_duration:null;
             $imperative_minutes=$request->imperative_minutes?$request->imperative_minutes:null;
-
-            if ($time > '10:00'){
-                return redirect()->back()->with('status','Select time below 10 hours');
+            if ($time > '10'){
+                return redirect()->back()->with('status','Select time below 10 Minutes');
             }
 
             if($time != null){
-                $get_time=Carbon::parse($time)->timestamp;
+                $get_time=Carbon::createFromTime($time);
+
                 $users = User::whereId($id)->update([
                     'capture_duration'      => $time,
                     ]);
