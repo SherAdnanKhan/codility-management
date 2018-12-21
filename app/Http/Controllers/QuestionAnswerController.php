@@ -220,11 +220,20 @@ class QuestionAnswerController extends Controller
     }
     public function searchQuestionByCategory(Request $request)
     {
-        $this->validate($request, [
-            'category' => 'required|exists:q_n_a_categories,id',
-        ]);
-        $category=QNACategory::whereId($request->category)->first();
-        $question_answers=$category->qnA()->paginate(50);
-        return view('QNA.Q&A.search',compact('question_answers'));
+
+        if ($request->category) {
+
+            $category = QNACategory::whereId($request->category)->first();
+            $question_answers = $category->qnA()->paginate(50);
+        }
+            if ($request->text){
+                $question_answers=QuestionAnswer::where('question','Like','%'.$request->text.'%')->paginate(50);
+            }
+            return view('QNA.Q&A.search', compact('question_answers'));
+
+
+
+
     }
+
 }

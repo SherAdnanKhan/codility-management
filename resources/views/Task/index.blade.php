@@ -51,10 +51,10 @@
                                             @endif
                                         </div>
 
-                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px; <?= \Request::get('filter')=='custom'? 'display:block':''?>">
 
                                             <div class='bootstrap-iso input-group-material' >
-                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{\Request::get('start_date')?\Request::get('start_date'):''}}" class="input-material" />
 
                                                 <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
                                             </div>
@@ -65,10 +65,10 @@
                                             @endif
 
                                         </div>
-                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px; <?= \Request::get('filter')=='custom'? 'display:block':''?>">
 
                                             <div class=' bootstrap-iso input-group-material date' >
-                                                <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{\Request::get('end_date')?\Request::get('end_date'):''}}" class="input-material" />
 
                                                 <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
                                             </div>

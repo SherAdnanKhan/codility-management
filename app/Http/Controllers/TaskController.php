@@ -203,11 +203,46 @@ class TaskController extends Controller
             $user = User::whereName($name)->first();
 
             if ($user) {
-                $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+                if ($request->download){
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->get();
+                    $str = $name.Carbon::now() . '.csv';
+                    header('Content-Type: text/csv');
+                    header('Content-Disposition: attachment; filename='. $str);
 
+                    $fh =fopen("php://output","wb");
+
+                    foreach ($tasks as $task) {
+                        $data = array(array("name" => $name?$name:$task->user->name, "Task Date" => $task->date, "Time Take" => $task->time_take, "Description" => $task->description));
+                        foreach ($data as $fields) {
+
+                            fputcsv($fh, $fields);
+                        }
+                    }
+                    fclose($fh);
+                    return $name.'`s Task Complete`';
+                }else {
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+                }
             }else{
-                $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->paginate(10);
+                if ($request->download){
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->get();
+                    $str =Carbon::now() . md5(uniqid() .  mt_rand()). '.csv';
+                    header('Content-Type: text/csv');
+                    header('Content-Disposition: attachment; filename='. $str);
+                    $fh =fopen("php://output","wb");
 
+                    foreach ($tasks as $task) {
+                        $data = array(array("name" => $name?$name:$task->user->name, "Task Date" => $task->date, "Time Take" => $task->time_take, "Description" => $task->description));
+                        foreach ($data as $fields) {
+
+                            fputcsv($fh, $fields);
+                        }
+                    }
+                    fclose($fh);
+                    return ' Task Complete';
+                }else {
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->paginate(10);
+                }
             }
 
             $tasks->withPath("task?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");

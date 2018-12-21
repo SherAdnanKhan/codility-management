@@ -124,6 +124,7 @@ class User extends Authenticatable
     public function getCaptureDurationAttribute($value){
 
         if ($value > 0 ) {
+            return $value;
             return Carbon::parse($value)->format('h');
         }
         else{
