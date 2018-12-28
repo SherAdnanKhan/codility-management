@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Helper\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -33,7 +34,8 @@ class EmployeeLessTimeConsumed extends Mailable
 
         $employee_emails=$this->emails;
         $user_detail=$this->names;
-        $to = array('atta.ur.rehman@codility.co','hussnain.raza@codility.co','amir@codility.co');
+        $to = Helper::all_admins();
+
 
         return $this->markdown('mail_employee_less_time_consumed',compact('user_detail'))->to($to)->subject("Monthly Assessment Alert ! From  ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));
 

@@ -122,7 +122,16 @@ class AttendanceController extends Controller
         } else {
             if ($inform) {
                 if ($inform->inform_type == 'LEAVE') {
-                    return redirect()->route('attendance.index')->with('status', 'You are on Leave !');
+
+                    $attendance = Attendance::create([
+                        'check_in_time' => $check_in_time,
+                        'check_out_time' => null,
+                        'break_interval' => null,
+                        'user_id' => Auth::user()->isEmployee() ? Auth::user()->id : $request->employee,
+                        'attendance_type' => 'check_in',
+                        'request_id'       =>null
+                    ]);
+                    return redirect()->route('attendance.index')->with('status', 'You are on Lave !');
                 }
             }
             $attendance = Attendance::create([
@@ -661,4 +670,7 @@ class AttendanceController extends Controller
             return redirect()->route('view.admin.inaccuracy.report')->with('status','No One User have inaccuracy in Task/Attendance');
         }
         }
+
+
+
 }

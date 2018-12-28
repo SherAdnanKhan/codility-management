@@ -117,6 +117,7 @@ class InformController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $attendance_date = Carbon::parse($request->attendance_date)->timestamp;
         $inform_at = Carbon::parse($request->inform_at)->timestamp;
         $inform= Inform::whereId($id)->update([
@@ -125,7 +126,7 @@ class InformController extends Controller
             'inform_type'    =>$request->inform_type,
             'reason'         =>$request->reason,
             'inform_late'    =>$request->late_informed?true:false,
-            'leave_type'     =>$request->leave_type?$request->leave_type:Null
+            'leave_type'     =>$request->inform_type == 'leave'?$request->leave_type:null
 
         ]);
         return redirect()->route('inform.index')->with('status', 'Employee Inform Updated !');
@@ -139,7 +140,12 @@ class InformController extends Controller
      */
     public function destroy($id)
     {
-        $inform = Inform::whereId($id)->delete();
+        $inform = Inform::whereId($id)->first();
+        $check_attendance = Attendance::whereBetween('check_in_time',[Carbon::parse($inform->attendance_date)->startOfDay()->timestamp,Carbon::parse($inform->attendance_date)->endOfDay()->timestamp])->where('user_id',$inform->user_id)->first();
+        if ($check_attendance != null){
+            return redirect()->route('inform.index')->with('status','This Employee have an attendance that have this inform, First you have to delete attendance !');
+
+        }
         return redirect()->route('inform.index')->with('status','Employee Inform Deleted !');
     }
     public function search(Request $request){

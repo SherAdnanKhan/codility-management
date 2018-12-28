@@ -133,4 +133,30 @@ class User extends Authenticatable
 
 
     }
+    public  function generateDateRange(Carbon $start_date, Carbon $end_date)
+    {
+        $dates = [];
+
+        for($date = $start_date; $date->lte($end_date); $date->addDay()) {
+            if (!($date->isSunday() || $date->isSaturday())) {
+
+                $dates[] = $date->format('Y-m-d');
+            }
+        }
+
+        return $dates;
+    }
+    public  function generateDateRangeWithSunday(Carbon $start_date, Carbon $end_date)
+    {
+        $dates = [];
+
+        for($date = $start_date; $date->lte($end_date); $date->addDay()) {
+            if (!($date->isSunday() )) {
+
+                $dates[] = $date->format('Y-m-d');
+            }
+        }
+
+        return $dates;
+    }
 }

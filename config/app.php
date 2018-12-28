@@ -13,6 +13,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Codility Management'),
+    'admin_email'=> env('ADMIN_EMAIL','amir@codility.co'),
 
     /*
     |--------------------------------------------------------------------------
@@ -230,8 +231,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
-
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'Helper' => App\Helper\Helper::class,
     ],
 
 ];

@@ -110,6 +110,8 @@
 
 @section('page_scripts')
     <script >
+        
+       
         $(".delete_link").change(function() {
             if ($(this).val() == 'leave') {
                 $.get('/leaves',function (result) {

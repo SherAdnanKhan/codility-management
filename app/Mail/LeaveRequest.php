@@ -3,15 +3,16 @@
 namespace App\Mail;
 
 use App\Helper\Helper;
-use Carbon\Carbon;
+use Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class YearlyReport extends Mailable
+class LeaveRequest extends Mailable
 {
-    public $user_details;
+    public $get_request;
+
     use Queueable, SerializesModels;
 
     /**
@@ -19,9 +20,10 @@ class YearlyReport extends Mailable
      *
      * @return void
      */
-    public function __construct($user_details)
+    public function __construct($leave_request)
     {
-        $this->user_details=$user_details;
+        $this->get_request = $leave_request;
+
     }
 
     /**
@@ -31,10 +33,10 @@ class YearlyReport extends Mailable
      */
     public function build()
     {
-        $user_details=$this->user_details;
+
         $to = Helper::all_admins();
+            $get_leave_request=$this->get_request;
 
-        return $this->markdown('year',compact('user_details'))->to($to)->subject("Yearly Evaluation Report Till ".Carbon::now()->endOfMonth()->format('d-m-Y'));
-
+            return $this->markdown('mail_leave_request',compact('get_leave_request'))->to($to)->subject("Request For Leave Approval". \Carbon\Carbon::now()->format('d-m-Y h:i'));
     }
 }
