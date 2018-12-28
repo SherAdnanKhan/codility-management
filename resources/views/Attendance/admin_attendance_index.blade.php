@@ -126,6 +126,7 @@
                                 <tbody>
                                 @if($attendances)
                                     @foreach($attendances as $attendance)
+                                       
                                         <tr style="color: {{$attendance->attendance_type=='Late'?'red':'green'}}">
                                             <td>{{$attendance->user->name}}</td>
                                             <td>{{$attendance->check_in_time}}</td>
@@ -133,12 +134,18 @@
                                             <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
                                             <td>{{$attendance->time_spent}}</td>
                                             <td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">{{$attendance->attendance_type}}
-                                                @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp))
+                                                @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp) )
 
                                                     {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"?'LATE':''}}
                                                 </br><p style="color: darkgoldenrod">{{$attendance->late_informed?$attendance->late_informed:''}}</p>
+                                                
                                                 @endif
-
+                                                
+                                                @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp) && $attendance->leave_comment != null)
+                                                @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LEAVE")
+                                                {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->request_id != null ?$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->get_request_leave->approved:''}}
+                                           @endif
+                                                    @endif
                                             </td>
 
                                             <td

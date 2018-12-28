@@ -160,3 +160,47 @@
     </form>
 
     @endif
+
+
+@if(isset($request_leave))
+    
+    <form class="form-horizontal" id ="request_leave" method="POST" action="{{route('request.update',$request_leave->id)}}" enctype="multipart/form-data" >
+        {{ csrf_field() }}
+        {{ method_field('PATCH') }}
+        <div class="row">
+            <div class="form-group-material col-md-5 col-md-offset-2">
+                <label for="leave" class="select-label form-control-label ">Leave Approved As</label>
+                <select name="leave" id="leave" class="form-control filters ">
+                    <option value="">Please Choose</option>
+                    @php
+                        $leaves=\App\Leave::all()->sortByDesc('id');
+                    @endphp
+                    @if(isset($leaves))
+                        @foreach($leaves as $leave)
+                            <option {{$leave->id == ($request_leave->inform_id != null ?$request_leave->inform->id:'')?"selected":''}} value="{{$leave->id}}">{{$leave->name}}</option>
+                        @endforeach
+                    @endif
+                </select>
+                
+                @if ($errors->has('leave'))
+                    <span class="help-block">
+                                        <strong>{{ $errors->first('leave') }}</strong>
+                                    </span>
+                @endif
+            </div>
+            <div class="form-group row of-button col-md-2 " >
+                <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Approved</label>
+                
+                <label class="switch" class="col-sm-offset-3 ">
+                    <input type="checkbox" name="approved" {{$request_leave->approved?'checked':''}}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Request Approved</button>
+        <button type="button" id="button_clear" class="btn btn-outline-danger">
+            Reset
+        </button>
+    </form>
+
+@endif

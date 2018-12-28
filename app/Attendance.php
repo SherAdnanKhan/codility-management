@@ -121,4 +121,5 @@ class Attendance extends Model
             return ' ';
         }
     }
+
 }

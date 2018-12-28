@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title')
-    <title> {{config('app.name')}} | Inform</title>
+    <title> {{config('app.name')}} | Task </title>
 @endsection
 @section('page_styles')
-
+    
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
 @endsection
@@ -12,7 +12,7 @@
     <div class="container">
         <!-- Page Header-->
         <header class="page-header">
-            <h1 class="h3 display">Informs Employee Detail</h1>
+            <h1 class="h3 display">Employee Leave Request List</h1>
         </header>
         @if (session('status'))
             <div class="alert alert-success">
@@ -23,25 +23,22 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-
                         <div class="row" style="margin-bottom: 30px">
                             <div class="col-lg-3">
-                                <a href="{{route('inform.create')}}" class="btn btn-outline-success ">Add Employee Inform
-                                    <span class="fa fa-plus"></span></a>
+                            
                             </div>
-                            <div class=" col-lg-9">
-
+                            <div class="col-lg-9 ">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12 ">
-                                <form class="filter_form" id ="filter_form" method="GET" action="{{route('inform.search')}}" >
+                            <div class="col-lg-12">
+                                <form class="filter_form" id ="filter_form" method="GET" action="{{route('request.search')}}" >
                                     {{--{{ csrf_field() }}--}}
                                     <div class="row">
                                         <div class="form-group-material col-sm-2 ">
-                                            <label for="inform_type" class="select-label form-control-label ">Search Inform By</label>
+                                            <label for="inform_type" class="select-label form-control-label ">Search Leave Request </label>
                                             <select name="filter" id="filter" class="form-control filters ">
-                                                <option>Please Choose</option>
+                                                <option value="">Please Choose</option>
 
                                                 <option {{\Request::get('filter')=='today'?'selected ':''}}value="today">Today</option>
                                                 <option {{\Request::get('filter')=='week'?'selected ':''}}value="week">This Week</option>
@@ -58,10 +55,10 @@
                                             @endif
                                         </div>
 
-                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px; <?= \Request::get('filter')=='custom'? 'display:block':''?>">
 
                                             <div class='bootstrap-iso input-group-material' >
-                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{old('start_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{\Request::get('start_date')?\Request::get('start_date'):''}}" class="input-material" />
 
                                                 <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
                                             </div>
@@ -72,10 +69,10 @@
                                             @endif
 
                                         </div>
-                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px;">
+                                        <div class="form-group-material date_search col-sm-2" style="margin-top: 23px; <?= \Request::get('filter')=='custom'? 'display:block':''?>">
 
                                             <div class=' bootstrap-iso input-group-material date' >
-                                                <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{old('end_date')}}" class="input-material" />
+                                                <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{\Request::get('end_date')?\Request::get('end_date'):''}}" class="input-material" />
 
                                                 <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
                                             </div>
@@ -86,21 +83,21 @@
                                             @endif
 
                                         </div>
-
+    
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
-                                                <input autocomplete="off" type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
-
+                                                <input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
+            
                                                 <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
                                             </div>
                                             @if ($errors->has('name'))
-                                            <span class="help-block">
+                                                <span class="help-block">
                                             <strong>{{ $errors->first('name') }}</strong>
                                             </span>
                                             @endif
                                         </div>
                                         <div class="col-sm-1 " style="margin-top: 27px;">
-                                            <button type="submit" class="btn btn-outline-success">Search Inform</button>
+                                            <button type="submit" class="btn btn-outline-success">Search Leave Request</button>
                                         </div>
 
                                     </div>
@@ -114,36 +111,26 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-
                                     <th>Employee Name</th>
-                                    <th>Attendance Date</th>
-                                    <th>Informed At</th>
-                                    <th>Inform Type</th>
-                                    <th>Informed Status</th>
-                                    <th>Reason</th>
-                                    
-                                    <th>Action</th>
+                                    <th>Leave From</th>
+                                    <th>Leave TO</th>
+                                    <th>Leave Reason</th>
+                                    <th>Approved Status</th>
+                                    <th>Marked Approved</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if($informs)
-                                    @foreach($informs as $inform)
+                                @if(isset($request_leaves))
+                                    @foreach($request_leaves as $request_leave)
                                         <tr>
-
-                                            <td>{{$inform->users->name}}</td>
-                                            <td>{{$inform->attendance_date}}</td>
-                                            <td>{{$inform->inform_at}}</td>
-                                            <td>{{$inform->request_id !=null ? $inform->get_request_leave->approved:''}}{{$inform->inform_type}}{{$inform->leaves?' ON '.$inform->leaves->name:''}} </td>
-                                            <td>{{$inform->inform_late?'Yes Late Informed':'No Late Informed'}}</td>
-                                            <td></td>
-    
-                                            <td>{{$inform->reason}}</td>
-                                            <td class="text-primary lead">
-                                                <a href="{{route('inform.edit',$inform->id)}}"><span class="fa fa-edit"></span></a>
-                                                <a  data-value="{{$inform->id}}"  class="delete_link" href="#" >
-                                                    <span class="fa fa-times"></span>
-                                                </a>
-                                            </td>
+                                            <td>{{$request_leave->get_user->name}}</td>
+                                            <td>{{\Carbon\Carbon::createFromTimestamp($request_leave->from_date)->format('d-m-Y')}}</td>
+                                            <td>{{$request_leave->to_date != null ? (\Carbon\Carbon::createFromTimestamp($request_leave->to_date)->format('d-m-Y')):''}}</td>
+                                            <td>{{$request_leave->reason}}</td>
+                                            <td>{{$request_leave->approved}}</td>
+                                            <td><a  style="color:green "data-value="{{$request_leave->id}}"  class="edit_link" href="#" >
+                                                    <span class="fa fa-edit"></span>
+                                                </a></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -152,27 +139,27 @@
                         </div>
                     </div>
                     <div class="bootstrap-iso">
-                        {{$informs->links()}}
+                        {{$request_leaves->links()}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="deleteMyModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+    <div id="updateModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5  class="modal-title">DELETE INFORM</h5>
+                    <h5  class="modal-title">APPROVED LEAVE REQUEST</h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
-                <div class="modal-body" id="modal-body">
-
+                <div class="modal-body" id="update-modal-body">
+            
+            
                 </div>
-
+        
             </div>
         </div>
     </div>
-
 @endsection
 @section('page_scripts')
     <script src="{{asset('scripts/moment.js')}}"></script>
@@ -203,22 +190,18 @@
             }
 
         });
+        $(".edit_link").on('click',function() {
+            var leave_request=$(this).data("value");
 
-    </script>
-    <script>
-        $(".delete_link").on('click',function() {
-            var inform=$(this).data("value");
-            $.get('/inform/'+ inform +'/',function (result) {
-                $('#modal-body').html("Are You Sure Delete "  +
-                    '<form class=form-inline" method="POST"  action ="/inform/'+result.id+'"   enctype="multipart/form-data" >' +
-                    '{{method_field('DELETE')}}' +
-                        '{{ csrf_field()}}'+
-                ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');
-                $('#deleteMyModal').modal();
-                console.log(result);
+            $.get('/approval/request/'+leave_request,function (data) {
+                // $.each(data,function (index,state) {
+                $('#update-modal-body').html(data);
+                $('#updateModal').modal();
+                console.log(data);
 
             })
 
         });
     </script>
+    
 @endsection

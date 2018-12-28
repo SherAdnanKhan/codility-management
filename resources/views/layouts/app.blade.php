@@ -76,6 +76,8 @@
                             </a>
                         </li>
                     <li><a href="{{route('view.time.tracking')}}">Time Tracking </a></li>
+                        <li><a href="{{route('request.index')}}">Request For Approval </a></li>
+
                     @endif
                 @if (\Auth::user()->isAdmin())
                     <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
@@ -96,7 +98,7 @@
                                 <li><a href="{{route('inform.index')}}"><i class="fa fa-info-circle"></i>Employee Inform</a></li>
                                 <li><a href="{{route('task.index')}}"><i class="fa fa-tasks"></i>Task Management</a></li>
                                 <li><a href="{{route('upload.cvs')}}"><i class="fa fa-file-excel"></i>Upload CSV</a></li>
-
+                                <li><a href="{{route('request.index')}}">Leave Request</a></li>
                             </ul>
                         </li>
                         <li><a href="#qna" aria-expanded="false" data-toggle="collapse">

@@ -15,7 +15,8 @@ class Inform extends Model
         'inform_type',
         'reason',
         'inform_late',
-        'leave_type'
+        'leave_type',
+        'request_id'
 
     ];
     public function users(){
@@ -35,5 +36,8 @@ class Inform extends Model
     }
     public function getInformTypeAttribute($vale){
         return strtoupper($vale);
+    }
+    public function get_request_leave(){
+        return $this->hasOne('App\RequestLeave','id','request_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Helper\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -33,7 +34,8 @@ class MailTask extends Mailable
     {
         $get_attendance = $this->attendance;
         $no_task   = $this->users;
-        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
+        $to = Helper::all_admins();
+
 
         return $this->markdown('mail_task',compact('get_attendance','no_task'))->to($to)->subject('Employee Checkout');
     }

@@ -53,7 +53,7 @@ Route::get('/', function () {
     Route::get('/generate/inaccuracy/report','AttendanceController@taskInaccuracyReportPage')->name('view.admin.inaccuracy.report');
     Route::get('/search/inaccuracy/report','AttendanceController@makeInaccuracyReportByAdmin')->name('admin.monthly.inaccuracy.search');
     Route::get('/employee/tracking/','TimeTrackerController@makeTimeTrackReportByAdmin')->name('admin.time.tracking.search');
-
+        Route::get('/search/request','RequestLeaveController@search')->name('request.search');
 
 
 
@@ -86,6 +86,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('task/{id}','TaskController@show')->name('task.show');
     Route::post('tracking','TimeTrackerController@makeTimeTrackReport')->name('time.tracking.search');
     Route::get('tracking/report','TimeTrackerController@index')->name('view.time.tracking');
+    Route::resource('approval/request','RequestLeaveController');
+
     Route::post('/search/categories/questions','QuestionAnswerController@searchQuestionByCategory')->name('searchQuestionByCategory');
 
 });

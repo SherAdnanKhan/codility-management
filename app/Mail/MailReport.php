@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Helper\Helper;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -38,7 +39,8 @@ class MailReport extends Mailable
         $report_attendance = $this->get_attendances;
         $report_users = $this->users;
 
-        $to = array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
+        $to = Helper::all_admins();
+
 
         return $this->markdown('mail_report', compact('report_attendance', 'report_tasks', 'report_users'))->to($to)->subject("Daily Report ".Carbon::yesterday()->format('d-m-Y'));
 
