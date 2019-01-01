@@ -86,9 +86,14 @@ class AttendanceController extends Controller
         }
         $break_interval = $request->break_interval ? Carbon::parse($request->break_interval)->timestamp : false;
         $user = Auth::user()->isEmployee() ? User::findOrFail(Auth::id()) : User::findOrFail($request->employee);
-        $default_time = Carbon::parse($user->checkInTime)->addMinutes(30);
+        $time_of_attendance=Carbon::parse($request->check_in_time)->startOfDay();
+        $user_time=Carbon::parse($user->checkInTime)->addMinutes(30)->format('g:i');
+        $time_explode=explode(':',$user_time);
+        $default_time = $time_of_attendance->addHours($time_explode[0])->addMinutes($time_explode[1]);
         $attendance_time = Carbon::parse($request->check_in_time);
+
         $compare_time = $attendance_time->gt($default_time);
+
         if ($request->check_out_time) {
             $time = $request->break_interval ? Carbon::parse($request->break_interval)->format('H:i') : false;
             $explode_time = explode(':', $time);
@@ -99,11 +104,11 @@ class AttendanceController extends Controller
             $time_spent = false;
         }
         if ($compare_time) {
+
             $attendance = Carbon::parse($request->check_in_time);
             $add_day = $attendance->endOfDay()->timestamp;
             $status = $compare_time ? 'late' : 'check_in';
             $inform = Inform::whereBetween('attendance_date', [$attendance->startOfDay()->timestamp, $add_day])->where('user_id', Auth::user()->isEmployee() ? Auth::id() : $request->employee)->first();
-
         } else {
             $inform = false;
             $status = 'check_in';
