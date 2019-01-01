@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Attendance;
 use App\Inform;
 use App\Leave;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LeaveController extends Controller
@@ -42,10 +44,32 @@ class LeaveController extends Controller
         $this->validate($request,[
             'name'      =>'required',
             'color_code'=>'required',
-            'allowed'   =>'required'
+            'allowed'   =>'required',
+            'date'      =>'required_if:public_holiday,on'
 
         ]);
+
         $public_holiday=$request->public_holiday== null ?false:true;
+
+        if ($public_holiday == true){
+            $date=Carbon::parse($request->date);
+            $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->where('abended',false)->get();
+
+            foreach ($users as $user){
+                $leave = Leave::create([
+                    'name'  =>  $request->name,
+                    'color_code'  => $request->color_code,
+                    'allowed'  => $request->allowed,
+                    'public_holiday'  => $public_holiday,
+                    'date'            =>$date->timestamp
+
+                ]);
+
+
+
+            }
+
+        }
         $leave = Leave::create([
             'name'  =>  $request->name,
             'color_code'  => $request->color_code,

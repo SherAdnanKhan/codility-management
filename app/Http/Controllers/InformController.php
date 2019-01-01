@@ -145,6 +145,8 @@ class InformController extends Controller
         if ($check_attendance != null){
             return redirect()->route('inform.index')->with('status','This Employee have an attendance that have this inform, First you have to delete attendance !');
 
+        }else{
+            $inform->delete();
         }
         return redirect()->route('inform.index')->with('status','Employee Inform Deleted !');
     }

@@ -2,6 +2,11 @@
 @section('title')
     <title> {{config('app.name')}} | Manage Leaves</title>
 @endsection
+@section('page_styles')
+    
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
+@endsection
 @section('body')
     {{--@if (session('timetable'))--}}
         {{--<div class="alert alert-success">--}}
@@ -45,13 +50,14 @@
                         <div class="form-group row of-button" >
                             <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label " >Is Public Holiday</label>
                             <label class="switch" class="col-sm-offset-3 " style="position: absolute ;margin-left: 79%;margin-top: -2%;">
-                                <input type="checkbox" name="public_holiday" >
+                                <input type="checkbox" name="public_holiday" id="public_holiday">
                                 <span class="slider round"></span>
                             </label>
                         </div>
+                        <div class="date_of_holiday"></div>
                         <div class="form-group-material">
                             <label for="color" class="label-material">Color</label>
-                            <input type="color" name="color_code" class=" col-2" value="#ffffff"/>
+                            <input type="color" name="color_code"  class=" col-2" value="#ffffff"/>
                             @if ($errors->has('color_code'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('color_code') }}</strong>
@@ -141,9 +147,44 @@
 @endsection
 
 @section('page_scripts')
+    <script src="{{asset('scripts/moment.js')}}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript">
+    
+    </script>
 
     <script>
+        $(document).ready(function () {
+            var ckbox = $('#public_holiday');
 
+            $('input').on('click',function () {
+                if (ckbox.is(':checked')) {
+                    
+                    $('.date_of_holiday').html("<div class='form-group-material'>" +
+                        "                            <div class=' bootstrap-iso input-group-material date' >" +
+                        "                                <input autocomplete='off' type='text' id='date' name='date'class='input-material' />" +
+                        "\n" +
+                        "                                <label for='date' class='label-material active'>Date Of Public Holiday</label>" +
+                        "                            </div>" +
+                        "@if($errors->has('date'))" +
+                        "                                <span class='help-block'>" +
+                        "                                        <strong>{{$errors->first('date') }}</strong>" +
+                        "                                    </span>" +
+                        "                            @endif" +
+                        "                        </div>");
+
+
+                    $(function () {
+                        $('#date').datetimepicker({
+                            format:'l'
+                        });
+                    });
+                } else {
+                    $('.date_of_holiday').html(" ")
+                }
+            });
+        });
         $(".edit_link").on('click',function() {
             var category=$(this).data("value");
 
@@ -157,4 +198,6 @@
 
         });
     </script>
+
+
 @endsection

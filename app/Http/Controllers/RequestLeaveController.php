@@ -28,7 +28,7 @@ class RequestLeaveController extends Controller
     public function index()
     {
         if (Auth::user()->isEmployee()){
-                return view('Employee.request_leave')->with('status','In case of  Employee needs UPTO TWO consecutive Absent ,Employee should hEmployee should compulsory to get an approval from Administration ');
+                return view('Employee.request_leave')->with('status','In case of  Employee needs UPTO TWO consecutive Absent ,Employee should hEmployee should compulsory to get an approval from Administration. In case of one also. Only sick leave is allowed on same day or in case of emergency ');
         }elseif (Auth::user()->isAdmin()){
             $request_leaves=RequestLeave::orderBy('id','desc')->paginate(10);
             return view('Employee.admin_request_leave',compact('request_leaves'));
