@@ -153,7 +153,7 @@
                                                     @if($attendance->leave_comment && $attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp))
                                                     style= "color:{{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->color_code}}"
                                                     @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
-                                                    style= "color:{{$attendance->leave->color_code}}"
+                                                    
                                                     @endif
                                             >
                                                 @if($attendance->leave_comment != null)

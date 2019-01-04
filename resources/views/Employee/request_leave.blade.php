@@ -46,6 +46,29 @@
                                 <label for="to_date" class="label-material">To Date</label>
                             </div>
                         </div>
+                        <div class="form-group-material ">
+                            <label for="leave" class="select-label form-control-label ">Required Leave</label>
+                            <select name="leave" id="leave" class="form-control filters ">
+                                <option value="">Please Choose</option>
+                                @php
+                                    $leaves=\App\Leave::all()->sortByDesc('id');
+                                @endphp
+                                @if(isset($leaves))
+                                    @foreach($leaves as $leave)
+                                        @if($leave->public_holiday == false)
+                                        <option  value="{{$leave->id}}">{{$leave->name}}</option>
+                                    @endif
+                                            @endforeach
+                                            
+                                @endif
+                            </select>
+        
+                            @if ($errors->has('leave'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('leave') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
                         <div class="form-group row">
                             <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Describe The Reason</label>
                             <div class="col-sm-12  mb-12 ">

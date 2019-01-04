@@ -104,7 +104,7 @@
                         <td>{{$leave->public_holiday == true ? 'Yes':'No'}}</td>
 
                         <td>
-                            <a  style="color: {{$leave->color_code?$leave->color_code:'yellow'}}" data-value="{{$leave->id}}"  class="edit_link" href="#" >
+                            <a style="color: {{$leave->color_code?$leave->color_code:'yellow'}}" data-value="{{$leave->id}}" class="edit_link" href="javascript://">
                                 <span class="fa fa-edit"></span>
                             </a>
 
@@ -147,17 +147,23 @@
 @endsection
 
 @section('page_scripts')
-    <script src="{{asset('scripts/moment.js')}}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
-    <script type="text/javascript">
     
-    </script>
+    
+    <script src="{{asset('scripts/moment.js')}}"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
+    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
 
     <script>
+        /*
+        function test(v){
+            var this_data = v.getAttribute("data-value");
+            alert( this_data );
+            //alert('asdf');
+        };
+        */
         $(document).ready(function () {
             var ckbox = $('#public_holiday');
-
+        
             $('input').on('click',function () {
                 if (ckbox.is(':checked')) {
                     
@@ -173,8 +179,8 @@
                         "                                    </span>" +
                         "                            @endif" +
                         "                        </div>");
-
-
+        
+        
                     $(function () {
                         $('#date').datetimepicker({
                             format:'l'
@@ -185,6 +191,10 @@
                 }
             });
         });
+        
+    </script>
+    <script type="text/javascript">
+        
         $(".edit_link").on('click',function() {
             var category=$(this).data("value");
 
@@ -192,12 +202,43 @@
                 // $.each(data,function (index,state) {
                 $('#modal-body').html(data);
                 $('#myModal').modal();
-                console.log(data);
+                
+                // $('#modal-body').change(
+                  $( function() {
 
-            })
+                        $('input').on('click',function () {
+                            var ckbox = $('#public_holidays');
+
+                            if (ckbox.is(':checked')) {
+
+                                $('.date_of_holidays').html("<div class='form-group-material'>" +
+                                    "                            <div class=' bootstrap-iso input-group-material date' >" +
+                                    "                                <input autocomplete='off' type='text' id='date' name='date'class='input-material' />" +
+                                    "\n" +
+                                    "                                <label for='date' class='label-material active'>Date Of Public Holiday</label>" +
+                                    "                            </div>" +
+                                    "@if($errors->has('date'))" +
+                                    "                                <span class='help-block'>" +
+                                    "                                        <strong>{{$errors->first('date') }}</strong>" +
+                                    "                                    </span>" +
+                                    "                            @endif" +
+                                    "                        </div>");
+
+
+                                $(function () {
+                                    $('#date').datetimepicker({
+                                        format:'l'
+                                    });
+                                });
+                            } else {
+                                $('.date_of_holidays').html(" ")
+                            }
+                        }); // ?
+                    });
+            });
 
         });
+        
     </script>
-
 
 @endsection

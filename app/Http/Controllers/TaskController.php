@@ -200,8 +200,9 @@ class TaskController extends Controller
         }
         $name=$request->name?$request->name:'';
         if (Auth::user()->isAdmin()) {
-            $user = User::whereName($name)->first();
-
+            $user = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->where('name','Like','%'.$name.'%')->first();
             if ($user) {
                 if ($request->download){
                     $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->get();

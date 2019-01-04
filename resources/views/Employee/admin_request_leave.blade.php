@@ -114,6 +114,7 @@
                                     <th>Employee Name</th>
                                     <th>Leave From</th>
                                     <th>Leave TO</th>
+                                    <th>Required Leave</th>
                                     <th>Leave Reason</th>
                                     <th>Approved Status</th>
                                     <th>Marked Approved</th>
@@ -126,6 +127,7 @@
                                             <td>{{$request_leave->get_user->name}}</td>
                                             <td>{{\Carbon\Carbon::createFromTimestamp($request_leave->from_date)->format('d-m-Y')}}</td>
                                             <td>{{$request_leave->to_date != null ? (\Carbon\Carbon::createFromTimestamp($request_leave->to_date)->format('d-m-Y')):''}}</td>
+                                            <td>{{$request_leave->get_inform_request->first() ? $request_leave->get_inform_request->first()->leaves->name:''}}</td>
                                             <td>{{$request_leave->reason}}</td>
                                             <td>{{$request_leave->approved}}</td>
                                             <td><a  style="color:green "data-value="{{$request_leave->id}}"  class="edit_link" href="#" >

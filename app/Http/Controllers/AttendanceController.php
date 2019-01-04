@@ -87,7 +87,7 @@ class AttendanceController extends Controller
         $break_interval = $request->break_interval ? Carbon::parse($request->break_interval)->timestamp : false;
         $user = Auth::user()->isEmployee() ? User::findOrFail(Auth::id()) : User::findOrFail($request->employee);
         $time_of_attendance=Carbon::parse($request->check_in_time)->startOfDay();
-        $user_time=Carbon::parse($user->checkInTime)->addMinutes(30)->format('g:i');
+        $user_time=Carbon::parse($user->checkInTime)->addMinutes(15)->format('H:i');
         $time_explode=explode(':',$user_time);
         $default_time = $time_of_attendance->addHours($time_explode[0])->addMinutes($time_explode[1]);
         $attendance_time = Carbon::parse($request->check_in_time);
@@ -263,7 +263,9 @@ class AttendanceController extends Controller
         }
         $name = $request->name ? $request->name : '';
         if (Auth::user()->isAdmin()) {
-            $user = User::whereName($name)->first();
+            $user = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->where('name','Like','%'.$name.'%')->first();
             if ($user == null) {
                 $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->paginate(10);
             } elseif ($user != null) {

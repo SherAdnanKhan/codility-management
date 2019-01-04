@@ -18,6 +18,9 @@ class RequestLeave extends Model
     public function get_user(){
         return $this->hasOne('App\User','id','user_id');
     }
+    public function get_inform_request(){
+        return $this->hasMany('App\Inform','request_id','id');
+    }
     public function getApprovedAttribute($value){
 
         if ($value == true ) {
@@ -30,4 +33,5 @@ class RequestLeave extends Model
 
 
     }
+
 }

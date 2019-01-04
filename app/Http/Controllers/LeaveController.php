@@ -45,38 +45,45 @@ class LeaveController extends Controller
             'name'      =>'required',
             'color_code'=>'required',
             'allowed'   =>'required',
-            'date'      =>'required_if:public_holiday,on'
+//            'date'      =>'required_if:public_holiday,on'
 
         ]);
-
+//dd($request->public_holiday);
         $public_holiday=$request->public_holiday== null ?false:true;
 
-        if ($public_holiday == true){
+        if ($public_holiday == true && $request->date){
             $date=Carbon::parse($request->date);
             $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->where('abended',false)->get();
+            $leave = Leave::create([
+                'name'  =>  $request->name,
+                'color_code'  => $request->color_code,
+                'allowed'  => $request->allowed,
+                'public_holiday'  => $public_holiday,
+                'date'            =>$date->timestamp
 
+            ]);
             foreach ($users as $user){
-                $leave = Leave::create([
-                    'name'  =>  $request->name,
-                    'color_code'  => $request->color_code,
-                    'allowed'  => $request->allowed,
-                    'public_holiday'  => $public_holiday,
-                    'date'            =>$date->timestamp
-
+                $inform= Inform::create([
+                    'attendance_date'=>$date->timestamp,
+                    'inform_at'      =>Carbon::now()->timestamp,
+                    'user_id'        =>$user->id,
+                    'inform_type'    =>'leave',
+                    'reason'         =>null,
+                    'inform_late'    =>false,
+                    'leave_type'     =>$leave->id,
+                    'reason'         =>"asdf",
                 ]);
-
-
-
             }
 
-        }
-        $leave = Leave::create([
-            'name'  =>  $request->name,
-            'color_code'  => $request->color_code,
-            'allowed'  => $request->allowed,
-            'public_holiday'  => $public_holiday,
+        }else {
+            $leave = Leave::create([
+                'name' => $request->name,
+                'color_code' => $request->color_code,
+                'allowed' => $request->allowed,
+//                'public_holiday' => $public_holiday,
 
-        ]);
+            ]);
+        }
         return redirect()->route('leave.index');
     }
 
