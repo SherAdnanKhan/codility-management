@@ -34,7 +34,7 @@ class EmployeeLessTimeConsumed extends Mailable
 
         $employee_emails=$this->emails;
         $user_detail=$this->names;
-        $to = Helper::all_admins();
+        $to = array('atta.ur.rehman@codility.co','hussnain.raza@codility.co');
 
 
         return $this->markdown('mail_employee_less_time_consumed',compact('user_detail'))->to($to)->subject("Monthly Assessment Alert ! From  ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));

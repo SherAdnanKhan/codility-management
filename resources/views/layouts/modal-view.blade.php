@@ -25,10 +25,11 @@
         @endif
 
     </div>
+    
     <div class="form-group row of-button" >
         <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label " >Is Public Holiday</label>
         <label class="switch col-sm-offset-3 " style="position: absolute ;margin-left: 79%;margin-top: -2%;"  >
-            <input type="checkbox" name="public_holiday" {{$leave->public_holiday == true ?'checked':''}}>
+            <input type="checkbox" name="public_holiday" id="public_holidays" {{$leave->public_holiday == true ?'checked':''}}>
             <span class="slider round"></span>
         </label>
     </div>
@@ -41,8 +42,24 @@
                                     </span>
         @endif
     </div>
+    <div class="date_of_holidays">
+        @if($leave->public_holiday == true)
+            <div class='form-group-material'>
+                <div class=' bootstrap-iso input-group-material date' >
+                    <input  type='text' id='date' name='date' class='input-material' value="{{\Carbon\Carbon::createFromTimestamp($leave->date)->format('m/d/Y')}}"/>
+                    <label for='date' class='label-material active '>Date Of Public Holiday</label>
+                </div>
+                @if($errors->has('date'))
+                    <span class='help-block'>
+                        <strong>{{$errors->first('date') }}</strong>
+                    </span>
+                @endif
+            </div>
+            @endif
+    </div>
     <button type="submit" class="btn btn-outline-success">Update Leaves</button>
 </form>
+
 @endif
 @if(isset($category))
     <form class="form-horizontal" method="POST" action= "{{ route('category.update', $category->id) }}">
@@ -177,7 +194,7 @@
                     @endphp
                     @if(isset($leaves))
                         @foreach($leaves as $leave)
-                            <option {{$leave->id == ($request_leave->inform_id != null ?$request_leave->inform->id:'')?"selected":''}} value="{{$leave->id}}">{{$leave->name}}</option>
+                            <option {{$leave->id == $selected_leave?"selected":''}} value="{{$leave->id}}">{{$leave->name}}</option>
                         @endforeach
                     @endif
                 </select>
@@ -190,9 +207,17 @@
             </div>
             <div class="form-group row of-button col-md-2 " >
                 <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Approved</label>
+                @php
+                $approved=$request_leave->approved;
+                if ($approved == 'Approved '){
+                $approved_status= true;
+                }else{
+               $approved_status= false;
+                }
+                @endphp
                 
                 <label class="switch" class="col-sm-offset-3 ">
-                    <input type="checkbox" name="approved" {{$request_leave->approved?'checked':''}}>
+                    <input type="checkbox" name="approved" {{$approved_status == true ? 'checked':''}}>
                     <span class="slider round"></span>
                 </label>
             </div>
