@@ -48,7 +48,6 @@ class LeaveController extends Controller
 //            'date'      =>'required_if:public_holiday,on'
 
         ]);
-//dd($request->public_holiday);
         $public_holiday=$request->public_holiday== null ?false:true;
 
         if ($public_holiday == true && $request->date){
@@ -63,15 +62,15 @@ class LeaveController extends Controller
 
             ]);
             foreach ($users as $user){
+
                 $inform= Inform::create([
                     'attendance_date'=>$date->timestamp,
                     'inform_at'      =>Carbon::now()->timestamp,
                     'user_id'        =>$user->id,
                     'inform_type'    =>'leave',
-                    'reason'         =>null,
                     'inform_late'    =>false,
                     'leave_type'     =>$leave->id,
-                    'reason'         =>"asdf",
+                    'reason'         =>$leave->name,
                 ]);
             }
 
@@ -124,12 +123,55 @@ class LeaveController extends Controller
     {
         $leave = Leave::whereId($id)->first();
         $public_holiday=$request->public_holiday== null ?false:true;
-        $leave->update([
-            'name'  =>  $request->name,
-            'color_code'  => $request->color_code,
-            'allowed'  => $request->allowed,
-            'public_holiday'  => $public_holiday,
-        ]);
+
+        if ($public_holiday == true && $request->date) {
+
+            $dateofholiday = Carbon::parse($request->date);
+            $leave_date = $leave->date ? Carbon::createFromTimestamp($leave->date) : null;
+            if (($leave_date->startOfYear()->eq(Carbon::parse($request->date)->startOfYear()))) {
+                if ((Carbon::createFromTimestamp($leave->date)->lessThan(Carbon::now()->startOfDay()))) {
+                    return redirect('/leave')->with('status_error', 'This leave have passed and Employees on this leave that,s why you did not change date now. You can change in next year');
+
+                }
+
+            }
+
+            if (Carbon::createFromTimestamp($leave->date)->gt(Carbon::now())) {
+
+//                if ((Carbon::createFromTimestamp($leave->date)->gt(Carbon::parse($request->date)))) {
+                    $date = Carbon::parse($request->date);
+                    $users = User::whereHas('role', function ($q) {
+                        $q->whereIn('name', ['Employee']);
+                    })->where('abended', false)->get();
+
+                    $informs = Inform::whereBetween('attendance_date', [Carbon::createFromTimestamp($leave->date)->startOfDay()->timestamp, Carbon::createFromTimestamp($leave->date)->endOfDay()->timestamp])->get();
+
+                    foreach ($informs as $inform) {
+
+                        $inform->attendance_date = Carbon::parse($request->date)->timestamp;
+                        $inform->update();
+
+                    }
+                    $leave->date=Carbon::parse($request->date)->timestamp;
+                    $leave->name  =$request->name;
+                    $leave->color_code  =$request->color_code;
+                    $leave->allowed  =$request->allowed;
+                    $leave->save();
+//                }
+            } else {
+
+                return redirect('/leave')->with('status_error', 'This leave have passed and employees on this leave thats why you did not change date now ');
+            }
+
+                }else {
+                $leave->update([
+                    'name'  =>  $request->name,
+                    'color_code'  => $request->color_code,
+                    'allowed'  => $request->allowed,
+
+                ]);
+                }
+
         return redirect()->route('leave.index');
     }
 
