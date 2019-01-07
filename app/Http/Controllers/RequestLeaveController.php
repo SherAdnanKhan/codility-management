@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rules\In;
 
 class RequestLeaveController extends Controller
 {
@@ -66,6 +67,7 @@ class RequestLeaveController extends Controller
 
         $request_to_date = Carbon::parse($request->to_date);
 
+
         if ($request->to_date) {
             $to_date = Carbon::parse($request->to_date)->timestamp;
             $from_date = Carbon::parse($request->from_date)->timestamp;
@@ -104,6 +106,10 @@ class RequestLeaveController extends Controller
                 foreach ($get_leave_dates as $get_leave_date) {
 
                     $check_attendance = Attendance::whereBetween('check_in_time', [Carbon::parse($get_leave_date)->startOfDay()->timestamp, Carbon::parse($get_leave_date)->endOfDay()->timestamp])->where('user_id', $user->id)->first();
+                    $check_informs=Inform::whereBetween('attendance_date', [Carbon::parse($get_leave_date)->startOfDay()->timestamp, Carbon::parse($get_leave_date)->endOfDay()->timestamp])->where('user_id', $user->id)->first();
+                    if ($check_informs != null){
+                        return view('Employee.request_leave')->with('status',"You Already have submitted request of this date $get_leave_date");
+                    }
                     $inform = Inform::create([
                         'attendance_date' => Carbon::parse($get_leave_date)->startOfDay()->timestamp,
                         'inform_at' => Carbon::parse($leave_request->created_at)->timestamp,
@@ -139,7 +145,7 @@ class RequestLeaveController extends Controller
             ]);
         }
         $send_request_mail=Mail::send(new LeaveRequest($leave_request));
-        return redirect()->route('request.index')->with('status','request successfully submit');
+        return view('Employee.request_leave')->with('status','Your request for getting approval is submit .After reviewing your approval you will get an email about  ');
 
     }
 
@@ -237,11 +243,14 @@ class RequestLeaveController extends Controller
             $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
             $this->end_date=$request->filter=='today'?$start_date->endOfDay()->timestamp:($request->filter == 'week'?$start_date->endOfWeek()->timestamp:($request->filter == 'month'?$start_date->endOfMonth()->timestamp:($request->filter =='year'?$start_date->endOfYear()->timestamp:'')));
         }
-        $name=$request->name?$request->name:'';
+        $name=$request->name?$request->name:null;
+        if ($name != null){
         $user = User::whereHas('role', function ($q) {
             $q->whereIn('name', ['Employee']);
         })->where('name','Like','%'.$name.'%')->first();
-        if ($user) {
+        }
+        if ($name != null) {
+
             $request_leaves = RequestLeave::whereBetween('from_date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
 
         }else{
