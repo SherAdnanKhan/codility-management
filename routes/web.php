@@ -54,7 +54,9 @@ Route::get('/', function () {
     Route::get('/search/inaccuracy/report','AttendanceController@makeInaccuracyReportByAdmin')->name('admin.monthly.inaccuracy.search');
     Route::get('/employee/tracking/','TimeTrackerController@makeTimeTrackReportByAdmin')->name('admin.time.tracking.search');
         Route::get('/search/request','RequestLeaveController@search')->name('request.search');
-
+        Route::resource('/task/project','ProjectTaskController');
+        Route::get('/search/project','ProjectTaskController@search')->name('project.search');
+        Route::post('/task/project/print','ProjectTaskController@print_report')->name('project.print');
 
 
 

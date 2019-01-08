@@ -124,6 +124,7 @@
                                     <th>Task Date</th>
                                     <th>Task Created</th>
                                     <th>Task Timing</th>
+                                    <th>Project</th>
                                     <th>Task Description</th>
                                     <th>Action</th>
                                 </tr>
@@ -136,6 +137,7 @@
                                             <td>{{$task->date}}</td>
                                             <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
+                                            <td>{{$task->project_id != null ?$task->projects->project_name:''}}</td>
                                             <td>{{substr($task->description,0,50 )."..."}}</td>
                                             <td><a href="{{route('task.edit',$task->id)}}"> <span class="fa fa-edit"></span>
                                                 </a>
@@ -214,6 +216,23 @@
                             @if ($errors->has('employee'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('employee') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="form-group-material row">
+                            <label for="project" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">
+                                Project</label> <div class="col-sm-12 mb-12 ">
+                                <select  name="project_id" class="form-control ">
+                                    <option value="" >Select Project</option>
+                                    {{$projects=\App\ProjectTask::all()}}
+                                    @foreach($projects as $project)
+                                        <option value="{{$project->id}}" >{{$project->project_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if ($errors->has('project_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('project_id') }}</strong>
                                 </span>
                             @endif
                         </div>
