@@ -233,7 +233,16 @@ class RequestLeaveController extends Controller
             'start_date' =>'required_if:filter,custom',
             'end_date'  =>'required_if:filter,custom',
         ]);
+        if ($request->filter == null){
+            $name=$request->name?$request->name:null;
+            $user = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->where('name','Like','%'.$name.'%')->pluck('id');
 
+            $request_leaves = RequestLeave::whereIn('user_id', [$user])->paginate(10);
+            $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+            return view('Employee.admin_request_leave',compact('request_leaves'));
+        }
         if($request->filter == 'custom') {
             $this->start_date = Carbon::parse($request->start_date)->timestamp;
             $this->end_date   = Carbon::parse($request->end_date)->timestamp;

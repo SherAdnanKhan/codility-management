@@ -61,6 +61,27 @@
 </form>
 
 @endif
+@if(isset($projects))
+    <form class="form-horizontal" method="POST" action= "{{ route('project.update', $projects->id) }}">
+        {{ csrf_field() }}
+        {{ method_field('PATCH') }}
+        <div class="form-group-material">
+            <div class='  input-group-material ' >
+                <input autocomplete="off" type='text' id='project_title' name="project_title"   value="{{$projects->project_name}}" class="input-material" />
+            
+                <label for="attendance" class=" active label-material">Project Title</label>
+            </div>
+            @if ($errors->has('project_title'))
+                <span class="help-block">
+                                            <strong>{{ $errors->first('project_title') }}</strong>
+                                        </span>
+            @endif
+        </div>
+  
+        <button type="submit" class="btn btn-outline-success">Update</button>
+    </form>
+
+@endif
 @if(isset($category))
     <form class="form-horizontal" method="POST" action= "{{ route('category.update', $category->id) }}">
         {{ csrf_field() }}

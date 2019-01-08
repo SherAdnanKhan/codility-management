@@ -110,6 +110,7 @@
                                     <th>Task Date</th>
                                     <th>Task Created Date</th>
                                     <th>Task Timing</th>
+                                    <th>Project</th>
                                     <th>Task Description</th>
                                     <th>Action</th>
                                 </tr>
@@ -121,6 +122,7 @@
                                             <td>{{$task->date}}</td>
                                             <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
+                                            <td>{{$task->project_id != null ?$task->projects->project_name:''}}</td>
                                             <td>{{substr($task->description,0,50 )."..."}}</td>
 
                                             <td>

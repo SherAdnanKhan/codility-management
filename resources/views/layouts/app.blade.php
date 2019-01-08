@@ -123,6 +123,7 @@
                                 <li><a href="{{route('view.time.tracking')}}"><i class="fa fa-clock"></i>Time Tracking </a></li>
                             </ul>
                         </li>
+                        <li><a href="{{route('project.index')}}"><i class="fa fa-file"></i>Projects</a></li>
 
                     @endif
                 </ul>

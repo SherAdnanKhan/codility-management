@@ -121,6 +121,9 @@ class User extends Authenticatable
 
         return $this->hasMany('App\TrackerTask','user_id','id');
     }
+    public function projects(){
+        return $this->belongsToMany('App\ProjectTask','projects_users','project_id','user_id');
+    }
     public function getCaptureDurationAttribute($value){
 
         if ($value > 0 ) {

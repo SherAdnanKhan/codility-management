@@ -36,6 +36,23 @@
                                     </span>
                             @endif
                         </div>
+                            <div class="form-group-material row">
+                                <label for="project" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">
+                                    Project</label> <div class="col-sm-12 mb-12 ">
+                                    <select name="project_id" class="form-control ">
+                                        <option value="" >Select Project</option>
+                                        {{$projects=\App\ProjectTask::all()}}
+                                        @foreach($projects as $project)
+                                            <option {{$task->project_id != null ? ($project->id == $task->project_id ?"selected='selected'":''):''}}value="{{$project->id}}" >{{$project->project_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @if ($errors->has('project_id'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('project_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
                         @endif
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attendance;
+use App\ProjectTask;
 use App\Task;
 use App\User;
 use Carbon\Carbon;
@@ -38,7 +39,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('Task.create');
+        $projects=ProjectTask::all()->where('is_deleted',false);
+        return view('Task.create',compact('projects'));
 
     }
 
@@ -56,12 +58,14 @@ class TaskController extends Controller
                 'time_taken' => 'required',
                 'description' => 'required',
                 'employee'    =>  'required',
-                'date'        => 'required|date'
+                'date'        => 'required|date',
+                'project_id'  => 'required|exists:project_tasks,id'
             ]);
         }elseif(Auth::user()->isEmployee()) {
             $this->validate($request, [
                 'description' => 'required',
-                'date'        => 'required|date'
+                'date'        => 'required|date',
+                'project_id'  => 'required|exists:project_tasks,id'
             ]);
         }
         $consume_time = $request->time_taken?Carbon::parse($request->time_taken)->timestamp:null;
@@ -82,7 +86,8 @@ class TaskController extends Controller
             'user_id' => Auth::user()->isEmployee()?Auth::id():$request->employee,
             'time_take' => $consume_time?$consume_time:0,
             'date' => $date,
-            'description' => $request->description
+            'description' => $request->description,
+            'project_id'  => $request->project_id?$request->project_id:null
         ]);
         return redirect()->route('task.index');
 
@@ -137,6 +142,7 @@ class TaskController extends Controller
                 'date' => 'required|date',
                 'time_taken' => 'required',
                 'description' => 'required',
+                'project_id'  => 'required|exists:project_tasks,id'
             ]);
             $consume_time = Carbon::parse($request->time_taken)->timestamp;
             $date = Carbon::parse($request->date)->timestamp;
@@ -144,7 +150,9 @@ class TaskController extends Controller
             Task::whereId($id)->update([
                 'time_take' => $consume_time,
                 'date' => $date,
-                'description' => $request->description
+                'description' => $request->description,
+                'project_id'  => $request->project_id?$request->project_id:null
+
             ]);
             return redirect()->route('task.index');
         }elseif(Auth::user()->isEmployee()) {
