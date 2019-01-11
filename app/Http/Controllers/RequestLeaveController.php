@@ -30,9 +30,11 @@ class RequestLeaveController extends Controller
     public function index()
     {
         if (Auth::user()->isEmployee()){
-                return view('Employee.request_leave')->with('status','In case of  Employee needs UPTO TWO consecutive Absent ,Employee should hEmployee should compulsory to get an approval from Administration. In case of one also. Only sick leave is allowed on same day or in case of emergency ');
+            $request_leaves=RequestLeave::where('user_id',Auth::user()->id)->orderBy('id','desc')->paginate(10);
+
+            return view('Employee.request_leave',compact('request_leaves'))->with('status','In case of  Employee needs UPTO TWO consecutive Absent ,Employee should hEmployee should compulsory to get an approval from Administration. In case of one also. Only sick leave is allowed on same day or in case of emergency ');
         }elseif (Auth::user()->isAdmin()){
-            $request_leaves=RequestLeave::orderBy('id','desc')->paginate(10);
+            $request_leaves=RequestLeave::where('from_date','>=',Carbon::now()->startOfDay()->timestamp)->orderBy('id','desc')->paginate(10);
             return view('Employee.admin_request_leave',compact('request_leaves'));
         }
 
@@ -59,7 +61,7 @@ class RequestLeaveController extends Controller
         $this->validate($request, [
             'from_date' => 'required|date',
             'to_date' => 'required_if:start_date,date',
-            'leave' => 'required',
+//            'leave' => 'required',
             'reason'=>'required'
         ]);
         $user=Auth::user();
@@ -85,65 +87,6 @@ class RequestLeaveController extends Controller
 
         ]);
 
-        if ($leave_request->to_date != null ) {
-
-            $request_from_date = Carbon::createFromTimestamp($leave_request->from_date);
-//        $get_diff=$this->generateDateRange($request_from_date,$request_to_date);
-
-
-
-            if ($user->workingDays == 5) {
-
-                $get_leave_dates = $user->generateDateRange($request_from_date, $request_to_date);
-
-            } elseif ($user->workingDays == 6) {
-                $get_leave_dates = $user->generateDateRangeWithSunday($request_from_date, $request_to_date);
-
-            }
-
-            if (isset($get_leave_dates)) {
-
-                foreach ($get_leave_dates as $get_leave_date) {
-
-                    $check_attendance = Attendance::whereBetween('check_in_time', [Carbon::parse($get_leave_date)->startOfDay()->timestamp, Carbon::parse($get_leave_date)->endOfDay()->timestamp])->where('user_id', $user->id)->first();
-                    $check_informs=Inform::whereBetween('attendance_date', [Carbon::parse($get_leave_date)->startOfDay()->timestamp, Carbon::parse($get_leave_date)->endOfDay()->timestamp])->where('user_id', $user->id)->first();
-                    if ($check_informs != null){
-                        return view('Employee.request_leave')->with('status',"You Already have submitted request of this date $get_leave_date");
-                    }
-                    $inform = Inform::create([
-                        'attendance_date' => Carbon::parse($get_leave_date)->startOfDay()->timestamp,
-                        'inform_at' => Carbon::parse($leave_request->created_at)->timestamp,
-                        'user_id' => $user->id,
-                        'inform_type' => 'leave',
-                        'reason' => $leave_request->reason,
-                        'inform_late' => false,
-                        'leave_type' => $leave->id,
-                        'request_id'   => $leave_request->id
-
-                    ]);
-
-
-                }
-
-            }
-
-        }elseif ($leave_request->to_date == null ){
-
-
-            $check_attendance = Attendance::whereBetween('check_in_time', [Carbon::parse($request->to_date)->startOfDay()->timestamp, Carbon::parse($request->to_date)->endOfDay()->timestamp])->where('user_id', $user->id)->first();
-
-            $inform = Inform::create([
-                'attendance_date' => Carbon::parse($leave_request->to_date)->startOfDay()->timestamp,
-                'inform_at' => Carbon::parse($leave_request->created_at)->timestamp,
-                'user_id' => $user->id,
-                'inform_type' => 'leave',
-                'reason' => $leave_request->reason,
-                'inform_late' => false,
-                'leave_type' => $leave->id,
-                'request_id'   => $leave_request->id
-
-            ]);
-        }
         $send_request_mail=Mail::send(new LeaveRequest($leave_request));
         return view('Employee.request_leave')->with('status','Your request for getting approval is submit .After reviewing your approval you will get an email about  ');
 
@@ -158,13 +101,14 @@ class RequestLeaveController extends Controller
     public function show($id)
     {
         $request_leave= RequestLeave::whereId($id)->first();
-        $informs=$request_leave->get_inform_request->first();
-        if ($informs != null){
-            $selected_leave=$informs->leave_type;
+        $leaves=$request_leave->leave_id;
+        if ($leaves != null){
+            $selected_leave=$leaves;
 
         }else{
             $selected_leave=null;
         }
+
         $data= view('layouts.modal-view',compact('request_leave','selected_leave'))->render();
         return \response()->json($data);
     }
@@ -191,30 +135,30 @@ class RequestLeaveController extends Controller
     {
         $this->validate($request, [
             'leave' => 'required',
-
-
         ]);
+
         $leave = Leave::whereId($request->leave)->first();
         $request_leave = RequestLeave::whereId($id)->first();
-        if ($request->approved == 'on'){
-            $request_leave->approved = true;
-            $request_leave->save();
-        }elseif($request->approved == null){
-            $request_leave->approved = false;
+        if($request->decline == 'on'){
+            $request_leave->approved = '2';
+            $request_leave->leave_id = $request->leave;
             $request_leave->save();
         }
-
-        if ($request_leave->get_inform_request){
-            $all_informs=$request_leave->get_inform_request()->get();
-            foreach ($all_informs as $inform) {
-                $inform->leave_type=$leave->id;
-                $inform->save();
+        if (!($request->decline)) {
+            if ($request->approved == 'on') {
+                $request_leave->approved = true;
+                $request_leave->leave_id = $request->leave;
+                $request_leave->save();
+            } elseif ($request->approved == null) {
+                $request_leave->approved = false;
+                $request_leave->leave_id = $request->leave;
+                $request_leave->save();
             }
         }
 
         $send_request_mail=Mail::send(new EmployeeRequestApproved($request_leave));
 
-        return redirect()->route('request.index')->with('status','Leave Request APPROVED');
+        return redirect()->route('request.index')->with('status','Leave Request '.$request_leave->approved);
     }
 
     /**
@@ -233,7 +177,14 @@ class RequestLeaveController extends Controller
             'start_date' =>'required_if:filter,custom',
             'end_date'  =>'required_if:filter,custom',
         ]);
+        $name=$request->name?$request->name:null;
+        if ($name != null) {
+            $user = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->where('name', 'Like', '%' . $name . '%')->first();
+        }
         if ($request->filter == null){
+
             $name=$request->name?$request->name:null;
             $user = User::whereHas('role', function ($q) {
                 $q->whereIn('name', ['Employee']);
@@ -241,7 +192,48 @@ class RequestLeaveController extends Controller
 
             $request_leaves = RequestLeave::whereIn('user_id', [$user])->paginate(10);
             $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
-            return view('Employee.admin_request_leave',compact('request_leaves'));
+//            return view('Employee.admin_request_leave',compact('request_leaves'));
+        }
+
+        if ($request->filter == 'approved'){
+
+            if ($name != null){
+                $request_leaves = RequestLeave::where(['approved'=>true, 'user_id'=> $user != null ? $user->id : ''])->paginate(10);
+                $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+                return view('Employee.admin_request_leave',compact('request_leaves'));
+            }else{
+                $request_leaves = RequestLeave::where('approved',true)->paginate(10);
+
+                $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+                return view('Employee.admin_request_leave',compact('request_leaves'));
+            }
+        }
+        if ($request->filter == 'declined'){
+
+            if ($name != null){
+                $request_leaves = RequestLeave::where(['approved'=>'2', 'user_id'=> $user != null ? $user->id : ''])->paginate(10);
+
+                $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+                return view('Employee.admin_request_leave',compact('request_leaves'));
+            }else{
+                $request_leaves = RequestLeave::where('approved',2)->paginate(10);
+                $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+                return view('Employee.admin_request_leave',compact('request_leaves'));
+            }
+        }
+        if ($request->filter =='not_approved'){
+
+            if ($name != null){
+
+                $request_leaves = RequestLeave::where(['approved'=>false, 'user_id'=>  $user != null ? $user->id : ''])->paginate(10);
+                $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+                return view('Employee.admin_request_leave',compact('request_leaves'));
+            }else{
+                $request_leaves = RequestLeave::where('approved',false)->paginate();
+                $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
+                return view('Employee.admin_request_leave',compact('request_leaves'));
+            }
+
         }
         if($request->filter == 'custom') {
             $this->start_date = Carbon::parse($request->start_date)->timestamp;
@@ -252,12 +244,8 @@ class RequestLeaveController extends Controller
             $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
             $this->end_date=$request->filter=='today'?$start_date->endOfDay()->timestamp:($request->filter == 'week'?$start_date->endOfWeek()->timestamp:($request->filter == 'month'?$start_date->endOfMonth()->timestamp:($request->filter =='year'?$start_date->endOfYear()->timestamp:'')));
         }
-        $name=$request->name?$request->name:null;
-        if ($name != null){
-        $user = User::whereHas('role', function ($q) {
-            $q->whereIn('name', ['Employee']);
-        })->where('name','Like','%'.$name.'%')->first();
-        }
+
+
         if ($name != null) {
 
             $request_leaves = RequestLeave::whereBetween('from_date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);

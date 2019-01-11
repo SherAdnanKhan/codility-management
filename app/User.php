@@ -53,6 +53,9 @@ class User extends Authenticatable
     public function photos(){
         return $this->hasOne('App\Photo');
     }
+    public function request_leave(){
+        return $this->hasOne('App\RequestLeave','user_id','id');
+    }
     public function users(){
         return $this->hasMany('App\Inform');
     }

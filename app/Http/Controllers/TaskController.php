@@ -81,13 +81,13 @@ class TaskController extends Controller
 
             }
         }
-
         Task::create([
             'user_id' => Auth::user()->isEmployee()?Auth::id():$request->employee,
             'time_take' => $consume_time?$consume_time:0,
             'date' => $date,
             'description' => $request->description,
-            'project_id'  => $request->project_id?$request->project_id:null
+            'project_id'  => $request->project_id?$request->project_id:null,
+            'sub_project' => $request->sub_projects?$request->sub_projects:null
         ]);
         return redirect()->route('task.index');
 
@@ -151,7 +151,8 @@ class TaskController extends Controller
                 'time_take' => $consume_time,
                 'date' => $date,
                 'description' => $request->description,
-                'project_id'  => $request->project_id?$request->project_id:null
+                'project_id'  => $request->project_id?$request->project_id:null,
+                'sub_project' => $request->sub_projects?$request->sub_projects:null
 
             ]);
             return redirect()->route('task.index');

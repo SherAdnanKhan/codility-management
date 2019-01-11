@@ -76,7 +76,7 @@
                             </a>
                         </li>
                     <li><a href="{{route('view.time.tracking')}}">Time Tracking </a></li>
-                        <li><a href="{{route('request.index')}}">Request For Approval </a></li>
+                        <li><a href="{{route('request.index')}}">Request For Leave Approval </a></li>
 
                     @endif
                 @if (\Auth::user()->isAdmin())

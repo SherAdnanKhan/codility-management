@@ -4,7 +4,7 @@
  
 The purpose of this email, is to notify you that your Request for Leaves is reviewed by HR and your request is {{$get_leave_request->approved}}
 
-
+{{$get_leave_request->approved == 'Declined' ? 'Concern to your HR Department/Send request again':''}}
 
 From HR Department, {{ config('app.name') }}<br>
 <br>

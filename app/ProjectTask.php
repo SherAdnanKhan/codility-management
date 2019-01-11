@@ -19,4 +19,7 @@ class ProjectTask extends Model
     public function project_tasks(){
         return $this->hasMany('App\Task','project_id','id');
     }
+    public function sub_projects(){
+        return $this->hasMany('App\SubProjectTask','project_id','id');
+    }
 }

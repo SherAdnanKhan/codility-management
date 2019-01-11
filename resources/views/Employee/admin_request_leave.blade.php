@@ -39,7 +39,9 @@
                                             <label for="inform_type" class="select-label form-control-label ">Search Leave Request </label>
                                             <select name="filter" id="filter" class="form-control filters ">
                                                 <option value="">Please Choose</option>
-
+                                                <option {{\Request::get('filter')=='approved'?'selected ':''}}value="approved">Approved</option>
+                                                <option {{\Request::get('filter')=='not_approved'?'selected ':''}}value="not_approved">Not Approved </option>
+                                                <option {{\Request::get('filter')=='declined'?'selected ':''}}value="declined">Declined </option>
                                                 <option {{\Request::get('filter')=='today'?'selected ':''}}value="today">Today</option>
                                                 <option {{\Request::get('filter')=='week'?'selected ':''}}value="week">This Week</option>
                                                 <option {{\Request::get('filter')=='month'?'selected ':''}}value="month">This Month</option>
@@ -127,7 +129,7 @@
                                             <td>{{$request_leave->get_user->name}}</td>
                                             <td>{{\Carbon\Carbon::createFromTimestamp($request_leave->from_date)->format('d-m-Y')}}</td>
                                             <td>{{$request_leave->to_date != null ? (\Carbon\Carbon::createFromTimestamp($request_leave->to_date)->format('d-m-Y')):''}}</td>
-                                            <td>{{$request_leave->get_inform_request->first() ? $request_leave->get_inform_request->first()->leaves->name:''}}</td>
+                                            <td>{{$request_leave->leave_id != null ? $request_leave->get_leaves->name:''}}</td>
                                             <td>{{$request_leave->reason}}</td>
                                             <td>{{$request_leave->approved}}</td>
                                             <td><a  style="color:green "data-value="{{$request_leave->id}}"  class="edit_link" href="#" >
@@ -204,6 +206,16 @@
             })
 
         });
+        // $('#update-modal-body').on("click", '#approved', function(event) {
+        //     var approved=$('#approved').val();
+        //     // if (approved == 'on'){
+        //     // $('.decline_group').hide();}
+        //     // else{
+        //     //     $('.decline_group').show();
+        //     //
+        //     // }
+        //     alert(approved);
+        // });
     </script>
     
 @endsection

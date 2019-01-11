@@ -213,6 +213,7 @@
                     @php
                         $leaves=\App\Leave::all()->sortByDesc('id');
                     @endphp
+                    
                     @if(isset($leaves))
                         @foreach($leaves as $leave)
                             <option {{$leave->id == $selected_leave?"selected":''}} value="{{$leave->id}}">{{$leave->name}}</option>
@@ -226,7 +227,9 @@
                                     </span>
                 @endif
             </div>
-            <div class="form-group row of-button col-md-2 " >
+            <div class="request_date">
+     
+            <div class="form-group of-button" >
                 <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Approved</label>
                 @php
                 $approved=$request_leave->approved;
@@ -238,7 +241,24 @@
                 @endphp
                 
                 <label class="switch" class="col-sm-offset-3 ">
-                    <input type="checkbox" name="approved" {{$approved_status == true ? 'checked':''}}>
+                    <input type="checkbox"   id="approved"name="approved"  {{$approved_status == true?'checked':''}}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            </div>
+            <div class="form-group of-button decline_group" >
+                <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Decline</label>
+                @php
+                    $approved=$request_leave->approved;
+                    if ($approved == 'Declined'){
+                    $decline_status= true;
+                    }else{
+                   $decline_status= false;
+                    }
+                @endphp
+        
+                <label class="switch" class="col-sm-offset-3 ">
+                    <input type="checkbox" name="decline" id="decline" {{$decline_status == true?'checked':''}} >
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -248,5 +268,5 @@
             Reset
         </button>
     </form>
-
+    
 @endif
