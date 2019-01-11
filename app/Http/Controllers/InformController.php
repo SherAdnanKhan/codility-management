@@ -129,6 +129,14 @@ class InformController extends Controller
             'leave_type'     =>$request->inform_type == 'leave'?$request->leave_type:null
 
         ]);
+        $get_inform= Inform::whereId($id)->first();
+        $check_attendance = Attendance::whereBetween('check_in_time',[Carbon::parse($request->attendance_date)->startOfDay()->timestamp ,Carbon::parse($request->attendance_date)->endOfDay()->timestamp])->where('user_id',$get_inform->user_id)->first();
+
+        if ($check_attendance != null){
+        $check_attendance->late_informed= $get_inform->inform_late;
+        $check_attendance->save();
+        }
+
         return redirect()->route('inform.index')->with('status', 'Employee Inform Updated !');
     }
 

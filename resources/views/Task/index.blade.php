@@ -122,7 +122,7 @@
                                             <td>{{$task->date}}</td>
                                             <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
-                                            <td>{{$task->project_id != null ?$task->projects->project_name:''}}</td>
+                                            <td>{{$task->project_id != null ?$task->projects->project_name:''}}{{$task->sub_project != null ?\App\SubProjectTask::where('id',$task->sub_project)->pluck('name'):''}}</td>
                                             <td>{{substr($task->description,0,50 )."..."}}</td>
 
                                             <td>

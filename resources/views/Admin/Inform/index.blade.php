@@ -121,7 +121,6 @@
                                     <th>Inform Type</th>
                                     <th>Informed Status</th>
                                     <th>Reason</th>
-                                    
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -135,8 +134,6 @@
                                             <td>{{$inform->inform_at}}</td>
                                             <td>{{$inform->request_id !=null ? $inform->get_request_leave->approved:''}}{{$inform->inform_type}}{{$inform->leaves?' ON '.$inform->leaves->name:''}} </td>
                                             <td>{{$inform->inform_late?'Yes Late Informed':'No Late Informed'}}</td>
-                                            <td></td>
-    
                                             <td>{{$inform->reason}}</td>
                                             <td class="text-primary lead">
                                                 <a href="{{route('inform.edit',$inform->id)}}"><span class="fa fa-edit"></span></a>

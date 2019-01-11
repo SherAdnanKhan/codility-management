@@ -37,7 +37,7 @@
                         <div class="form-group-material row">
                             <label for="project" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">
                                 Project</label> <div class="col-sm-12 mb-12 ">
-                                <select name="project_id" class="form-control ">
+                                <select name="project_id" class="form-control delete_link">
                                     <option value="" >Select Project</option>
                                     
                                     @foreach($projects as $project)
@@ -50,6 +50,14 @@
                                     <strong>{{ $errors->first('project_id') }}</strong>
                                 </span>
                             @endif
+                        </div>
+                        <div  class="form-group-material row view" style="display: none">
+                            <label for='leave_type' class='select-label col-sm-offset-3 col-sm-11 form-control-label view_label'>Select Sub Projects</label>
+                            <div class='col-sm-12  mb-12 '>
+                                <select name='sub_projects'  class='form-control  ajax'>
+                                    <option value="">Select Sub Projects</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
@@ -91,6 +99,30 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
+        $(".delete_link").change(function() {
+            var project=$(this).val();
+           
+                $.get('/project/project/'+project,function (result) {
+                    if (result.length == 0){
+                        $(".view").css('display','none');
+                        // $(".ajax").css('display','none');
+                        // $(".view_label").css('display','none');
+
+                        
+                    }else {
+                        for (var i = 0; i < result.length; i++) {
+                            var sub_projects = result[i];
+                            console.log(sub_projects.id);
+                            $(".ajax").append("<option value=" + sub_projects.id + " >" + sub_projects.name + "</option>");
+                        }
+                        console.log(result.length);
+                        $(".view").css('display','block');
+                    }
+                    
+                    
+                })
+            
+        });
         $(function() {
             var t = new Date;
             var time = "{{\Carbon\Carbon::now()}}";

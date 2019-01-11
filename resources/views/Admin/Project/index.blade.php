@@ -2,6 +2,11 @@
 @section('title')
     <title> {{config('app.name')}} | Employee Projects</title>
 @endsection
+@section('page_styles')
+    
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/styles/bootstrap-tagsinput.css')}}">
+@endsection
 @section('body')
     
     <div class="container">
@@ -92,7 +97,7 @@
                                 <thead>
                                 <tr>
                                     <th>Project Title</th>
-                                    {{--<th>Assignee </th>--}}
+                                    <th>Sub Projects </th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -102,7 +107,17 @@
                                         
                                         <tr>
                                             <td>{{$project->project_name}}</td>
-                                            {{--<td>{{$project->users?$project->users->name:''}}</td>--}}
+                                            <td>
+                                                @php
+                                                if ($project->sub_projects){
+                                                $sub_projects=$project->sub_projects;
+                                                }
+                                                foreach ($sub_projects as $item){
+                                                echo $item->name.', ';
+                                                }
+                                                @endphp
+                                                
+                                            </td>
                                             <td class="text-primary lead">
                                                 <a  data-value="{{$project->id}}"  class="edit_link" href="#" >
                                                     <span class="fa fa-edit"></span>
@@ -126,6 +141,7 @@
                     <div class="bootstrap-iso">
                         {{$projects->links()}}
                     </div>
+                   
                 </div>
             </div>
         </div>
@@ -153,23 +169,12 @@
                                         </span>
                             @endif
                         </div>
-                        
-                        {{--<div class="form-group-material row">--}}
-                            {{--<label for="inform_type" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Employee</label>--}}
-                            {{--<div class="col-sm-12  mb-12 ">--}}
-                                {{--<select  multiple name="employee[]"  class="form-control  ">--}}
-                                    {{--@foreach($users as $user)--}}
-                                        {{--<option value="{{$user->id}}"  >{{$user->name}}</option>--}}
-                                    {{--@endforeach--}}
-                                {{--</select>--}}
-                            {{--</div>--}}
-                            {{--@if ($errors->has('employee'))--}}
-                                {{--<span class="help-block">--}}
-                                        {{--<strong>{{ $errors->first('employee') }}</strong>--}}
-                                    {{--</span>--}}
-                            {{--@endif--}}
-                        {{--</div>--}}
-               
+                        <div class="bootstrap-iso">
+                            <div class="form-group">
+                                <label for="sub_projects" class="sub_projects">Sub Projects</label>
+                                    <input type="text" value="" name="sub_projects" data-role="tagsinput" />
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-outline-success">Submit</button>
                         
                     </form>
@@ -212,7 +217,10 @@
     <script src="{{asset('scripts/moment.js')}}"></script>
     {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
-   <script type="text/javascript">
+    <script src="{{asset('scripts/bootstrap-tagsinput-angular.min.js')}}"></script>
+    <script src="{{asset('scripts/bootstrap-tagsinput.min.js')}}"></script>
+
+    <script type="text/javascript">
 
        $(".edit_link").on('click',function() {
            var project=$(this).data("value");

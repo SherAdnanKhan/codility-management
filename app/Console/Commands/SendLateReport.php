@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Inform;
+use App\Leave;
 use App\Mail\EmployeeLessTimeConsumed;
 use App\Mail\MailCheckIn;
 use App\Mail\MailLateEmployee;
@@ -10,6 +12,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class SendLateReport extends Command
@@ -54,8 +57,7 @@ class SendLateReport extends Command
 
 //        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
 
-                $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
-
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('name','AttaUrRehman')->get();
         foreach ($users as $user)
         {
             if($user->checkInTime){
@@ -63,12 +65,41 @@ class SendLateReport extends Command
                 $user_date=Carbon::parse($get_user_time)->timestamp;
                 $half_past_hour =Carbon::now()->subMinutes(45)->format('H:i');
                 $now_time=Carbon::now()->format('H:i');
-                    if ($get_user_time > $half_past_hour){
-                        if($get_user_time < $now_time){
+                if ($get_user_time > $half_past_hour){
+                    if($get_user_time < $now_time){
+                        $check_attendance = $user->attendance()->whereBetween('check_in_time', [$today, Carbon::now()->timestamp])->where('user_id',$user->id)->first();
+                        $informs=$user->informs()->whereBetween('attendance_date', [$today, Carbon::now()->timestamp])->first();
+                        //start Update if employee have an approved leave
+                        if ($informs == null) {
+                            $request_leave = DB::table('request_leaves')->whereRaw('"' . Carbon::now()->startOfDay()->timestamp . '" between `from_date` and `to_date`')->where('user_id', $user->id)->where('approved', '<>', '2')->first();
+                            if ($request_leave != null) {
+
+                            $request_from_date = Carbon::createFromTimestamp($request_leave->from_date);
+                            $request_to_date = Carbon::createFromTimestamp($request_leave->to_date);
+                            if ($user->workingDays == 5) {
+                                $get_leave_dates = $user->generateDateRange($request_from_date, $request_to_date);
+                            } elseif ($user->workingDays == 6) {
+                                $get_leave_dates = $user->generateDateRangeWithSunday($request_from_date, $request_to_date);
+                            }
+                            $today_date = Carbon::now()->toDateString();
+                            $check_exist_in_leave = in_array($today_date, $get_leave_dates);
+                            if ($check_exist_in_leave == true) {
+                                $informs = Inform::create([
+                                    'attendance_date' => Carbon::now()->startOfDay()->timestamp,
+                                    'inform_at' => Carbon::parse($request_leave->created_at)->timestamp,
+                                    'user_id' => $user->id,
+                                    'inform_type' => 'leave',
+                                    'reason' => $request_leave->reason,
+                                    'inform_late' => false,
+                                    'leave_type' => $request_leave->leave_id == null ? Leave::first()->id : $request_leave->leave_id,
+                                    'request_id' => $request_leave->id
+                                ]);
+                            }
+                        }
+                        }
+                        //end Update if employee have an approved leave
 
 
-            $check_attendance = $user->attendance()->whereBetween('check_in_time', [$today, Carbon::now()->timestamp])->where('user_id',$user->id)->first();
-            $informs=$user->informs()->whereBetween('attendance_date', [$today, Carbon::now()->timestamp])->first();
             if ($check_attendance == null && $informs == null)
             {
                 $late_users_data[]=array('email'=>$user->email,'name'=>$user->name);

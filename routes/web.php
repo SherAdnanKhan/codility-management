@@ -62,6 +62,7 @@ Route::get('/', function () {
 
 
 
+
     });
     Route::group(['middleware' => ['firstLogin','auth','employee']], function () {
 
@@ -89,7 +90,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('tracking','TimeTrackerController@makeTimeTrackReport')->name('time.tracking.search');
     Route::get('tracking/report','TimeTrackerController@index')->name('view.time.tracking');
     Route::resource('approval/request','RequestLeaveController');
-
+    Route::get('/project/project/{id}','ProjectTaskController@project')->name('project.project');
     Route::post('/search/categories/questions','QuestionAnswerController@searchQuestionByCategory')->name('searchQuestionByCategory');
 
 });

@@ -137,7 +137,7 @@
                                             <td>{{$task->date}}</td>
                                             <td>{{$task->created_at->diffForHumans()}}</td>
                                             <td>{{$task->time_take}}</td>
-                                            <td>{{$task->project_id != null ?$task->projects->project_name:''}}</td>
+                                            <td>{{$task->project_id != null ?$task->projects->project_name:''}}{{$task->sub_project != null ?\App\SubProjectTask::where('id',$task->sub_project)->pluck('name'):''}}</td>
                                             <td>{{substr($task->description,0,50 )."..."}}</td>
                                             <td><a href="{{route('task.edit',$task->id)}}"> <span class="fa fa-edit"></span>
                                                 </a>
@@ -222,7 +222,7 @@
                         <div class="form-group-material row">
                             <label for="project" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">
                                 Project</label> <div class="col-sm-12 mb-12 ">
-                                <select  name="project_id" class="form-control ">
+                                <select  name="project_id" class="form-control delete_links">
                                     <option value="" >Select Project</option>
                                     {{$projects=\App\ProjectTask::all()}}
                                     @foreach($projects as $project)
@@ -235,6 +235,14 @@
                                     <strong>{{ $errors->first('project_id') }}</strong>
                                 </span>
                             @endif
+                        </div>
+                        <div  class="form-group-material row view" style="display: none">
+                            <label for='leave_type' class='select-label col-sm-offset-3 col-sm-11 form-control-label view_label'>Select Sub Projects</label>
+                            <div class='col-sm-12  mb-12 '>
+                                <select name='sub_projects'  class='form-control  ajax'>
+                                    <option value="">Select Sub Projects</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group-material">
                             <div class=' bootstrap-iso input-group-material date' >
@@ -306,6 +314,30 @@
             console.log(result);
 
             })
+        });
+        $(".delete_links").change(function() {
+            var project=$(this).val();
+
+            $.get('/project/project/'+project,function (result) {
+                if (result.length == 0){
+                    $(".view").css('display','none');
+                    // $(".ajax").css('display','none');
+                    // $(".view_label").css('display','none');
+
+
+                }else {
+                    for (var i = 0; i < result.length; i++) {
+                        var sub_projects = result[i];
+                        console.log(sub_projects.id);
+                        $(".ajax").append("<option value=" + sub_projects.id + " >" + sub_projects.name + "</option>");
+                    }
+                    console.log(result.length);
+                    $(".view").css('display','block');
+                }
+
+
+            })
+
         });
         $(".show_link").on('click',function() {
             var task=$(this).data("value");

@@ -43,13 +43,20 @@ class ProjectTaskController extends Controller
      */
     public function store(ProjectRequest $projectRequest)
     {
-        $this->validate($projectRequest, [
-            'project_title' => 'required',
-        ]);
+
         $project=ProjectTask::create([
             'project_name'=>
                 $projectRequest->project_title
         ]);
+
+        if ($projectRequest->sub_projects){
+            $sub_projects=explode(',',$projectRequest->sub_projects);
+            foreach ($sub_projects as $items) {
+
+                $project->sub_projects()->create(['name'=>$items]);
+            }
+
+        }
         return redirect()->route('project.index')->with('status','Project Created successfully!');
 
     }
@@ -62,7 +69,7 @@ class ProjectTaskController extends Controller
      */
     public function show($id)
     {
-        //
+        return $id;
     }
 
     /**
@@ -141,6 +148,17 @@ class ProjectTaskController extends Controller
         }else{
 
             return redirect()->back('status','project not found');
+        }
+    }
+    public function project($id)
+    {
+        if ($id){
+            $project=ProjectTask::where('id',$id)->first();
+            if ($project->sub_projects){
+                $result=$project->sub_projects
+                    ->toArray();
+                return $result;
+            }
         }
     }
 

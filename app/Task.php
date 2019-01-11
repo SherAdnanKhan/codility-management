@@ -11,7 +11,7 @@ class Task extends Model
         'time_take',
         'description',
         'date',
-        'project_id'
+        'project_id','sub_project'
     ];
 
     public function getTimeTakeAttribute($value){
@@ -40,6 +40,9 @@ class Task extends Model
     }
     public function projects(){
         return $this->hasOne('App\ProjectTask','id','project_id');
+    }
+    public function sub_projects(){
+        return $this->hasOne('App\SubProjectTask','id','sub_project');
     }
 
 }

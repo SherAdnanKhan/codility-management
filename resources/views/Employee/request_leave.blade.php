@@ -18,7 +18,7 @@
         <div class="Register-form" style="background-color: #fff;">
             <div class="form-inner flex-fill">
                 <div class="card-header">
-                    <h4>Submit Form For Getting Approval </h4>
+                    <h4>Submit Form For Getting Leave Approval </h4>
                 </div>
 
                 <div class="card-body">
@@ -46,29 +46,29 @@
                                 <label for="to_date" class="label-material">To Date</label>
                             </div>
                         </div>
-                        <div class="form-group-material ">
-                            <label for="leave" class="select-label form-control-label ">Required Leave</label>
-                            <select name="leave" id="leave" class="form-control filters ">
-                                <option value="">Please Choose</option>
-                                @php
-                                    $leaves=\App\Leave::all()->sortByDesc('id');
-                                @endphp
-                                @if(isset($leaves))
-                                    @foreach($leaves as $leave)
-                                        @if($leave->public_holiday == false)
-                                        <option  value="{{$leave->id}}">{{$leave->name}}</option>
-                                    @endif
-                                            @endforeach
-                                            
-                                @endif
-                            </select>
-        
-                            @if ($errors->has('leave'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('leave') }}</strong>
-                                    </span>
-                            @endif
-                        </div>
+                        {{--<div class="form-group-material ">--}}
+                            {{--<label for="leave" class="select-label form-control-label ">Required Leave</label>--}}
+                            {{--<select name="leave" id="leave" class="form-control filters ">--}}
+                                {{--<option value="">Please Choose</option>--}}
+                                {{--@php--}}
+                                    {{--$leaves=\App\Leave::all()->sortByDesc('id');--}}
+                                {{--@endphp--}}
+                                {{--@if(isset($leaves))--}}
+                                    {{--@foreach($leaves as $leave)--}}
+                                        {{--@if($leave->public_holiday == false)--}}
+                                        {{--<option  value="{{$leave->id}}">{{$leave->name}}</option>--}}
+                                    {{--@endif--}}
+                                            {{--@endforeach--}}
+                                            {{----}}
+                                {{--@endif--}}
+                            {{--</select>--}}
+        {{----}}
+                            {{--@if ($errors->has('leave'))--}}
+                                {{--<span class="help-block">--}}
+                                        {{--<strong>{{ $errors->first('leave') }}</strong>--}}
+                                    {{--</span>--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
                         <div class="form-group row">
                             <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Describe The Reason</label>
                             <div class="col-sm-12  mb-12 ">
@@ -82,6 +82,42 @@
                         </div>
                         <button type="submit" class="btn btn-outline-success">Request Submit</button>
                     </form>
+                    
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Leave From</th>
+                                <th>Leave TO</th>
+                                <th>Leave Status</th>
+                                <th>Leave Reason</th>
+                                <th>Approved Status</th>
+                
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if(isset($request_leaves))
+                                @foreach($request_leaves as $request_leave)
+                                    <tr>
+                                        <td>{{$request_leave->get_user->name}}</td>
+                                        <td>{{\Carbon\Carbon::createFromTimestamp($request_leave->from_date)->format('d-m-Y')}}</td>
+                                        <td>{{$request_leave->to_date != null ? (\Carbon\Carbon::createFromTimestamp($request_leave->to_date)->format('d-m-Y')):''}}</td>
+                                        <td>{{$request_leave->leave_id != null ? $request_leave->get_leaves->name:''}}</td>
+                                        <td>{{$request_leave->reason}}</td>
+                                        <td>{{$request_leave->approved}}</td>
+                        
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="bootstrap-iso">
+                    {{$request_leaves->links()}}
                 </div>
                 </div>
             </div>
