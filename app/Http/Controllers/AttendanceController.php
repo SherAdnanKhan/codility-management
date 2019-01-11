@@ -35,13 +35,13 @@ class AttendanceController extends Controller
     {
 
         if (Auth::user()->isEmployee()) {
-            $attendances = Attendance::whereUserId(Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
+            $attendances = Attendance::whereUserId(Auth::user()->id)->orderBy('check_in_time', 'desc')->paginate(10);
             $get_tomorrow = Carbon::today()->endOfDay()->timestamp;
             $get_today = Carbon::today()->timestamp;
             $today = Attendance::whereBetween('check_in_time', [$get_today, $get_tomorrow])->Where('user_id', Auth::id())->first();
             return view('Attendance.index', compact('attendances', 'today'));
         } elseif (Auth::user()->isAdmin()) {
-            $attendances = Attendance::orderBy('id', 'desc')->paginate(10);
+            $attendances = Attendance::orderBy('check_in_time', 'desc')->paginate(10);
             $users = User::whereHas('role', function ($q) {
                 $q->whereIn('name', ['Employee']);
             })->where('abended', false)->get();
@@ -267,9 +267,9 @@ class AttendanceController extends Controller
                 $q->whereIn('name', ['Employee']);
             })->where('name','Like','%'.$name.'%')->first();
             if ($user == null) {
-                $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->paginate(10);
+                $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->orderBy('check_in_time', 'desc')->paginate(10);
             } elseif ($user != null) {
-                $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+                $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('check_in_time', 'desc')->paginate(10);
 
             }
             $attendances->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
@@ -278,7 +278,7 @@ class AttendanceController extends Controller
             })->get();
             return view('Attendance.admin_attendance_index', compact('attendances', 'users'));
         } else {
-            $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->paginate(10);
+            $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orderBy('check_in_time', 'desc')->paginate(10);
             $attendances->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             $get_tomorrow = Carbon::today()->endOfDay()->timestamp;
             $get_today = Carbon::today()->timestamp;

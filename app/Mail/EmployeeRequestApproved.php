@@ -17,9 +17,9 @@ class EmployeeRequestApproved extends Mailable
      *
      * @return void
      */
-    public function __construct($request_leave)
+    public function __construct($request_leaves)
     {
-        $this->request_leave=$request_leave;
+        $this->request_leave=$request_leaves;
     }
 
     /**

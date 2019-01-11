@@ -22,7 +22,7 @@ class InformController extends Controller
     public function index()
     {
         //
-        $informs= Inform::orderBy('id','desc')->paginate(10);
+        $informs= Inform::orderBy('attendance_date', 'desc')->paginate(10);
         return view('Admin.Inform.index',compact('informs'));
     }
 
@@ -178,10 +178,10 @@ class InformController extends Controller
         $user=User::where('name','Like','%'.$name.'%')->first();
 
     if ($user) {
-    $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+    $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('attendance_date', 'desc')->paginate(10);
 
     }else{
-    $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->paginate(10);
+    $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->orderBy('attendance_date', 'desc')->paginate(10);
 
     }
 

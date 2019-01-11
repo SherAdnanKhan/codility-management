@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <div class="bootstrap-iso">
-                    {{$request_leaves->links()}}
+                    {{--{{$request_leaves->links()}}--}}
                 </div>
                 </div>
             </div>
