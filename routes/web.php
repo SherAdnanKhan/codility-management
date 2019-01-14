@@ -57,8 +57,7 @@ Route::get('/', function () {
         Route::resource('/task/project','ProjectTaskController');
         Route::get('/search/project','ProjectTaskController@search')->name('project.search');
         Route::post('/task/project/print','ProjectTaskController@print_report')->name('project.print');
-
-
+        Route::get('/all/admins','UserController@indexAdmin')->name('admin.list');
 
 
 

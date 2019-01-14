@@ -86,7 +86,8 @@
                         <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                             <li><a href="{{route('profile.index')}}"><i class="fa fa-users"></i>Employee Lists</a></li>
                             <li><a href="{{route('register')}}"><i class="fa fa-user"></i>Employee Register</a></li>
-                            <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Admin Register</a></li>
+                            <li><a href="{{route('register.admin.form')}}"><i class="fa fa-user-circle"></i>Administrator Register</a></li>
+                            <li><a href="{{route('admin.list')}}"><i class="fa fa-users"></i>Administrator List</a></li>
 
                         </ul>
                     </li>

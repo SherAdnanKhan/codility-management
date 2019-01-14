@@ -261,5 +261,11 @@ class UserController extends Controller
             }
             }
     }
+    public function indexAdmin()
+    {
+        $admins = User::whereHas('role',function ($q){$q->whereIn('name',['Administrator']);})->orderByDesc('id')->paginate(10);
+
+        return view('Admin.admin_list', compact('admins'));
+    }
 }
 
