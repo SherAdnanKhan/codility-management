@@ -86,18 +86,18 @@
 
                                         </div>
     
-                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
-                                            <div class='input-group-material'>
-                                                <input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />
-            
-                                                <label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>
-                                            </div>
-                                            @if ($errors->has('name'))
-                                                <span class="help-block">
-                                            <strong>{{ $errors->first('name') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
+                                        {{--<div class="form-group-material col-sm-3 "style="margin-top: 23px;">--}}
+                                            {{--<div class='input-group-material'>--}}
+                                                {{--<input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />--}}
+            {{----}}
+                                                {{--<label for="name" class="label-material" style="left: 17px">Employee Name (Optional)</label>--}}
+                                            {{--</div>--}}
+                                            {{--@if ($errors->has('name'))--}}
+                                                {{--<span class="help-block">--}}
+                                            {{--<strong>{{ $errors->first('name') }}</strong>--}}
+                                            {{--</span>--}}
+                                            {{--@endif--}}
+                                        {{--</div>--}}
                                         <div class="col-sm-1 " style="margin-top: 27px;">
                                             <button type="submit" class="btn btn-outline-success">Search Leave Request</button>
                                         </div>
