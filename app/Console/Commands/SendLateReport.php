@@ -53,6 +53,7 @@ class SendLateReport extends Command
         $today  = $carbon->startOfDay()->timestamp;
         $late_users=array();
         $late_users_data=array();
+        $late_user_uninforms=array();
 
 
 //        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
@@ -103,19 +104,35 @@ class SendLateReport extends Command
             if ($check_attendance == null && $informs == null)
             {
                 $late_users_data[]=array('email'=>$user->email,'name'=>$user->name);
+                $late_user_uninforms[]=$user->name;
             }
-            if ($check_attendance ==  null){
-
+            if ($check_attendance ==  null && $informs != null){
                 $late_users[] = $user->name;
             }
                         }
                     }
             }
         }
+//if have informs
+        if ((!(empty($late_users))) && empty($late_user_uninforms)) {
 
-        if (!(empty($late_users))) {
-            Mail::send(new MailCheckIn($late_users));
+            Mail::send(new MailCheckIn($late_users,$late_user_uninforms));
         }
+//if have uninforms
+        if ((!(empty($late_user_uninforms))) && empty($late_users)) {
+
+
+
+            Mail::send(new MailCheckIn($late_users,$late_user_uninforms));
+
+        }
+//if have both
+        if ((!(empty($late_user_uninforms)) && (!empty($late_users)))) {
+
+            Mail::send(new MailCheckIn($late_users,$late_user_uninforms));
+
+        }
+
         if (!(empty($late_users) && empty($late_users_data))) {
             foreach ($late_users_data as $late_users_detail) {
                 Mail::send(new MailLateEmployee($late_users_detail));
