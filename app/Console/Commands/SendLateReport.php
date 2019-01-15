@@ -57,7 +57,7 @@ class SendLateReport extends Command
 
 //        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
 
-        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('name','AttaUrRehman')->get();
+        $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
         foreach ($users as $user)
         {
             if($user->checkInTime){

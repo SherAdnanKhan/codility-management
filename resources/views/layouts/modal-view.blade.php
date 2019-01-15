@@ -227,43 +227,19 @@
                                     </span>
                 @endif
             </div>
-            <div class="request_date">
-     
-            <div class="form-group of-button" >
-                <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Approved</label>
-                @php
-                $approved=$request_leave->approved;
-                if ($approved == 'Approved '){
-                $approved_status= true;
-                }else{
-               $approved_status= false;
-                }
-                @endphp
-                
-                <label class="switch" class="col-sm-offset-3 ">
-                    <input type="checkbox"   id="approved"name="approved"  {{$approved_status == true?'checked':''}}>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            </div>
             <div class="form-group of-button decline_group" >
-                <label for="comment" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Decline</label>
-                @php
-                    $approved=$request_leave->approved;
-                    if ($approved == 'Declined'){
-                    $decline_status= true;
-                    }else{
-                   $decline_status= false;
-                    }
-                @endphp
-        
-                <label class="switch" class="col-sm-offset-3 ">
-                    <input type="checkbox" name="decline" id="decline" {{$decline_status == true?'checked':''}} >
-                    <span class="slider round"></span>
-                </label>
+                <div class="switch-field">
+                    <div class="switch-title">Marked Status </div>
+                    <input type="radio" id="switch_3_left" name="status" value="approved" {{$request_leave->approved == 'Approved '?'checked':''}}/>
+                    <label for="switch_3_left">Approved</label>
+                    <input type="radio" id="switch_3_center" name="status" value="not_approved" {{$request_leave->approved == 'Not Approved '?'checked':''}}/>
+                    <label for="switch_3_center">Not Approved</label>
+                    <input type="radio" id="switch_3_right" name="status" value="declined" {{$request_leave->approved == 'Declined'?'checked':''}} />
+                    <label for="switch_3_right">Declined</label>
+                </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-success">Request Approved</button>
+        <button type="submit" class="btn btn-outline-success">Update Request</button>
         <button type="button" id="button_clear" class="btn btn-outline-danger">
             Reset
         </button>

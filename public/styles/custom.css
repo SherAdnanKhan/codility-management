@@ -458,3 +458,61 @@ label.sub_projects {
     -webkit-transition: all 0.2s;
     /* transition: all 0.2s; */
     font-weight: 300;}
+
+
+.switch-title {
+    margin-bottom: 9px;
+    color: #ABAAB3;
+    font-weight: lighter;
+}
+
+.switch-field input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+}
+
+.switch-field label {
+    float: left;
+}
+
+.switch-field label {
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition:    all 0.1s ease-in-out;
+    -ms-transition:     all 0.1s ease-in-out;
+    -o-transition:      all 0.1s ease-in-out;
+    transition:         all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+    cursor: pointer;
+}
+
+.switch-field input:checked + label {
+    background-color: #4162cb;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #ffffff;
+    -webkit-box-shadow: -4px 10px 256px 29px rgba(0,0,0,0.45);
+    -moz-box-shadow: -4px 10px 256px 29px rgba(0,0,0,0.45);
+    box-shadow: -2px 2px 33px 11px rgba(0, 0, 0, 0.22);
+}
+
+.switch-field label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+    border-radius: 0 4px 4px 0;
+}

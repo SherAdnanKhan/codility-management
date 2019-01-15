@@ -133,28 +133,23 @@ class RequestLeaveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-//            'leave' => 'required',
-        ]);
-
         $leave = Leave::whereId($request->leave)->first();
         $request_leave = RequestLeave::whereId($id)->first();
-        if($request->decline == 'on'){
+        if($request->status == 'declined'){
             $request_leave->approved = '2';
             $request_leave->leave_id = $request->leave?$request->leave:null;
             $request_leave->save();
         }
-        if (!($request->decline)) {
-            if ($request->approved == 'on') {
+            if ($request->status == 'approved') {
                 $request_leave->approved = true;
                 $request_leave->leave_id = $request->leave?$request->leave:null;
                 $request_leave->save();
-            } elseif ($request->approved == null) {
+            } elseif ($request->status == 'not_approved') {
                 $request_leave->approved = false;
                 $request_leave->leave_id = $request->leave?$request->leave:null;
                 $request_leave->save();
             }
-        }
+
         $request_leaves = RequestLeave::whereId($id)->first();
         $send_request_mail=Mail::send(new EmployeeRequestApproved($request_leaves));
 
