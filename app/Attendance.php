@@ -38,25 +38,45 @@ class Attendance extends Model
     {
         switch ($value)
             {
-                case "check_in":
-                    return 'On Time';
-                    break;
-                case "late":
-                    return 'UnInformed Late';
-                    break;
-                case "LeaveBySystem":
-                    return 'Informed-Leave Marked By System ';
-                    break;
-                case "AbsentBySystem":
-                    return 'Absent Marked By System';
-                    break;
-                case "LeaveByAdmin":
-                    return 'Leave Marked By Admin';
+//                case "check_in":
+//                    return 'On Time';
+//                    break;
+//                case "late":
+//                    return 'UnInformed Late';
+//                    break;
+//                case "LeaveBySystem":
+//                    return 'Informed-Leave Marked By System ';
+//                    break;
+//                case "AbsentBySystem":
+//                    return 'Absent Marked By System';
+//                    break;
+//                case "LeaveByAdmin":
+//                    return 'Leave Marked By Admin';
+//            case "inform":
+//                return 'Informed';
+//                default:
+//                    return 'No Status';
+            case "check_in":
+                return 'On Time';
+                break;
+            case "late":
+                return 'UnInformed late';
+                break;
+            case "LeaveBySystem":
+                return 'Informed leave';
+                break;
+            case "AbsentBySystem":
+                return 'Un-Informed leave';
+                break;
+            case "LeaveByAdmin":
+                return 'Leave Marked By Admin';
             case "inform":
                 return 'Informed';
-                default:
-                    return 'No Status';
-            }
+            default:
+                return 'No Status';
+
+        }
+
     }
     public function getCheckOutTimeAttribute($value){
         if($value== true) {
