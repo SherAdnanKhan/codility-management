@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helper\Helper;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -54,11 +55,12 @@ class YearlyReport extends Command
 
             if ($user_attendance != null) {
                 foreach ($user_attendance as $attendance) {
-                    if (($attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
+                    if((Helper::check_leaveby_admin($attendance->getOriginal('attendance_type')) == true ) || ( Helper::check_informed_leave($attendance->getOriginal('attendance_type')) == true )){
+//                    if (($attendance->getOriginal('attendance_type') == 'LeaveByAdmin') || ($attendance->getOriginal('attendance_type') == 'LeaveBySystem')) {
                         $total_absent += 1;
 
                     }
-                    if ($attendance->attendance_type == 'Absent Marked By System') {
+                    if(Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true){
                         $total_absent += 1;
                     }
 
@@ -70,11 +72,11 @@ class YearlyReport extends Command
             if ($user_current_month_attendance != null){
                 foreach ($user_current_month_attendance as $current_month_attendance) {
 
-                    if (($current_month_attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
+                    if ((Helper::check_leaveby_admin($current_month_attendance->getOriginal('attendance_type')) == true) || (Helper::check_informed_leave($attendance->getOriginal('attendance_type')) == true )) {
                         $current_month_absent += 1;
 
                     }
-                    if ($current_month_attendance->attendance_type == 'Absent Marked By System') {
+                    if (Helper::check_uninformed_leave($current_month_attendance->getOriginal('attendance_type')) == true) {
                         $current_month_absent += 1;
                     }
                 }

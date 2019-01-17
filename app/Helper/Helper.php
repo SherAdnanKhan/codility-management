@@ -2,7 +2,9 @@
 
 namespace App\Helper;
 
-class Helper
+use App\User;
+
+class Helper extends User
 {
     public static function all_admins()
     {
@@ -15,5 +17,48 @@ class Helper
         return $all_admins;
     }
 
+    public static function check_uninformed_late($value){
+        if ($value == 'late'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static function check_informed_late($value){
+        if ($value == 'inform'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static function check_informed_leave($value){
+        if ($value == 'LeaveBySystem'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static function check_uninformed_leave($value){
+        if ($value == 'AbsentBySystem'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static function check_leaveby_admin($value){
+        if ($value == 'LeaveByAdmin'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static function check_on_time($value){
+        if ($value == 'check_in'){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

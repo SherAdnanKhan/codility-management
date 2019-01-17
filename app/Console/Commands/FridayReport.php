@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helper\Helper;
 use App\Mail\EmployeeLessTimeConsumed;
 use App\Mail\WeeklyReport;
 use App\User;
@@ -69,18 +70,19 @@ class FridayReport extends Command
                     {
                         //check if employee have late
 
-                        if ($attendance->attendance_type =='UnInformed Late'){
+                        if (Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true){
                             $sum_lates+=1;
                         }
 
-                        if(($attendance->attendance_type =='Leave Marked By Admin') || ($attendance->attendance_type =='Informed-Leave Marked By System ')){
+                        if((Helper::check_leaveby_admin($attendance->getOriginal('attendance_type')) == true ) || ( Helper::check_informed_leave($attendance->getOriginal('attendance_type')) == true )){
                             $sum_leaves+=1;
 
                         }
-                        if($attendance->attendance_type =='Absent Marked By System'){
+                        if(Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true){
                             $absent+=1;
                         }
-                        if($attendance->attendance_type =='Informed'){
+                        if(Helper::check_informed_late($attendance->getOriginal('attendance_type')) ==true){
+
                             if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"){
                                 $informed_late+=1;
                             }
