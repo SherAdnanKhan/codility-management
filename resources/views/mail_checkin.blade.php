@@ -4,6 +4,8 @@
 @component('mail::panel')
 These Employees are not marked CHECK IN or not present in Office Yet .
 @endcomponent
+@if(isset($get_users_collection))
+The following list having those employees who have informed
 @component('mail::table')
     |  Employee  Name     | Informed At                                                                                                                                                                                                                                     |        Informed Type                                                                            |   Inform status                               | Informed Reason              |
     | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------- | ---------------------------- |
@@ -12,6 +14,23 @@ These Employees are not marked CHECK IN or not present in Office Yet .
     @endforeach
 
 @endcomponent
+
+@endif
+@if(isset($uninform))
+ The following list having those employees who have Un-informed
+@component('mail::table')
+        |  Employee  Name     |
+        | ------------------- |
+        @foreach($uninform as $uninform_user)
+        |     {{$uninform_user->name}} |
+        @endforeach
+    
+@endcomponent
+
+@endif
+
+
+
 Thanks,
 {{ config('app.name') }}
 @endcomponent

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 class MailCheckIn extends Mailable
 {
     public $get_users;
-
+    public $uninforms;
     use Queueable, SerializesModels;
 
     /**
@@ -22,9 +22,10 @@ class MailCheckIn extends Mailable
      *
      * @return void
      */
-    public function __construct($late_users)
+    public function __construct($late_users,$late_user_uninforms)
     {
         $this->get_users = $late_users;
+        $this->uninforms=$late_user_uninforms;
 
     }
 
@@ -37,9 +38,34 @@ class MailCheckIn extends Mailable
     {
 
         $users = $this->get_users;
-        $get_users_collection = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->whereIn('name',$users)->get();
-        $to = Helper::all_admins();
+        $uninforms=$this->uninforms;
 
-        return $this->markdown('mail_checkin',compact('users' ,'get_users_collection'))->to($to)->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
+        if ((!(empty($users))) && empty($uninforms) ) {
+            $get_users_collection = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->whereIn('name', $users)->get();
+            $uninform=null;
+//            echo ('if  informs');
+        }
+        if ((!(empty($uninforms))) && empty($users)) {
+            $uninform = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->whereIn('name', $uninforms)->get();
+            $get_users_collection=null;
+//            echo ('if uninforms');
+
+        }
+        if ((!(empty($uninforms))) && (!(empty($users)))) {
+            $uninform = User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->whereIn('name', $uninforms)->get();
+            $get_users_collection=User::whereHas('role', function ($q) {
+                $q->whereIn('name', ['Employee']);
+            })->whereIn('name', $users)->get();
+//            echo ('if both');
+
+        }
+        $to = Helper::all_admins();
+        return $this->markdown('mail_checkin',compact('users' ,'get_users_collection','uninform'))->to($to)->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
     }
 }
