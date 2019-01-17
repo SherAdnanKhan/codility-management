@@ -23,7 +23,7 @@ Please Note that short hours could effect your annual evaluation report.<br>
 @component('mail::table')
     |      Total Hours                 |       Hours Logged             |      Less Hours                   |
     | -------------------------------- | ------------------------------ | --------------------------------- |
-    | {{$user_detail['requiredWithoutCompansetionTime']}} | {{$user_detail['loggedTime']}} |     {{$user_detail['lessHours']}} |
+    | {{$user_detail['requiredWithoutCompansetionTime']}} | {{$user_detail['loggedTime']}} |     {{$user_detail['lessTimeWithoutCompensation']}} |
 @endcomponent
 From HR Department, <br>{{ config('app.name') }}<br>
 
