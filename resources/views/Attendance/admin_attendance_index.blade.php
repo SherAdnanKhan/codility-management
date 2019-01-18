@@ -127,7 +127,7 @@
                                 @if($attendances)
                                     @foreach($attendances as $attendance)
                                        
-                                        <tr style="color: {{\App\Helper\Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true?'red':(\App\Helper\Helper::check_informed_late($attendance->getOriginal('attendance_type'))== true ?'#f17707':(\App\Helper\Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true ?'#1300f7':'green'))}}">
+                                        <tr style="color: {{\App\Helper\Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true?'red':(\App\Helper\Helper::check_informed_late($attendance->getOriginal('attendance_type'))== true ?'#f17707':(\App\Helper\Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true ?'#8a0000':'#067d11'))}}">
                                             {{--<tr style="color:{{$attendance->attendance_type=='Late'?'red':'green'}};">--}}
     
                                             <td>{{$attendance->user->name}}</td>
