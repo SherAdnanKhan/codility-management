@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Attendance;
+use App\Helper\Helper;
 use App\Inform;
 use App\User;
 use Carbon\Carbon;
@@ -320,11 +321,14 @@ class AttendanceController extends Controller
             $user_attendance = $user->attendance()->whereBetween('check_in_time', [$start_search_date->timestamp, $end_search_date->timestamp])->orderBy('id', 'desc')->get();
             if ($user_attendance != null) {
                 foreach ($user_attendance as $attendance) {
-                    if (($attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
+
+                    if((Helper::check_leaveby_admin($attendance->getOriginal('attendance_type')) == true ) || ( Helper::check_informed_leave($attendance->getOriginal('attendance_type')) == true )){
+//                    if (($attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
                         $total_absent += 1;
 
                     }
-                    if ($attendance->attendance_type == 'Absent Marked By System') {
+                    if(Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true){
+//                    if ($attendance->attendance_type == 'Absent Marked By System') {
                         $total_absent += 1;
                     }
                     $inform_get =$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp);
@@ -339,6 +343,7 @@ class AttendanceController extends Controller
 
                 }
             }
+            echo ($total_absent.$attendance->user->name);
             $sub_of_public_holiday=abs($this->public_holiday - $total_absent);
             $collection->put('total_absent', $sub_of_public_holiday + $user->abended);
             $now_month = Carbon::now()->month;
@@ -353,6 +358,7 @@ class AttendanceController extends Controller
             $user_details[] = array($collection->all());
 
         }
+
         if (!empty($user_details)) {
             Session::flash('status', 'Employee Detail of required ERA ');
 
@@ -400,19 +406,22 @@ class AttendanceController extends Controller
                     //check if employee have check in time in attendance
                     if ($attendance->check_in_time) {
                         //check if employee have late
-
-                        if ($attendance->attendance_type == 'UnInformed Late') {
+                        if (Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true){
+//                        if ($attendance->attendance_type == 'UnInformed Late') {
                             $sum_lates += 1;
                         }
-
-                        if (($attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
+                        if((Helper::check_leaveby_admin($attendance->getOriginal('attendance_type')) == true ) || ( Helper::check_informed_leave($attendance->getOriginal('attendance_type')) == true )){
+//                        if (($attendance->attendance_type == 'Leave Marked By Admin') || ($attendance->attendance_type == 'Informed-Leave Marked By System ')) {
                             $sum_leaves += 1;
 
                         }
-                        if ($attendance->attendance_type == 'Absent Marked By System') {
+                        if(Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true){
+
+//                        if ($attendance->attendance_type == 'Absent Marked By System') {
                             $absent += 1;
                         }
-                        if ($attendance->attendance_type == 'Informed') {
+                        if(Helper::check_informed_late($attendance->getOriginal('attendance_type')) ==true){
+//                        if ($attendance->attendance_type == 'Informed') {
                             if ($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp, \Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE") {
                                 $informed_late += 1;
                             }

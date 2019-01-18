@@ -127,13 +127,18 @@
                                 @if($attendances)
                                     @foreach($attendances as $attendance)
                                        
-                                        <tr style="color: {{$attendance->attendance_type=='Late'?'red':'green'}}">
+                                        <tr style="color: {{\App\Helper\Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true?'red':(\App\Helper\Helper::check_informed_late($attendance->getOriginal('attendance_type'))== true ?'#f17707':(\App\Helper\Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true ?'#8a0000':'#067d11'))}}">
+                                            {{--<tr style="color:{{$attendance->attendance_type=='Late'?'red':'green'}};">--}}
+    
                                             <td>{{$attendance->user->name}}</td>
                                             <td>{{$attendance->check_in_time}}</td>
                                             <td>{{$attendance->check_out_time?$attendance->check_out_time:'Not Inserted'}}</td>
                                             <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
                                             <td>{{$attendance->time_spent}}</td>
-                                            <td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">{{$attendance->attendance_type}}
+                                            <td style= "color:{{\App\Helper\Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true? 'red':''}}">
+                                                {{--<td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">--}}
+    
+                                                {{$attendance->attendance_type}}
                                                 @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp) )
 
                                                     {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"?'LATE':''}}

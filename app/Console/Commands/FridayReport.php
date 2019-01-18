@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helper\Helper;
 use App\Mail\EmployeeLessTimeConsumed;
 use App\Mail\WeeklyReport;
 use App\User;
@@ -69,18 +70,19 @@ class FridayReport extends Command
                     {
                         //check if employee have late
 
-                        if ($attendance->attendance_type =='UnInformed Late'){
+                        if (Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true){
                             $sum_lates+=1;
                         }
 
-                        if(($attendance->attendance_type =='Leave Marked By Admin') || ($attendance->attendance_type =='Informed-Leave Marked By System ')){
+                        if((Helper::check_leaveby_admin($attendance->getOriginal('attendance_type')) == true ) || ( Helper::check_informed_leave($attendance->getOriginal('attendance_type')) == true )){
                             $sum_leaves+=1;
 
                         }
-                        if($attendance->attendance_type =='Absent Marked By System'){
+                        if(Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true){
                             $absent+=1;
                         }
-                        if($attendance->attendance_type =='Informed'){
+                        if(Helper::check_informed_late($attendance->getOriginal('attendance_type')) ==true){
+
                             if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"){
                                 $informed_late+=1;
                             }
@@ -143,12 +145,14 @@ class FridayReport extends Command
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
                 $total_day_time =$subtract_time * abs($subtract_absent_days);
                 $asdf=$total_day_time;
+                $lessTimeWithoutCompensation=abs($total_day_time - $total_minutes);
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
                 $getlessTime= +($compensate - $total_minutes);
                 $lessTime=abs($getlessTime);
                 if ($total_minutes <= $compensate){
+                    $lessTimeWithoutCompensationTime=sprintf("%02d:%02d", floor($lessTimeWithoutCompensation/60), $lessTimeWithoutCompensation%60);
                     $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
                     $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($asdf/60), $asdf%60);
                     $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
@@ -157,6 +161,7 @@ class FridayReport extends Command
                     $concatinate=$collection->put('requiredTime',$requiredTime);
                     $concatinate=$collection->put('lessHours',$lessHours);
                     $concatinate=$collection->put('requiredWithoutCompansetionTime',$requiredWithoutCompansetionTime);
+                    $concatinate=$collection->put('lessTimeWithoutCompensation',$lessTimeWithoutCompensationTime);
                     $concatinate=$collection->put('user_id',$user_attendance->id);
 
                     $user_name[]=array($concatinate->all());
@@ -203,11 +208,13 @@ class FridayReport extends Command
                 });
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
                 $total_day_time =$subtract_time * abs($subtract_absent_days);
+                $lessTimeWithoutCompensation=abs($total_day_time - $total_minutes);
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
                 $lessTime= +($compensate - $total_minutes);
                 $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
+                $lessTimeWithoutCompensationTime=sprintf("%02d:%02d", floor($lessTimeWithoutCompensation/60), $lessTimeWithoutCompensation%60);
                 $requiredTime=sprintf("%02d:%02d", floor($compensate/60), $compensate%60);
                 $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($total_day_time/60), $total_day_time%60);
                 $lessHours=sprintf("%02d:%02d", floor($lessTime/60), $lessTime%60);
@@ -218,6 +225,7 @@ class FridayReport extends Command
                 $concatinate=$collection->put('lessHours',$lessHours);
                 $concatinate=$collection->put('email',$user_attendance->email);
                 $concatinate=$collection->put('requiredWithoutCompansetionTime',$requiredWithoutCompansetionTime);
+                $concatinate=$collection->put('lessTimeWithoutCompensation',$lessTimeWithoutCompensationTime);
                 $concatinate=$collection->put('user_id',$user_attendance->id);
                 $user_name[]=array($concatinate->all());
                 // $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
