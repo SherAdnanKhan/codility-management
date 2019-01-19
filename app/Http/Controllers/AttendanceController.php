@@ -343,16 +343,19 @@ class AttendanceController extends Controller
 
                 }
             }
-            echo ($total_absent.$attendance->user->name);
+//            echo ($total_absent.$attendance->user->name);
             $sub_of_public_holiday=abs($this->public_holiday - $total_absent);
             $collection->put('total_absent', $sub_of_public_holiday + $user->abended);
             $now_month = Carbon::now()->month;
             if (!((Carbon::parse($user->joiningDate)->month == $now_month) && (Carbon::parse($user->joiningDate)->year == Carbon::now()->year))) {
-                $this->get_employement_month = ((Carbon::parse($user->joiningDate)->month - 1) - $now_month);
+                $joiningDate=Carbon::parse($user->joiningDate);
+                $this->get_employement_month = $joiningDate->diffInMonths(Carbon::now());
+//                dd($this->get_employement_month);
             }
             if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month = 1;
             }
+
             $allowed_absent = abs($this->get_employement_month) * 1.5  ;
             $collection->put('allowed_absent', $allowed_absent);
             $user_details[] = array($collection->all());
@@ -687,6 +690,12 @@ class AttendanceController extends Controller
         }
         }
 
-
+    public function compensatory()
+    {
+        $users = User::whereHas('role', function ($q) {
+            $q->whereIn('name', ['Employee']);
+        })->where('abended', false)->get();
+        return view('Report.compensatory', compact('users'));
+    }
 
 }

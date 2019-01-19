@@ -1,4 +1,7 @@
 /* your styles go here */
+table {
+    font-size: 13px !important;
+}
 .clear{
     clear: both;
 }

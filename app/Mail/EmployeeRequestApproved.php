@@ -33,7 +33,7 @@ class EmployeeRequestApproved extends Mailable
         $to =$user->email;
         $get_leave_request=$this->request_leave;
 
-        return $this->markdown('mail_employee_leave_request',compact('get_leave_request','user'))->to($to)->subject("Status Of Requested Leave ". \Carbon\Carbon::now()->format('d-m-Y h:i'));
+        return $this->markdown('mail_employee_leave_request',compact('get_leave_request','user'))->to($to)->subject("Leave Request Decline/Approved ". \Carbon\Carbon::now()->format('d-m-Y h:i'));
 
     }
 }

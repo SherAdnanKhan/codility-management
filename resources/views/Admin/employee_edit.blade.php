@@ -40,6 +40,56 @@
                                     @endif
                                 <label for="email" class="label-material">E-Mail Address</label>
                                  </div>
+                                <div class="form-group-material">
+                                    <input autocomplete="off" id="cnic" type="text"  class="input-material" name="cnic" value="{{ $user->cnic_no }}" required>
+            
+                                    @if ($errors->has('cnic'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('cnic') }}</strong>
+                                    </span>
+                                    @endif
+                                    <label for="cnic" class="label-material">CNIC No</label>
+                                </div>
+                                <div class="form-group-material">
+                                    <input autocomplete="off" id="compensatory_leaves" type="number"  class="input-material" name="compensatory_leaves" value="{{ $user->compensatory_leaves }}" required>
+            
+                                    @if ($errors->has('compensatory_leaves'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('compensatory_leaves') }}</strong>
+                                    </span>
+                                    @endif
+                                    <label for="cnic" class="label-material">Compensatory Leaves (Optional)</label>
+                                </div>
+                                <div class="form-group-material">
+                                    <input autocomplete="off" id="ntn" type="text"  class="input-material" name="ntn" value="{{ $user->ntn_no }}" required>
+            
+                                    @if ($errors->has('ntn'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('ntn') }}</strong>
+                                    </span>
+                                    @endif
+                                    <label for="ntn" class="label-material">NTN No</label>
+                                </div>
+                                <div class="form-group-material">
+                                    <input autocomplete="off" id="account_no" type="text"  class="input-material" name="account_no" value="{{ $user->bank_account_no }}" required>
+            
+                                    @if ($errors->has('account_no'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('account') }}</strong>
+                                    </span>
+                                    @endif
+                                    <label for="account_no" class="label-material">Bank Account No</label>
+                                </div>
+                                <div class="form-group-material">
+                                    <input autocomplete="off" id="blood_group" type="text"  class="input-material" name="blood_group" value="{{ $user->blood_group }}">
+            
+                                    @if ($errors->has('blood_group'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('blood_group') }}</strong>
+                                    </span>
+                                    @endif
+                                    <label for="blood_group" class="label-material">Blood Group</label>
+                                </div>
                             @if ($user->isEmployee())
 
                                 <div class="form-group-material">

@@ -38,9 +38,7 @@ class MailReport extends Mailable
         $report_tasks = $this->tasks;
         $report_attendance = $this->get_attendances;
         $report_users = $this->users;
-
         $to = Helper::all_admins();
-
 
         return $this->markdown('mail_report', compact('report_attendance', 'report_tasks', 'report_users'))->to($to)->subject("Daily Report ".Carbon::yesterday()->format('d-m-Y'));
 
