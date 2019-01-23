@@ -173,14 +173,16 @@ class InformController extends Controller
             $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
             $this->end_date=Carbon::now()->timestamp;
         }
-        $name=$request->name?$request->name:'';
+        $name=$request->name?$request->name:null;
 
         $user=User::where('name','Like','%'.$name.'%')->first();
 
-    if ($user) {
+    if ($name != null) {
     $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('attendance_date', 'desc')->paginate(10);
 
-    }else{
+    }
+
+    if ($name == null){
     $informs = Inform::whereBetween('attendance_date', [$this->start_date, $this->end_date])->orderBy('attendance_date', 'desc')->paginate(10);
 
     }

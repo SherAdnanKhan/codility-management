@@ -53,8 +53,9 @@ class Attendance extends Model
             case "LeaveByAdmin":
                 return 'Leave Marked By Admin';
             case "inform":
-                return 'No Status';
-
+                return 'Informed';
+            default:
+               return "No Status";
         }
 
     }
