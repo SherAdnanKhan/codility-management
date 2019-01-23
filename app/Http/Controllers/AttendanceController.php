@@ -254,6 +254,7 @@ class AttendanceController extends Controller
             'end_date' => 'required_if:filter,custom',
 
         ]);
+
         if ($request->filter == 'custom') {
             $this->start_date = Carbon::parse($request->start_date)->timestamp;
             $this->end_date = Carbon::parse($request->end_date)->timestamp;
@@ -262,14 +263,18 @@ class AttendanceController extends Controller
             $this->start_date = $request->filter == 'today' ? $start_date->startOfDay()->timestamp : ($request->filter == 'week' ? $start_date->startOfWeek()->timestamp : ($request->filter == 'month' ? $start_date->startOfMonth()->timestamp : ($request->filter == 'year' ? $start_date->startOfYear()->timestamp : '')));
             $this->end_date = Carbon::now()->timestamp;
         }
-        $name = $request->name ? $request->name : '';
+        $name = $request->name ? $request->name : null;
+
         if (Auth::user()->isAdmin()) {
             $user = User::whereHas('role', function ($q) {
                 $q->whereIn('name', ['Employee']);
             })->where('name','Like','%'.$name.'%')->first();
-            if ($user == null) {
+            if ($name == null) {
+
                 $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->orderBy('check_in_time', 'desc')->paginate(10);
-            } elseif ($user != null) {
+
+            } elseif ($name != null) {
+
                 $attendances = Attendance::whereBetween('check_in_time', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('check_in_time', 'desc')->paginate(10);
 
             }
