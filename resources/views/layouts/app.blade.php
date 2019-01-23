@@ -118,7 +118,8 @@
                                 <i class="fa fa-users"></i> Reports &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                             </a>
                             <ul id="exampledropdownDropdowns" class="collapse list-unstyled ">
-                                <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Absent </a></li>
+                                <li><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Leave Monthly</a></li>
+                                <li><a href="{{route('view.admin.report.compensatory')}}"><i class="fa fa-file"></i>Generate Leave Yearly</a></li>
                                 <li><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Hours Detail</a></li>
                                 <li><a href="{{route('view.admin.inaccuracy.report')}}"><i class="fa fa-file"></i>Monthly Inaccuracy  </a></li>
                                 <li><a href="{{route('view.time.tracking')}}"><i class="fa fa-clock"></i>Time Tracking </a></li>

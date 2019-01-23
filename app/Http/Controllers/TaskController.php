@@ -23,11 +23,11 @@ class TaskController extends Controller
     {
 
         if (Auth::user()->isEmployee()) {
-            $tasks = User::findOrFail(Auth::id())->tasks()->orderBy('id', 'desc')->paginate(10);
+            $tasks = User::findOrFail(Auth::id())->tasks()->orderBy('date', 'desc')->paginate(10);
             return view('Task.index', compact('tasks'));
         }
         else{
-            $tasks =Task::orderBy('id', 'desc')->paginate(10);
+            $tasks =Task::orderBy('date', 'desc')->paginate(10);
             return view('Task.admin_index',compact('tasks'));
         }
         }
@@ -214,7 +214,7 @@ class TaskController extends Controller
             })->where('name','Like','%'.$name.'%')->first();
             if ($user) {
                 if ($request->download){
-                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->get();
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('date', 'desc')->get();
                     $str = $name.Carbon::now() . '.csv';
                     header('Content-Type: text/csv');
                     header('Content-Disposition: attachment; filename='. $str);
@@ -231,7 +231,7 @@ class TaskController extends Controller
                     fclose($fh);
                     return $name.'`s Task Complete`';
                 }else {
-                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->paginate(10);
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('date', 'desc')->paginate(10);
                 }
             }else{
                 if ($request->download){
@@ -251,7 +251,7 @@ class TaskController extends Controller
                     fclose($fh);
                     return ' Task Complete';
                 }else {
-                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->paginate(10);
+                    $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->orderBy('date', 'desc')->paginate(10);
                 }
             }
 
@@ -259,7 +259,7 @@ class TaskController extends Controller
             return view('Task.admin_index', compact('tasks'));
         }
         else{
-            $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orWhere('description',$request->description)->paginate(10);
+            $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', Auth::user()->id)->orWhere('description',$request->description)->orderBy('date', 'desc')->paginate(10);
             $tasks->withPath("task?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
             return view('Task.index', compact('tasks'));
         }

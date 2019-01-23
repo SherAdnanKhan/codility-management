@@ -2,6 +2,11 @@
 @section('title')
     <title> {{config('app.name')}} | Register Employee</title>
 @endsection
+@section('page_styles')
+    
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
+@endsection
 @section('body')
     <div class="container" style="margin-top: 5%">
         <div class="">
@@ -33,6 +38,46 @@
                                 <label for="email" class="label-material">E-Mail Address</label>
                             </div>
                             <div class="form-group-material">
+                                <input autocomplete="off" id="cnic" type="text"  class="input-material" name="cnic" value="{{ old('cnic') }}" required>
+        
+                                @if ($errors->has('cnic'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('cnic') }}</strong>
+                                    </span>
+                                @endif
+                                <label for="cnic" class="label-material">CNIC No</label>
+                            </div>
+                            <div class="form-group-material">
+                                <input autocomplete="off" id="ntn" type="text"  class="input-material" name="ntn" value="{{ old('ntn') }}" required>
+        
+                                @if ($errors->has('ntn'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('ntn') }}</strong>
+                                    </span>
+                                @endif
+                                <label for="ntn" class="label-material">NTN No</label>
+                            </div>
+                            <div class="form-group-material">
+                                <input autocomplete="off" id="account_no" type="text"  class="input-material" name="account_no" value="{{ old('account_no') }}" required>
+        
+                                @if ($errors->has('account_no'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('account') }}</strong>
+                                    </span>
+                                @endif
+                                <label for="account_no" class="label-material">Bank Account No</label>
+                            </div>
+                            <div class="form-group-material">
+                                <input autocomplete="off" id="blood_group" type="text"  class="input-material" name="blood_group" value="{{ old('blood_group') }}">
+        
+                                @if ($errors->has('blood_group'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('blood_group') }}</strong>
+                                    </span>
+                                @endif
+                                <label for="blood_group" class="label-material">Blood Group</label>
+                            </div>
+                            <div class="form-group-material">
                                 <input autocomplete="off" id="designation" type="text"  class="input-material" name="designation" value="{{ old('designation') }}" required>
                                 @if ($errors->has('designation'))
                                     <span class="help-block">
@@ -41,14 +86,20 @@
                                 @endif
                                 <label for="email" class="label-material ">Designation</label>
                             </div>
+                            
+
                             <div class="form-group-material">
-                                <input autocomplete="off" id="joiningDate" type="date"  class="input-material" name="joiningDate" value="{{ old('joiningDate') }}" required autofocus>
+                                <div class=' bootstrap-iso input-group-material date' >
+                                    <input autocomplete="off" type='text' id='joiningDate' name="joiningDate"   value="{{old('joiningDate')}}" class="input-material" />
+    
+                                    <label for="joiningDate" class="label-material">Date Of Joining</label>
+                                </div>
                                 @if ($errors->has('joiningDate'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('joiningDate') }}</strong>
                                     </span>
                                 @endif
-                                <label for="joiningDate" class="label-material active">Joining Date</label>
+    
                             </div>
                             <div class="form-group-material">
                                 <input id="password" type="password"  class="input-material" name="password" required>
@@ -113,6 +164,16 @@
     </div>
 @endsection
 @section('page_scripts')
+    <script src="{{asset('scripts/moment.js')}}"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
+    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#joiningDate').datetimepicker({
+                format:'YYYY-MM-DD'
+            });
+        });
+    </script>
     <script type="text/javascript">
         $('#button_clear').click(function(){
             $('#register input[type="text"]').val('');

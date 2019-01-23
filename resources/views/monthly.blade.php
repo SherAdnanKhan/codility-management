@@ -5,11 +5,11 @@
 The Following are the Employee list
 @endcomponent
 @component('mail::table')
-    |      Employee  Name |      Total Hours    |      Hours Logged   |      Less Hours     |      Total UnInformed Late     |      Total Informed Late     |      Total Leaves    |      Total Absent     |
-    | ------------------- | ------------------- | ------------------- | ------------------- |------------------------------- |----------------------------- |--------------------- |---------------------- |
+    |      Employee  Name |      Total Hours                                       |        Logged                                        |         Less                                        |       Informed late      | UnInformed Late  | Informed Leaves   | UnInformed Leaves  |
+    | ------------------- | ------------------------------------------------------ | ---------------------------------------------------- | --------------------------------------------------- |--------------------------|----------------- |------------------ |------------------- |
     @foreach($employee_names as $item)
         @foreach($item as $user)
-            |     {{$user['name']}}      |     {{\App\Attendance::mktimesimple($user['requiredTime'])}}       |     {{\App\Attendance::mktimesimple($user['loggedTime'])}}       |     {{\App\Attendance::mktimesimple($user['lessHours'])}}  |{{$user['late']}} |{{$user['informed_late']}} |{{$user['leave']}} |{{$user['absent']}} |
+    | {{$user['name']}}   |{{\App\Attendance::mktimesimple($user['requiredTime'])}}|{{\App\Attendance::mktimesimple($user['loggedTime'])}}|{{\App\Attendance::mktimesimple($user['lessHours'])}}|{{$user['informed_late']}}|{{$user['late']}} |{{$user['leave']}} |{{$user['absent']}} |
         @endforeach
     @endforeach
 

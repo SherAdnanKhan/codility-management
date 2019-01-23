@@ -96,17 +96,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'confirm_password' => 'required|same:password',
-            'name' => 'required',
-            'designation'=>'required'
+            'email'                 => 'required|email|unique:users',
+            'password'              => 'required|min:6',
+            'confirm_password'      => 'required|same:password',
+            'name'                  => 'required',
+            'designation'           => 'required',
+
         ]);
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'designation' => $request->designation,
+            'name'                  => $request->name,
+            'email'                 => $request->email,
+            'password'              => bcrypt($request->password),
+            'designation'           => $request->designation,
 
 
         ]);
@@ -153,20 +154,29 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'image' => 'mimes:jpeg,jpg'
+            'image'                 => 'mimes:jpeg,jpg',
+            'cnic'                  => 'integer',
+            'ntn'                   => 'integer',
+            'account_no'            => 'integer'
         ]);
         $user = User::findOrFail($id);
 
         if (Auth::user()->isAdmin()){
             $check_in_time = Carbon::parse($request->check_in_time )->timestamp;
             $check_out_time = Carbon::parse( $request->check_out_time )->timestamp;
+
             $update= User::whereId($id)->update([
-                'abended'           =>$request->abended?true:false,
-                'email'             => $request->email,
-                'name'              => $request->name,
-                'checkInTime'       =>$check_in_time,
-                'checkOutTime'      =>$check_out_time,
-                'opening_balance'   =>$request->opening_balance?$request->opening_balance:false
+                'abended'               => $request->abended?true:false,
+                'email'                 => $request->email,
+                'name'                  => $request->name,
+                'checkInTime'           => $check_in_time,
+                'checkOutTime'          => $check_out_time,
+                'opening_balance'       => $request->opening_balance?$request->opening_balance:false,
+                'cnic_no'                  => $request->cnic?$request->cnic:null,
+                'ntn_no'                   => $request->ntn?$request->ntn:null,
+                'bank_account_no'            => $request->account_no?$request->account_no:null,
+                'blood_group'           => $request->blood_group?$request->blood_group:null,
+                'compensatory_leaves'   => $request->compensatory_leaves?$request->compensatory_leaves:$user->compensatory_leaves,
             ]);
         } else{
             $update= User::whereId($id)->update([

@@ -38,7 +38,14 @@ class User extends Authenticatable
         'breakAllowed',
         'workingDays',
         'abendend',
-        'imperative_minutes'
+        'imperative_minutes',
+        'compensatory_leaves',
+        'allotted_leaves',
+        'count_use_leaves',
+        'cnic_no',
+        'ntn_no',
+        'bank_account_no',
+        'blood_group'
     ];
 
     /**
