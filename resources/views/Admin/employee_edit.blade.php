@@ -41,7 +41,7 @@
                                 <label for="email" class="label-material">E-Mail Address</label>
                                  </div>
                                 <div class="form-group-material">
-                                    <input autocomplete="off" id="cnic" type="text"  class="input-material" name="cnic" value="{{ $user->cnic_no }}" required>
+                                    <input autocomplete="off" id="cnic" type="text"  class="input-material" name="cnic" value="{{ $user->cnic_no }} " required>
             
                                     @if ($errors->has('cnic'))
                                         <span class="help-block">
@@ -51,7 +51,7 @@
                                     <label for="cnic" class="label-material">CNIC No</label>
                                 </div>
                                 <div class="form-group-material">
-                                    <input autocomplete="off" id="compensatory_leaves" type="number"  class="input-material" name="compensatory_leaves" value="{{ $user->compensatory_leaves }}" required>
+                                    <input autocomplete="off" id="compensatory_leaves" type="number"  class="input-material" name="compensatory_leaves" value="{{ $user->compensatory_leaves }}" >
             
                                     @if ($errors->has('compensatory_leaves'))
                                         <span class="help-block">
@@ -61,7 +61,7 @@
                                     <label for="cnic" class="label-material">Compensatory Leaves (Optional)</label>
                                 </div>
                                 <div class="form-group-material">
-                                    <input autocomplete="off" id="ntn" type="text"  class="input-material" name="ntn" value="{{ $user->ntn_no }}" required>
+                                    <input autocomplete="off" id="ntn" type="text"  class="input-material" name="ntn" value="{{ $user->ntn_no }}" >
             
                                     @if ($errors->has('ntn'))
                                         <span class="help-block">

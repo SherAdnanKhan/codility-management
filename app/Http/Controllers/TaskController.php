@@ -207,12 +207,12 @@ class TaskController extends Controller
             $this->start_date=$request->filter=='today'?$start_date->startOfDay()->timestamp:($request->filter == 'week'?$start_date->startOfWeek()->timestamp:($request->filter == 'month'?$start_date->startOfMonth()->timestamp:($request->filter =='year'?$start_date->startOfYear()->timestamp:'')));
             $this->end_date=Carbon::now()->timestamp;
         }
-        $name=$request->name?$request->name:'';
+        $name=$request->name?$request->name:null;
         if (Auth::user()->isAdmin()) {
             $user = User::whereHas('role', function ($q) {
                 $q->whereIn('name', ['Employee']);
             })->where('name','Like','%'.$name.'%')->first();
-            if ($user) {
+            if ($name != null) {
                 if ($request->download){
                     $tasks = Task::whereBetween('date', [$this->start_date, $this->end_date])->where('user_id', $user != null ? $user->id : '')->orderBy('date', 'desc')->get();
                     $str = $name.Carbon::now() . '.csv';

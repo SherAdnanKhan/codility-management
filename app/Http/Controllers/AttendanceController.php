@@ -354,8 +354,9 @@ class AttendanceController extends Controller
             $now_month = Carbon::now()->month;
             if (!((Carbon::parse($user->joiningDate)->month == $now_month) && (Carbon::parse($user->joiningDate)->year == Carbon::now()->year))) {
                 $joiningDate=Carbon::parse($user->joiningDate);
-                $this->get_employement_month = $joiningDate->diffInMonths(Carbon::now());
-//                dd($this->get_employement_month);
+                $this->get_employement_month = Carbon::parse($request->start_date)->diffInMonths(Carbon::parse($request->end_date));
+
+
             }
             if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month = 1;
@@ -363,6 +364,7 @@ class AttendanceController extends Controller
 
             $allowed_absent = abs($this->get_employement_month) * 1.5  ;
             $collection->put('allowed_absent', $allowed_absent);
+
             $user_details[] = array($collection->all());
 
         }
@@ -485,19 +487,34 @@ class AttendanceController extends Controller
                 {
                     $start_date =1;
                 }
+                if ($user_attendance->workingDays == 5) {
+                    for ($i = $start_date; $i <= $day_count; $i++) {
 
-                for ($i = $start_date; $i <= $day_count; $i++) {
+                        $date = $year . '/' . $month . '/' . $i; //format date
+                        $get_name = date('l', strtotime($date)); //get week day
+                        $day_name = substr($get_name, 0, 3); // Trim day name to 3 chars
 
-                    $date = $year . '/' . $month . '/' . $i; //format date
-                    $get_name = date('l', strtotime($date)); //get week day
-                    $day_name = substr($get_name, 0, 3); // Trim day name to 3 chars
+                        //if not a weekend add day to array
+                        if ($day_name != 'Sun' && $day_name != 'Sat') {
+                            $workdays[] = $i;
+                        }
 
-                    //if not a weekend add day to array
-                    if ($day_name != 'Sun' && $day_name != 'Sat') {
-                        $workdays[] = $i;
                     }
+                } elseif ($user_attendance->workingDays == 6) {
+                    for ($i = $start_date; $i <= $day_count; $i++) {
 
+                        $date = $year . '/' . $month . '/' . $i; //format date
+                        $get_name = date('l', strtotime($date)); //get week day
+                        $day_name = substr($get_name, 0, 3); // Trim day name to 3 chars
+
+                        //if not a weekend add day to array
+                        if ($day_name != 'Sun') {
+                            $workdays[] = $i;
+                        }
+
+                    }
                 }
+
                 $collect = collect($workdays);
                 $collect->each(function ($item, $key) {;
                     if ($item == $this->days) {
