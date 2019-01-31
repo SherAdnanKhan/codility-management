@@ -156,9 +156,10 @@ class ApplicantsController extends Controller
             'firstName'         => 'required',
             'gender'            => 'required',
             'nationality'       => 'required',
-            'phoneNumber'       => 'required',
+            'phoneNumber'       => 'required|integer',
             'city'              => 'required',
             'country'           => 'required',
+            'source'            => 'required',
 
         ]);
         $applicant=Applicants::create([
@@ -176,6 +177,7 @@ class ApplicantsController extends Controller
             'expectedSalary'        => $request->expectedSalary ? $request->expectedSalary:null,
             'city'                  => $request->city ? $request->city:null,
             'country'               => $request->country ? $request->country:null,
+            'source'                => $request->source ? $request->source:null,
         ]);
         if ($applicant) {
             return redirect('/applicants/lists')->with('status', 'Applicant Insert Successfully');

@@ -103,218 +103,286 @@
                             {{$applicants->appends(['query' => $query])->links()}}
                         @endif
                     </div>
-                    <div >
+                    <div>
                         {{$applicants->total()}} Records Found
                     </div>
                 @endif
             </div>
         </div>
     </div>
-    <div id="createModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+    <div id="createModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+         class="modal fade text-left">
         <div role="document" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5  class="modal-title">Add New Applicant of Job</h5>
-                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                    <h5 class="modal-title">Add New Applicant of Job</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                                aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <form class="form-horizontal" id ="timetable" method="POST" action="{{route('applicant.manual')}}" >
+                    <form class="form-horizontal" id="timetable" method="POST" action="{{route('applicant.manual')}}">
                         {{ csrf_field() }}
                         <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group-material ">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='applicantId' name="applicantId"   value="" class="input-material" />
-                            
-                                <label for="applicantId" class="label-material">Applicant ID</label>
-                            </div>
-                            @if ($errors->has('applicantId'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material ">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='applicantId' name="applicantId"
+                                               value="" class="input-material"/>
+                                        
+                                        <label for="applicantId" class="label-material">Applicant ID</label>
+                                    </div>
+                                    @if ($errors->has('applicantId'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('applicantId') }}</strong>
                                         </span>
-                            @endif
-                        </div>
-                    </div>
-                        <div class="col-md-3">
-                        <div class="form-group-material ">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='firstName' name="firstName"   value="" class="input-material" />
-            
-                                <label for="firstName" class="label-material">Applicant`s First Name</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('firstName'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material ">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='firstName' name="firstName" value=""
+                                               class="input-material"/>
+                                        
+                                        <label for="firstName" class="label-material">Applicant`s First Name</label>
+                                    </div>
+                                    @if ($errors->has('firstName'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('firstName') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='middleName' name="middleName"   value="" class="input-material" />
-            
-                                <label for="middleName" class="label-material">Applicant`s Middle Name (Optional)</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('middleName'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='middleName' name="middleName" value=""
+                                               class="input-material"/>
+                                        
+                                        <label for="middleName" class="label-material">Applicant`s Middle Name
+                                            (Optional)</label>
+                                    </div>
+                                    @if ($errors->has('middleName'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('middleName') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='lastName' name="lastName"   value="" class="input-material" />
-            
-                                <label for="lastName" class="label-material">Applicant`s Last Name </label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('lastName'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='lastName' name="lastName" value=""
+                                               class="input-material"/>
+                                        
+                                        <label for="lastName" class="label-material">Applicant`s Last Name </label>
+                                    </div>
+                                    @if ($errors->has('lastName'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('lastName') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material " style="margin: 7px 0 0 0px">
-                            <div class="">
-                                <select name="gender"  class="form-control ">
-                                    <option value="" >Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('gender'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material " style="margin: 7px 0 0 0px">
+                                    <div class="">
+                                        <select name="gender" class="form-control ">
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    @if ($errors->has('gender'))
+                                        <span class="help-block">
                                         <strong>{{ $errors->first('gender') }}</strong>
                                     </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material date" >
-                            <div class=' bootstrap-iso input-group-material date' >
-                                <input autocomplete="off" type='text' id='date' name="date"   value="" class="input-material" />
-                            
-                                <label for="date" class="label-material">Date Of Apply</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('date'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material date">
+                                    <div class=' bootstrap-iso input-group-material date'>
+                                        <input autocomplete="off" type='text' id='date' name="date" value=""
+                                               class="input-material"/>
+                                        
+                                        <label for="date" class="label-material">Date Of Apply</label>
+                                    </div>
+                                    @if ($errors->has('date'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('date') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material date" >
-                            <div class=' bootstrap-iso input-group-material date' >
-                                <input autocomplete="off" type='text' id='dob' name="dob"   value="" class="input-material" />
-            
-                                <label for="dob" class="label-material">Date of Birthday</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('dob'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material date">
+                                    <div class=' bootstrap-iso input-group-material date'>
+                                        <input autocomplete="off" type='text' id='dob' name="dob" value=""
+                                               class="input-material"/>
+                                        
+                                        <label for="dob" class="label-material">Date of Birthday</label>
+                                    </div>
+                                    @if ($errors->has('dob'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('dob') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='number' id='age' name="age"   value="" class="input-material" />
-            
-                                <label for="age" class="label-material">Applicant`s Age</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('age'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='number' id='age' name="age" value=""
+                                               class="input-material"/>
+                                        
+                                        <label for="age" class="label-material">Applicant`s Age</label>
+                                    </div>
+                                    @if ($errors->has('age'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('age') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='nationality' name="nationality"   value="" class="input-material" placeholder="Pakistani/Indian/American"/>
-            
-                                <label for="nationality" class="label-material active">Applicant`s Nationality</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('nationality'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='nationality' name="nationality"
+                                               value="" class="input-material" placeholder="Pakistani/Indian/American"/>
+                                        
+                                        <label for="nationality" class="label-material active">Applicant`s
+                                            Nationality</label>
+                                    </div>
+                                    @if ($errors->has('nationality'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('nationality') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='tel' id='phoneNumber' name="phoneNumber"   value="" class="input-material" placeholder="9230000000000"/>
-            
-                                <label for="phoneNumber" class="label-material active">Applicant`s Contact Number</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('phoneNumber'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='tel' id='phoneNumber' name="phoneNumber"
+                                               value="" class="input-material" placeholder="9230000000000"/>
+                                        
+                                        <label for="phoneNumber" class="label-material active">Applicant`s Contact
+                                            Number</label>
+                                    </div>
+                                    @if ($errors->has('phoneNumber'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('phoneNumber') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='currentSalary' name="currentSalary"   value="" class="input-material" />
-            
-                                <label for="currentSalary" class="label-material">Current Salary</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('currentSalary'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='currentSalary' name="currentSalary"
+                                               value="" class="input-material"/>
+                                        
+                                        <label for="currentSalary" class="label-material">Current Salary</label>
+                                    </div>
+                                    @if ($errors->has('currentSalary'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('currentSalary') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='expectedSalary' name="expectedSalary"   value="" class="input-material" />
-            
-                                <label for="expectedSalary" class="label-material">Expected Salary</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('expectedSalary'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='expectedSalary' name="expectedSalary"
+                                               value="" class="input-material"/>
+                                        
+                                        <label for="expectedSalary" class="label-material">Expected Salary</label>
+                                    </div>
+                                    @if ($errors->has('expectedSalary'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('expectedSalary') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='country' name="country"   value="" class="input-material" placeholder="Pakistan"/>
-            
-                                <label for="country" class="label-material active">Country</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('country'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='country' name="country" value=""
+                                               class="input-material" placeholder="Pakistan"/>
+                                        
+                                        <label for="country" class="label-material active">Country</label>
+                                    </div>
+                                    @if ($errors->has('country'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('country') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
-                        <div class="col-md-3">
-                        <div class="form-group-material">
-                            <div class='input-group-material' >
-                                <input autocomplete="off" type='text' id='city' name="city"   value="" class="input-material" placeholder="Lahore"/>
-            
-                                <label for="city" class="label-material active">City</label>
+                                    @endif
+                                </div>
                             </div>
-                            @if ($errors->has('city'))
-                                <span class="help-block">
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='city' name="city" value=""
+                                               class="input-material" placeholder="Lahore"/>
+                                        
+                                        <label for="city" class="label-material active">City</label>
+                                    </div>
+                                    @if ($errors->has('city'))
+                                        <span class="help-block">
                                             <strong>{{ $errors->first('city') }}</strong>
                                         </span>
-                            @endif
-                        </div></div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='source' name="source" value=""
+                                               class="input-material" placeholder="Lahore"/>
+                
+                                        <label for="city" class="label-material active">City</label>
+                                    </div>
+                                    @if ($errors->has('city'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('city') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group-material " style="margin: 7px 0 0 0px">
+                                    <div class="">
+                                        <select name="source" class="form-control ">
+                                            <option value="">Select Source</option>
+                                            <option value="Rozee.pk">Rozee.pk</option>
+                                            <option value="Facebook">Facebook</option>
+                                            <option value="Linkedin">Linkedin</option>
+                                            <option value="Gmail">Gmail</option>
+                                            <option value="Management">Management</option>
+                                            <option value="Staff">Staff</option>
+
+                                        </select>
+                                    </div>
+                                    @if ($errors->has('source'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('source') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                         </div>
                         <button type="submit" class="btn btn-outline-success">Submit</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
                             Reset
                         </button>
                     </form>
-            
+                
                 </div>
-        
+            
             </div>
         </div>
     </div>
@@ -351,7 +419,7 @@
     <script type="text/javascript">
         $(function () {
             $('#dob').datetimepicker({
-                format:'L'
+                format: 'L'
             });
             $('#date').datetimepicker({
                 format: 'L',

@@ -20,6 +20,7 @@ class Applicants extends Model
             'currentSalary',
             'expectedSalary',
             'city',
+            'source',
             'country'
     ];
     public function experienceAndEducation()
