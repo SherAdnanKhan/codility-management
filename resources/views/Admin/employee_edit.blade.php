@@ -128,7 +128,14 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
-
+                                    <div class="form-group row of-button" >
+                                        <label for="is_hr" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Assign Rights (HR)</label>
+                
+                                        <label class="switch" class="col-sm-offset-3 ">
+                                            <input type="checkbox" name="is_hr" {{$user->is_hr?'checked':''}}>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
                                 @endif
                                 @elseif($user->isEmployee())
 

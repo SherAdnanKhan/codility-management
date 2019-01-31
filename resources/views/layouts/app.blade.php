@@ -112,7 +112,6 @@
                                 <li><a href="{{route('question.page')}}"><i class="fa fa-search"></i>Search Question</a></li>
                             </ul>
                         </li>
-                    <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
 
                         <li><a href="#exampledropdownDropdowns" aria-expanded="true" data-toggle="collapse" class="active">
                                 <i class="fa fa-users"></i> Reports &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
@@ -128,6 +127,10 @@
                         <li><a href="{{route('project.index')}}"><i class="fa fa-file"></i>Projects</a></li>
 
                     @endif
+                    @if (\Auth::user()->checkHr())
+                    <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
+                       @endif
+
                 </ul>
             </div>
         </div>

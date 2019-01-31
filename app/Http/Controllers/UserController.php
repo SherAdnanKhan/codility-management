@@ -172,20 +172,21 @@ class UserController extends Controller
                 'checkInTime'           => $check_in_time,
                 'checkOutTime'          => $check_out_time,
                 'opening_balance'       => $request->opening_balance?$request->opening_balance:false,
-                'cnic_no'                  => $request->cnic?$request->cnic:null,
-                'ntn_no'                   => $request->ntn?$request->ntn:null,
-                'bank_account_no'            => $request->account_no?$request->account_no:null,
+                'cnic_no'               => $request->cnic?$request->cnic:null,
+                'ntn_no'                => $request->ntn?$request->ntn:null,
+                'bank_account_no'       => $request->account_no?$request->account_no:null,
                 'blood_group'           => $request->blood_group?$request->blood_group:null,
+                'is_hr'                 => $request->is_hr?true:false,
                 'compensatory_leaves'   => $request->compensatory_leaves?$request->compensatory_leaves:$user->compensatory_leaves,
             ]);
         } else{
             $update= User::whereId($id)->update([
-                'name' => $request->name,
-                'designation' => $request->designation,
-                'address' => $request->address,
-                'qualification' => $request->qualification,
-                'phoneNumber' => $request->contact,
-                'address' => $request->name
+                'name'              => $request->name,
+                'designation'       => $request->designation,
+                'address'           => $request->address,
+                'qualification'     => $request->qualification,
+                'phoneNumber'       => $request->contact,
+                'address'           => $request->name
 
             ]);
         }
