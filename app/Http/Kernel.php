@@ -60,6 +60,8 @@ class Kernel extends HttpKernel
         'firstLogin'=>\App\Http\Middleware\FirstLoginMiddleware::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verify-token' => \App\Http\Middleware\VerifyToken::class,
+        'checkHr' => \App\Http\Middleware\CheckHRMiddleware::class
+
 
     ];
 }

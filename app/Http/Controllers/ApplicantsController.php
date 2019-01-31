@@ -49,28 +49,32 @@ class ApplicantsController extends Controller
             foreach ($sheetData as $key => $value) {
                 $counter++;
                 if($counter!=1){
-                    $applicant=new Applicants;
-                    $applicant->applicantId     = $value['B'];
-                    $applicant->date            = Carbon::parse($value['C'])->format('Y-m-d');
-                    $applicant->firstName       = $value['D'];
-                    $applicant->middleName      = $value['E'];
-                    $applicant->lastName        = $value['F'];
-                    $applicant->gender          = strtolower($value['G']);
-                    $applicant->age             = $value['H'];
-                    $applicant->nationality     = $value['I'];
-                    $applicant->phoneNumber     = $value['J'];
-                    $applicant->dob             = Carbon::parse($value['K'])->format('Y-m-d');
-                    $applicant->currentSalary   = $value['L'];
-                    $applicant->expectedSalary  = $value['M'];
-                    $applicant->city            = $value['N'];
-                    $applicant->country         = $value['O'];
-                    $applicant->save();
+                    $check=Applicants::where('applicantId',$value['B'])->first();
+                    if ($check== null) {
+                        $applicant = new Applicants;
+                        $applicant->applicantId = $value['B'];
+                        $applicant->date = Carbon::parse($value['C'])->format('Y-m-d');
+                        $applicant->firstName = $value['D'];
+                        $applicant->middleName = $value['E'];
+                        $applicant->lastName = $value['F'];
+                        $applicant->gender = strtolower($value['G']);
+                        $applicant->age = $value['H'];
+                        $applicant->nationality = $value['I'];
+                        $applicant->phoneNumber = $value['J'];
+                        $applicant->dob = Carbon::parse($value['K'])->format('Y-m-d');
+                        $applicant->currentSalary = $value['L'];
+                        $applicant->expectedSalary = $value['M'];
+                        $applicant->city = $value['N'];
+                        $applicant->country = $value['O'];
+                        $applicant->source = $value['R'];
+                        $applicant->save();
+                    }
                 }
                 }
-                return redirect()->route('applicant_list')->with('info','File uploaded successfully.');
+            return response()->json("File uploaded successfully.");
         }else
         {
-            return redirect('/upload-csv')->with('info','File upload error.');
+            return response()->json("File Type is incorrect");
         }
 
     }

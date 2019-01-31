@@ -20,6 +20,9 @@
                         <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success"
                            id="MainNavHelp"
                            href="#createMyModal">Add Applicant </a>
+                        <a  class="btn btn-outline-success"
+                           id="MainNavHelp"
+                           href="{{route('upload.cvs')}}"><i class="fa fa-upload"></i> Add Bulk Applicants </a>
                     </div>
                     
                     <div class="col-lg-3">
@@ -50,10 +53,10 @@
                     <tr>
                         <th>ID</th>
                         <th>Date</th>
-                        <th>First Name</th>
-                        <th>Age</th>
+                        <th>Name</th>
+                        <th>Source</th>
                         <th>Contact</th>
-                        <th>City</th>
+                        <th>Area</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -63,10 +66,10 @@
                             <tr>
                                 <td>{{$applicant->applicantId}}</td>
                                 <td>{{$applicant->date}}</td>
-                                <td>{{$applicant->firstName}}</td>
-                                <td>{{$applicant->age}}</td>
+                                <td>{{$applicant->firstName}}{{$applicant->middleName?$applicant->middleName:''}}{{$applicant->LastName?$applicant->LastName:''}}</td>
+                                <td>{{$applicant->source?$applicant->source:'No Source Defined'}}</td>
                                 <td>{{$applicant->phoneNumber}}</td>
-                                <td>{{$applicant->city}}</td>
+                                <td>{{$applicant->country?$applicant->country.'=>':''}}{{$applicant->city?$applicant->city:''}}</td>
                                 <td><a class="cvUploadLink" title="Upload CV" data-id='{{$applicant->id}}'
                                        href='{{url("/upload-cv/{$applicant->id}")}}'><i class="fa fa-upload"></i></a>
                                     &nbsp;
@@ -79,7 +82,7 @@
                                         $disabled = '';
                                         ?>
                                     @else
-                                        <?php $extClass = "fas fa-ban";
+                                        <?php $extClass = "fas fa-eye-slash";
                                         $disabled = 'not-active';
                                         ?>
                                     @endif

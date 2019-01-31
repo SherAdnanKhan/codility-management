@@ -45,6 +45,7 @@ class User extends Authenticatable
         'cnic_no',
         'ntn_no',
         'bank_account_no',
+        'is_hr',
         'blood_group'
     ];
 
@@ -171,5 +172,14 @@ class User extends Authenticatable
         }
 
         return $dates;
+    }
+    public function checkHr(){
+
+        if ($this->is_hr == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
