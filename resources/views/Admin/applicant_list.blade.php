@@ -120,8 +120,9 @@
                 <div class="modal-body" id="modal-body">
                     <form class="form-horizontal" id ="timetable" method="POST" action="{{route('applicant.manual')}}" >
                         {{ csrf_field() }}
-                    
-                        <div class="form-group-material">
+                        <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group-material ">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='applicantId' name="applicantId"   value="" class="input-material" />
                             
@@ -133,7 +134,9 @@
                                         </span>
                             @endif
                         </div>
-                        <div class="form-group-material">
+                    </div>
+                        <div class="col-md-3">
+                        <div class="form-group-material ">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='firstName' name="firstName"   value="" class="input-material" />
             
@@ -144,7 +147,8 @@
                                             <strong>{{ $errors->first('firstName') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='middleName' name="middleName"   value="" class="input-material" />
@@ -156,7 +160,8 @@
                                             <strong>{{ $errors->first('middleName') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='lastName' name="lastName"   value="" class="input-material" />
@@ -168,10 +173,10 @@
                                             <strong>{{ $errors->first('lastName') }}</strong>
                                         </span>
                             @endif
-                        </div>
-                        <div class="form-group-material row">
-                            <label for="inform_type" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Choose Applicant`s Gender </label>
-                            <div class="col-sm-12  mb-12 ">
+                        </div></div>
+                        <div class="col-md-3">
+                        <div class="form-group-material " style="margin: 7px 0 0 0px">
+                            <div class="">
                                 <select name="gender"  class="form-control ">
                                     <option value="" >Select Gender</option>
                                     <option value="male">Male</option>
@@ -183,8 +188,8 @@
                                         <strong>{{ $errors->first('gender') }}</strong>
                                     </span>
                             @endif
-                        </div>
-                        
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material date" >
                             <div class=' bootstrap-iso input-group-material date' >
                                 <input autocomplete="off" type='text' id='date' name="date"   value="" class="input-material" />
@@ -196,7 +201,8 @@
                                             <strong>{{ $errors->first('date') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material date" >
                             <div class=' bootstrap-iso input-group-material date' >
                                 <input autocomplete="off" type='text' id='dob' name="dob"   value="" class="input-material" />
@@ -208,7 +214,8 @@
                                             <strong>{{ $errors->first('dob') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='number' id='age' name="age"   value="" class="input-material" />
@@ -220,7 +227,8 @@
                                             <strong>{{ $errors->first('age') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='nationality' name="nationality"   value="" class="input-material" placeholder="Pakistani/Indian/American"/>
@@ -232,10 +240,11 @@
                                             <strong>{{ $errors->first('nationality') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
-                                <input autocomplete="off" type='tel' id='phoneNumber' name="phoneNumber"   value="" class="input-material" placeholder="+9230000000000"/>
+                                <input autocomplete="off" type='tel' id='phoneNumber' name="phoneNumber"   value="" class="input-material" placeholder="9230000000000"/>
             
                                 <label for="phoneNumber" class="label-material active">Applicant`s Contact Number</label>
                             </div>
@@ -244,7 +253,8 @@
                                             <strong>{{ $errors->first('phoneNumber') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='currentSalary' name="currentSalary"   value="" class="input-material" />
@@ -256,7 +266,8 @@
                                             <strong>{{ $errors->first('currentSalary') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='expectedSalary' name="expectedSalary"   value="" class="input-material" />
@@ -268,7 +279,8 @@
                                             <strong>{{ $errors->first('expectedSalary') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='country' name="country"   value="" class="input-material" placeholder="Pakistan"/>
@@ -280,7 +292,8 @@
                                             <strong>{{ $errors->first('country') }}</strong>
                                         </span>
                             @endif
-                        </div>
+                        </div></div>
+                        <div class="col-md-3">
                         <div class="form-group-material">
                             <div class='input-group-material' >
                                 <input autocomplete="off" type='text' id='city' name="city"   value="" class="input-material" placeholder="Lahore"/>
@@ -292,6 +305,7 @@
                                             <strong>{{ $errors->first('city') }}</strong>
                                         </span>
                             @endif
+                        </div></div>
                         </div>
                         <button type="submit" class="btn btn-outline-success">Submit</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
