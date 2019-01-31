@@ -29,6 +29,8 @@ Route::get('/', function () {
     Route::post('/upload-csv','ApplicantsController@uploadCsvPost');
     Route::get('/view-cv/{id}','ApplicantsController@viewCv');
     Route::get('/delete/{id}','ApplicantsController@delete');
+    Route::post('/add/manually/applicant','ApplicantsController@addApplicant')->name('applicant.manual');
+
     Route::get('/register','Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('/register','Auth\RegisterController@register');
     Route::resource('/timetable','TimeTableController');

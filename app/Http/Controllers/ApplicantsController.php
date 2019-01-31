@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use App\Applicants;
 use File;
@@ -48,20 +50,20 @@ class ApplicantsController extends Controller
                 $counter++;
                 if($counter!=1){
                     $applicant=new Applicants;
-                    $applicant->applicantId=$value['B'];
-                    $applicant->date=date("Y-m-d", strtotime($value['C']));
-                    $applicant->firstName=$value['D'];
-                    $applicant->middleName=$value['E'];
-                    $applicant->lastName=$value['F'];
-                    $applicant->gender=$value['G'];
-                    $applicant->age=$value['H'];
-                    $applicant->nationality=$value['I'];
-                    $applicant->phoneNumber=$value['J'];
-                    $applicant->dob=date("Y-m-d", strtotime($value['K']));
-                    $applicant->currentSalary=$value['L'];
-                    $applicant->expectedSalary=$value['M'];
-                    $applicant->city=$value['N'];
-                    $applicant->country=$value['O'];
+                    $applicant->applicantId     = $value['B'];
+                    $applicant->date            = Carbon::parse($value['C'])->format('Y-m-d');
+                    $applicant->firstName       = $value['D'];
+                    $applicant->middleName      = $value['E'];
+                    $applicant->lastName        = $value['F'];
+                    $applicant->gender          = strtolower($value['G']);
+                    $applicant->age             = $value['H'];
+                    $applicant->nationality     = $value['I'];
+                    $applicant->phoneNumber     = $value['J'];
+                    $applicant->dob             = Carbon::parse($value['K'])->format('Y-m-d');
+                    $applicant->currentSalary   = $value['L'];
+                    $applicant->expectedSalary  = $value['M'];
+                    $applicant->city            = $value['N'];
+                    $applicant->country         = $value['O'];
                     $applicant->save();
                 }
                 }
@@ -144,5 +146,42 @@ class ApplicantsController extends Controller
         $applicant = Applicants::find($id);
         $applicant->delete();
         return redirect('/applicants/lists')->with('status','Employee Deleted.');
+    }
+
+    public function addApplicant(Request $request){
+
+        $this->validate($request,[
+            'date'              => 'date|required',
+            'dob'               => 'date|required',
+            'firstName'         => 'required',
+            'gender'            => 'required',
+            'nationality'       => 'required',
+            'phoneNumber'       => 'required',
+            'city'              => 'required',
+            'country'           => 'required',
+
+        ]);
+        $applicant=Applicants::create([
+            'applicantId'           => $request->applicantId?$request->applicantId:null,
+            'date'                  => $request->date ? Carbon::parse($request->date)->format('Y-m-d'):null,
+            'firstName'             => $request->firstName ? $request->firstName:null,
+            'middleName'            => $request->middleName ? $request->middleName:null,
+            'lastName'              => $request->lastName ? $request->lastName:null,
+            'gender'                => $request->gender ? $request->gender:null ,
+            'age'                   => $request->age ? $request->age:null,
+            'nationality'           => $request->nationality?$request->nationality:null,
+            'phoneNumber'           => $request->phoneNumber ? $request->phoneNumber:null,
+            'dob'                   => $request->dob ? Carbon::parse($request->dob)->format('Y-m-d') :null,
+            'currentSalary'         => $request->currentSalary ? $request->currentSalary:null,
+            'expectedSalary'        => $request->expectedSalary ? $request->expectedSalary:null,
+            'city'                  => $request->city ? $request->city:null,
+            'country'               => $request->country ? $request->country:null,
+        ]);
+        if ($applicant) {
+            return redirect('/applicants/lists')->with('status', 'Applicant Insert Successfully');
+        }else{
+            return redirect('/applicants/lists')->with('status', 'Applicant Insert UnSuccessful, Please Try Again !');
+
+        }
     }
 }
