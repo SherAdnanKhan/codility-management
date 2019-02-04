@@ -72,7 +72,9 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::get('/view-cv/{id}', 'ApplicantsController@viewCv');
     Route::get('/delete/{id}', 'ApplicantsController@delete');
     Route::post('/add/manually/applicant', 'ApplicantsController@addApplicant')->name('applicant.manual');
-
+    Route::resource('/interview/status', 'StatusController');
+    Route::get('/get_sub_status/{id}', 'StatusController@sub_status');
+    Route::resource('/interview', 'InterviewController');
 
 });
 Route::group(['middleware' => ['firstLogin', 'auth', 'employee']], function () {

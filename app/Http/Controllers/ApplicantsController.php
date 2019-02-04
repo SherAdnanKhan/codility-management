@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -14,20 +15,21 @@ class ApplicantsController extends Controller
 {
     public function home(Request $request)
     {
+        $statuses= Status::where('is_deleted',false)->orderBy('id','desc')->get();
         $query=$request->input('query');
         if($query != "")
         {
             $applicants=Applicants::where('cvData','LIKE','%'.$query.'%')->paginate(10);
             if(count($applicants)>0)
             {
-                return view('applicants/lists',['applicants'=>$applicants,'query' => $query]);
+                return view('applicants/lists',['applicants'=>$applicants,'query' => $query,'statuses'=>$statuses]);
             }else
             {
                 return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
             }
         }else{
             $applicants=Applicants::paginate(10);
-            return view('Admin.applicant_list',['applicants'=>$applicants])->with('status','Search Field Empty.');
+            return view('Admin.applicant_list',compact('applicants','statuses'))->with('status','Search Field Empty.');
         }
     }
 
@@ -81,10 +83,18 @@ class ApplicantsController extends Controller
 
     public function uploadCvPost(Request $request)
     {
+
         if($request->hasFile('uploadedCv') && ($request->uploadedCv->getClientOriginalExtension()=="doc" || $request->uploadedCv->getClientOriginalExtension()=="docx" || $request->uploadedCv->getClientOriginalExtension()=="pdf") )
         {
             $user=Applicants::where('id',$request->userId)->first();
-            $slug = Str::slug($user->firstName." ".$user->LastName);
+
+            $slug = Str::slug($user->firstName." ".$user->LastName.time());
+            if($user->cvUrl){
+                $check_file_exists=Storage::exists('Public/Resumes/'.$user->cvSlug.'.'.$user->cvExt);
+                if ($check_file_exists == true){
+                    Storage::delete('Public/Resumes/'.$user->cvSlug.'.'.$user->cvExt);
+                }
+            }
             $count = Applicants::whereRaw("cvSlug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
             $finalFileName= $count ? "{$slug}-{$count}" : $slug;
             $file = $request->file('uploadedCv')->storeAs('Public/Resumes', $finalFileName.'.'.$request->uploadedCv->getClientOriginalExtension() ,'local');
@@ -100,8 +110,7 @@ class ApplicantsController extends Controller
             }else
             {
 
-
-                $text="";
+                $text=array();
                 $phpWord = \PhpOffice\PhpWord\IOFactory::load($filePath);
                 $sections = $phpWord->getSections();
                 foreach ($sections as $key => $value) {
@@ -110,19 +119,25 @@ class ApplicantsController extends Controller
                         if ($elementValue instanceof \PhpOffice\PhpWord\Element\TextRun) {
                             $secondSectionElement = $elementValue->getElements();
                             foreach ($secondSectionElement as $secondSectionElementKey => $secondSectionElementValue) {
+
                                 if ($secondSectionElementValue instanceof \PhpOffice\PhpWord\Element\Text) {
-                                    $text= $secondSectionElementValue->getText()."<br>";
+                                    $text[]= $secondSectionElementValue->getText()."";
+                                    $check=null;
                                 }
                             }
                         }
                     }
                 }
             }
-
+            if (isset($check)){
+                if ($check == null){
+                $string_version = implode(' ', $text);
+                }
+            }
             $user->cvSlug=$finalFileName;
             $user->cvExt=$request->uploadedCv->getClientOriginalExtension();
             $user->cvUrl=$file;
-            $user->cvData=$text;
+            $user->cvData=isset($string_version)?$string_version:null;
             $user->save();
 
             return redirect()->route('applicant_list')->with('status','Uploaded Resume of Applicant');
@@ -137,8 +152,12 @@ class ApplicantsController extends Controller
         $user=Applicants::where('id',$id)->first();
         if($user->cvUrl != "")
         {
-            return response()->file(storage_path('app/'.$user->cvUrl));
+            if ($user->cvExt != 'pdf') {
+                return response()->download(storage_path('app/' . $user->cvUrl));
+            }else{
+                return response()->file(storage_path('app/' . $user->cvUrl));
 
+            }
         }else
         {
             return redirect('/applicants/lists')->with('status','Resume not Found.');
@@ -164,6 +183,7 @@ class ApplicantsController extends Controller
             'city'              => 'required',
             'country'           => 'required',
             'source'            => 'required',
+            'applicantId'       => 'unique:applicants,applicantId',
 
         ]);
         $applicant=Applicants::create([

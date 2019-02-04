@@ -16,12 +16,12 @@ class CheckHRMiddleware
      */
     public function handle($request, Closure $next)
     {
-
-        if (Auth::user()->checkHr() == true){
-        return $next($request);
-        }else{
-            return redirect()->back()->with('status','You have no rights to access this, For more information contact Administrator');
+        if(Auth::check()) {
+            if (Auth::user()->checkHr() == true || Auth::user()->isAdmin()) {
+                return $next($request);
+            } else {
+                return redirect()->back()->with('status', 'You have no rights to access this, For more information contact Administrator');
+            }
         }
-
     }
 }
