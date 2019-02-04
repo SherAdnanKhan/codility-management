@@ -28,5 +28,10 @@ class Applicants extends Model
     	return $this->hasMany('App\Education');
     	return $this->hasMany('App\Experience');
     }
-
+    public function test(){
+        return $this->hasMany('App\TestInterview','applicant_id','id');
+    }
+    public function interview(){
+        return $this->hasMany('App\Interview','applicant_id','id');
+    }
 }

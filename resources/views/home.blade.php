@@ -20,6 +20,24 @@
                                     <span class="wrap"></span>
                                 </a>
                             </h1>
+                            @if (\Auth::user()->checkHr() || \Auth::user()->isAdmin())
+                                @php
+                                $interview=\App\Interview::whereBetween('date',[\Carbon\Carbon::now()->startOfDay()->timestamp,\Carbon\Carbon::now()->endOfDay()->timestamp])->first();
+                                @endphp
+                            @if($interview != null)
+                                @php
+                                    $interviews=\App\Interview::whereBetween('date',[\Carbon\Carbon::now()->startOfDay()->timestamp,\Carbon\Carbon::now()->endOfDay()->timestamp])->get();
+
+                                @endphp
+                                <div class="alert alert-success" style="text-align: left">
+                                    These Applicants have an interview Today
+                                @foreach($interviews as $items)
+                                    
+                                    <li>{{$items->applicant->firstName}} {{$items->applicant->middleName?$items->applicant->middleName:''}} {{$items->applicant->LastName?$items->applicant->LastName:''}} On : {{\Carbon\Carbon::createFromTimestamp($items->date)}}</li>
+                                    @endforeach
+                                </div>
+                              @endif
+                            @endif
                     </div>
                 </div>
             </div>

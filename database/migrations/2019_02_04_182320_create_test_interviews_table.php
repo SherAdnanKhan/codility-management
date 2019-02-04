@@ -19,6 +19,8 @@ class CreateTestInterviewsTable extends Migration
             $table->integer('status')->default(false);
             $table->string('image')->nullable();
             $table->string('note')->nullable();
+            $table->integer('applicant_id')->nullable();
+
 
             $table->timestamps();
         });

@@ -15,14 +15,36 @@ class ApplicantsController extends Controller
 {
     public function home(Request $request)
     {
+
         $statuses= Status::where('is_deleted',false)->orderBy('id','desc')->get();
         $query=$request->input('query');
+        $source=$request->input('source');
+        $applicant_id=$request->input('applicant_id');
+
         if($query != "")
         {
             $applicants=Applicants::where('cvData','LIKE','%'.$query.'%')->paginate(10);
             if(count($applicants)>0)
             {
-                return view('applicants/lists',['applicants'=>$applicants,'query' => $query,'statuses'=>$statuses]);
+                return view('Admin.applicant_list',['applicants'=>$applicants,'query' => $query,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($source != ""){
+            $applicants=Applicants::where('source',$source)->paginate(10);
+            if(count($applicants)>0)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'source' => $source,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($applicant_id != ""){
+            $applicant=Applicants::where('applicantId',$applicant_id)->first();
+            if($applicant != null)
+            {
+                return view('Admin.applicant_list_search',['applicant'=>$applicant,'applicant_id' => $applicant_id,'statuses'=>$statuses]);
             }else
             {
                 return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');

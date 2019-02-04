@@ -10,7 +10,8 @@ class TestInterview extends Model
         'image',
         'marks',
         'status',
-        'note'
+        'note',
+        'applicant_id'
 
     ];
 }

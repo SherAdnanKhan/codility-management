@@ -17,7 +17,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-6">
                         <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success"
                            id="MainNavHelp"
                            href="#createModal">Add Applicant </a>
@@ -28,22 +28,100 @@
                            href="#createMyModal"> <i class="fa fa-cog"></i> Status</a>
                     </div>
                     
-                    <div class="col-lg-3">
-                        <form method="GET" action="{{route('applicant_list')}}">
-                            <div id="custom-search-input">
-                                <div class="input-group col-md-12">
-                                    <input type="text" class="form-control input-lg" name="query"
-                                           placeholder="Search Resume"/>
-                                    <span class="input-group-btn">
-                                    <button class="btn  btn-lg" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
+                        <div class="row">
+                        {{--<form method="GET" action="{{route('applicant_list')}}">--}}
+                            {{--<div class="col-md-3">--}}
+                                {{--<div class="form-group-material " >--}}
+                                    {{--<div class="">--}}
+                                    
+                                    {{--</div>--}}
+                                    {{--@if ($errors->has('source'))--}}
+                                        {{--<span class="help-block">--}}
+                                        {{--<strong>{{ $errors->first('source') }}</strong>--}}
+                                    {{--</span>--}}
+                                    {{--@endif--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="col-lg-3">--}}
+                                {{--<div class="form-group-material ">--}}
+                                    {{--<div class='input-group-material'>--}}
+                                        {{--<input autocomplete="off" type='text' id='applicantId' name="applicantId"--}}
+                                               {{--value="" class="input-material"/>--}}
+                {{----}}
+                                        {{--<label for="applicantId" class="label-material">Applicant ID</label>--}}
+                                    {{--</div>--}}
+                                    {{--@if ($errors->has('applicantId'))--}}
+                                        {{--<span class="help-block">--}}
+                                            {{--<strong>{{ $errors->first('applicantId') }}</strong>--}}
+                                        {{--</span>--}}
+                                    {{--@endif--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{----}}
+   {{----}}
+                                    {{--<button type="submit" style="position: relative; float: right;" class="btn btn-outline-success clear">Search</button>--}}
+
+
+                                {{----}}
+                        {{--</form>--}}
+                            <div class="col-lg-12">
+                                <form class="filter_form" id ="filter_form"  method="GET" action="{{route('applicant_list')}}" >
+                                    {{--{{ csrf_field() }}--}}
+                                    <div class="row">
+                                        <div class="form-group-material col-sm-2 ">
+                                            <label for="inform_type" class="select-label form-control-label ">Search by Source</label>
+                                            <select name="source" class="form-control ">
+                                                <option value="">Select Source</option>
+                                                <option value="Rozee.pk">Rozee.pk</option>
+                                                <option value="Facebook">Facebook</option>
+                                                <option value="Linkedin">Linkedin</option>
+                                                <option value="Gmail">Gmail</option>
+                                                <option value="Management">Management</option>
+                                                <option value="Staff">Staff</option>
+    
+                                            </select>
+                    
+                                            @if ($errors->has('source'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('source') }}</strong>
+                                    </span>
+                                            @endif
+                                        </div>
+                                        
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input autocomplete="off" type='text' id='query' name="query"
+                                                value="" class="input-material"/>
+                                                <label for="name" class="label-material" style="left: 17px">Enter text</label>
+                                            </div>
+                                            @if ($errors->has('query'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('query') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input autocomplete="off" type='text' id='applicant_id' name="applicant_id"
+                                                       value="" class="input-material"/>
+                                                <label for="applicant_id" class="label-material" style="left: 17px">Search with Applicant ID</label>
+                                            </div>
+                                            @if ($errors->has('applicant_id'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('applicant_id') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="col-sm-1 " style="margin-top: 27px;">
+                                            <button type="submit" class="btn btn-outline-success">Search</button>
+                                        </div>
+            
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                {{--</div>--}}
             </div>
             <div class="card-body">
                 @if (session('status'))
