@@ -127,7 +127,7 @@
                         <li><a href="{{route('project.index')}}"><i class="fa fa-file"></i>Projects</a></li>
 
                     @endif
-                    @if (\Auth::user()->checkHr())
+                    @if (\Auth::user()->checkHr() || \Auth::user()->isAdmin())
                     <li><a href="{{route('applicant_list')}}"><i class="fa fa-male"></i>Applicants list</a></li>
                        @endif
 
