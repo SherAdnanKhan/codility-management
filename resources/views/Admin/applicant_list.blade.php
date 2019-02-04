@@ -96,7 +96,10 @@
                                     <a title="Add Interview status" data-target="#addInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-plus"></i></a>
                                     &nbsp;
                                     <a class="deleteLink" title="Delete" href='{{url("/delete/{$applicant->id}")}}'><i
-                                                class="fa fa-trash-alt"></i></a></td>
+                                                class="fa fa-trash-alt"></i></a>
+                                    <a title="Add Test Detail" data-target="#addTest" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-file"></i></a>
+
+                                </td>
                             </tr>
                         @endforeach
                     @endif
@@ -548,6 +551,96 @@
                         
                         </div>
                         
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                        <button type="button" id="button_clear" class="btn btn-outline-danger">
+                            Reset
+                        </button>
+                    </form>
+            
+                </div>
+        
+            </div>
+        </div>
+    </div>
+    <div id="addTest" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+         class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Test Details</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                                aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <form class="form-horizontal" id="timetable" method="POST" action="{{route('interviewtest.store')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group-material " style="margin: 7px 0 0 0px">
+                                    <div class="">
+                                        <select name="status" class="form-control status_get">
+                                            <option value="" >Select Status</option>
+                                            <option value="1" >Pass</option>
+                                            <option value="0" >Fail</option>
+                                            
+                                        </select>
+                                    </div>
+                                    @if ($errors->has('status'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-3">
+                                <div class="form-group-material ">
+                                    <div class=' bootstrap-iso input-group-material'>
+                                        <input autocomplete="off" type='file' id='image' name="image"
+                                               class="input-material"/>
+                                    
+                                        <label for="image" class="label-material active">Upload Image</label>
+                                    </div>
+                                    @if ($errors->has('image'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('image') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='number' id='marks' name="marks" value=""
+                                               class="input-material"/>
+                
+                                        <label for="marks" class="label-material">Obtained Marks</label>
+                                    </div>
+                                    @if ($errors->has('marks'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('marks') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                        </div>
+                    
+                        <div class="form-group row">
+                            <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Note</label>
+                            <div class="col-sm-12  mb-12 ">
+                                <textarea  name="description" class="form-control">{{old('description')}}</textarea>
+                            </div>
+                            @if ($errors->has('description'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+                        <div class="applicant_core_id">
+                    
+                        </div>
+                    
                         <button type="submit" class="btn btn-outline-success">Submit</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
                             Reset

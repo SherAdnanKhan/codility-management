@@ -75,6 +75,8 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::resource('/interview/status', 'StatusController');
     Route::get('/get_sub_status/{id}', 'StatusController@sub_status');
     Route::resource('/interview', 'InterviewController');
+    Route::resource('/interviewtest', 'TestInterviewController');
+
 
 });
 Route::group(['middleware' => ['firstLogin', 'auth', 'employee']], function () {
