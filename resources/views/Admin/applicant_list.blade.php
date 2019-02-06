@@ -93,7 +93,7 @@
                                             <div class='input-group-material'>
                                                 <input autocomplete="off" type='text' id='query' name="query"
                                                 value="" class="input-material"/>
-                                                <label for="name" class="label-material" style="left: 17px">Enter text</label>
+                                                <label for="name" class="label-material" style="left: 17px">Enter Keyword </label>
                                             </div>
                                             @if ($errors->has('query'))
                                                 <span class="help-block">
@@ -170,11 +170,29 @@
                                     @endif
                                     <a class="viewCvLink {{$disabled}}" title="View CV"
                                        href='{{url("/view-cv/{$applicant->id}")}}'><i class='{{$extClass}}'></i></a>
+                                    @php
+                                        $interview_check=$applicant->interview()->orderBy('id','desc')->first();
+                                    
+                                    @endphp
                                     &nbsp;
-                                    <a title="Add Interview status" data-target="#addInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-plus"></i></a>
-                                    &nbsp;
+                                    
+                                    @if(isset($interview_check))
+                                        @if($interview_check->sub_status_id == null)
+                                        {{--<a title="Edit Interview status" data-target="#editInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-edit"></i></a>--}}
+                                        <a title="Edit Interview status" data-value='{{$applicant->id}}' class="edit_link" href="javascript://">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+                                        @else
+                                            <a title="Add Interview status" data-target="#addInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-plus"></i></a>
+                                            &nbsp;
+                                    @endif
+                                    @else
+                                        <a title="Add Interview status" data-target="#addInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-plus"></i></a>
+                                        &nbsp;
+                                    @endif
                                     <a class="deleteLink" title="Delete" href='{{url("/delete/{$applicant->id}")}}'><i
                                                 class="fa fa-trash-alt"></i></a>
+                                    
                                     <a title="Add Test Detail" data-target="#addTest" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-file"></i></a>
 
                                 </td>
@@ -550,6 +568,21 @@
             </div>
         </div>
     </div>
+    <div id="updateInterview" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+         class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Interview Update</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                                aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="modal-body-update-interview">
+                </div>
+        
+            </div>
+        </div>
+    </div>
     <div id="addInterview" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
          class="modal fade text-left">
         <div role="document" class="modal-dialog">
@@ -570,7 +603,7 @@
                                             <option value="" >Select Status</option>
                                             @if($statuses)
                                                 @foreach($statuses as $status)
-                                            <option value="{{$status->id}}">{{$status->status_name}}</option>
+                                                    <option value="{{$status->id}}">{{$status->status_name}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -582,7 +615,7 @@
                                     @endif
                                 </div>
                             </div>
-                          
+                        
                             <div class="col-md-3">
                                 <div class="form-group-material date">
                                     <div class=' bootstrap-iso input-group-material date'>
@@ -600,7 +633,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div  class="form-group-material  view" style="display: none">
-            
+                                
                                     <div class='col-sm-12  mb-12 '>
                                         <select name='sub_status'  class='form-control  ajax'>
                                         </select>
@@ -613,22 +646,22 @@
                                 </div>
                             </div>
                         </div>
-                        
-                            <div class="form-group row">
-                                <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Note</label>
-                                <div class="col-sm-12  mb-12 ">
-                                    <textarea  name="description" class="form-control">{{old('description')}}</textarea>
-                                </div>
-                                @if ($errors->has('description'))
-                                    <span class="help-block">
+                    
+                        <div class="form-group row">
+                            <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Note</label>
+                            <div class="col-sm-12  mb-12 ">
+                                <textarea  name="description" class="form-control">{{old('description')}}</textarea>
+                            </div>
+                            @if ($errors->has('description'))
+                                <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        <div class="applicant_core_id">
-                        
+                            @endif
                         </div>
-                        
+                        <div class="applicant_core_id">
+                    
+                        </div>
+                    
                         <button type="submit" class="btn btn-outline-success">Submit</button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
                             Reset
@@ -749,7 +782,7 @@
                 // minDate:new Date()
             });
             $('#dates').datetimepicker({
-                format: 'L',
+                
                 minDate:new Date()
             });
 
@@ -799,6 +832,17 @@
                         $(".view").css('display','none');
                     }
                    });
+        });
+        $(".edit_link").on('click',function() {
+            var applicantId=$(this).data("value");
+            $.get('/interview/'+applicantId+'/edit',function (data) {
+                // $.each(data,function (index,state) {
+                $('#modal-body-update-interview').append(data);
+                $('#updateInterview').modal();
+                // $('#modal-body').change(
+                
+            });
+
         });
     </script>
 @endsection

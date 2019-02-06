@@ -246,3 +246,58 @@
     </form>
     
 @endif
+
+@if(isset($interview))
+    <form class="form-horizontal" id="timetable" method="POST" action="{{route('interview.update',$interview->id)}}">
+        {{ csrf_field() }}
+        {{ method_field('PATCH') }}
+        <div class="row">
+            
+            @php
+                $selected_status=\App\Status::whereId($interview->status_id)->first();
+            @endphp
+            @if(isset($selected_status))
+                
+                @if($selected_status->sub_status)
+            <div class="col-md-3">
+                <div  class="form-group-material  view">
+                    
+                    <div class='col-sm-12  mb-12 '>
+                        <select name='sub_status'  class='form-control  ajax'>
+                            @foreach($selected_status->sub_status as $sub_status)
+                                <option {{$interview->sub_status != null ? ($interview->sub_status == $sub_status->id ?'selected':''):''}} value="{{$sub_status->id}}">{{$sub_status->name}}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('sub_status'))
+                            <span class="help-block">
+                                            <strong>{{ $errors->first('sub_status') }}</strong>
+                                        </span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+                @endif
+                @endif
+        </div>
+        
+        <div class="form-group row">
+            <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Note</label>
+            <div class="col-sm-12  mb-12 ">
+                <textarea  name="description" class="form-control">{{$sub_status->description?$sub_status->description:''}}</textarea>
+            </div>
+            @if ($errors->has('description'))
+                <span class="help-block">
+                                        <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+            @endif
+        </div>
+        <div class="applicant_core_id">
+        
+        </div>
+        
+        <button type="submit" class="btn btn-outline-success">Submit</button>
+        <button type="button" id="button_clear" class="btn btn-outline-danger">
+            Reset
+        </button>
+    </form>
+@endif
