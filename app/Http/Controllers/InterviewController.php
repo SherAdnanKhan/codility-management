@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Applicants;
 use App\Interview;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class InterviewController extends Controller
 {
@@ -38,9 +40,9 @@ class InterviewController extends Controller
     {
         $this->validate($request,[
             'applicant_original_id'     => 'required|integer',
-            'status_get'                 => 'required',
+            'status_get'                => 'required',
             'date'                      => 'required|date',
-            'description'                      => 'required',
+            'description'               => 'required',
 
         ]);
         $interview=Interview::create([
@@ -76,9 +78,12 @@ class InterviewController extends Controller
      * @param  \App\Interview  $interview
      * @return \Illuminate\Http\Response
      */
-    public function edit(Interview $interview)
+    public function edit($id)
     {
-        //
+        $applicant = Applicants::whereId($id)->first();
+        $interview = $applicant->interview()->orderBy('id','desc')->first();
+        $data= view('layouts.modal-view',compact('interview'))->render();
+        return \response()->json($data);
     }
 
     /**
@@ -88,9 +93,22 @@ class InterviewController extends Controller
      * @param  \App\Interview  $interview
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Interview $interview)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'sub_status'                 => 'required',
+            'description'                => 'required',
+        ]);
+        $interview=Interview::whereId($id)->update([
+            'sub_status_id'     =>  $request->sub_status?$request->sub_status:null,
+            'note'              =>  $request->description?$request->description:null,
+        ]);
+        if ($interview){
+            return redirect('applicants/lists')->with('status','Interview schedule successfully');
+        }else{
+            return redirect('applicants/lists')->with('status','Interview schedule unsuccessful ');
+
+        }
     }
 
     /**
