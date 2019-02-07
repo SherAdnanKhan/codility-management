@@ -76,8 +76,11 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::get('/get_sub_status/{id}', 'StatusController@sub_status');
     Route::resource('/interview', 'InterviewController');
     Route::resource('/interviewtest', 'TestInterviewController');
-
-
+    Route::get('/get_state/{id}', 'ApplicantsController@getState');
+    Route::get('/get_city/{id}', 'ApplicantsController@getCity');
+    Route::get('/get_single_applicant/{id}', 'ApplicantsController@get_single_applicant')->name('get_single_applicant');
+    Route::resource('/dropdown','DropDownController');
+    Route::post('/reject/applicant', 'ApplicantsController@reject')->name('reject.applicant');
 });
 Route::group(['middleware' => ['firstLogin', 'auth', 'employee']], function () {
 
