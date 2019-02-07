@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-tagsinput.css')}}">
 @endsection
 @section('body')
-    
     <div class="container">
         <header class="page-header">
             <h1 class="h3 display">Applicant List</h1>
@@ -17,7 +16,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-9">
                         <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success"
                            id="MainNavHelp"
                            href="#createModal">Add Applicant </a>
@@ -25,7 +24,9 @@
                            id="MainNavHelp"
                            href="{{route('upload.cvs')}}"><i class="fa fa-upload"></i> Add Bulk Applicants </a>
                         <a data-target="#createMyModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
-                           href="#createMyModal"> <i class="fa fa-cog"></i> Status</a>
+                           href="#createMyModal"> <i class="fa fa-cog"></i> Manage Status</a>
+                        <a data-target="#addDropDownInterviewFor" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
+                           href="#addDropDownInterviewFor"> <i class="fa fa-cog"></i> Manage Interview for(Dropdown)</a>
                     </div>
                     
                 </div>
@@ -69,17 +70,17 @@
                                 <form class="filter_form" id ="filter_form"  method="GET" action="{{route('applicant_list')}}" >
                                     {{--{{ csrf_field() }}--}}
                                     <div class="row">
-                                        <div class="form-group-material col-sm-2 ">
-                                            <label for="inform_type" class="select-label form-control-label ">Search by Source</label>
+                                        <div class="form-group-material col-sm-3 " style="margin-top: 30px;">
                                             <select name="source" class="form-control ">
-                                                <option value="">Select Source</option>
+                                                <option value="">Search By Source</option>
                                                 <option value="Rozee.pk">Rozee.pk</option>
                                                 <option value="Facebook">Facebook</option>
                                                 <option value="Linkedin">Linkedin</option>
                                                 <option value="Gmail">Gmail</option>
                                                 <option value="Management">Management</option>
                                                 <option value="Staff">Staff</option>
-    
+                                                <option value="Codility">Codility</option>
+
                                             </select>
                     
                                             @if ($errors->has('source'))
@@ -92,8 +93,8 @@
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
                                                 <input autocomplete="off" type='text' id='query' name="query"
-                                                value="" class="input-material"/>
-                                                <label for="name" class="label-material" style="left: 17px">Enter Keyword </label>
+                                                value="{{app('request')->input('query')}}" class="input-material"/>
+                                                <label for="name" class="label-material" style="left: 17px">Search by Keyword </label>
                                             </div>
                                             @if ($errors->has('query'))
                                                 <span class="help-block">
@@ -103,15 +104,89 @@
                                         </div>
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
+                                                <input autocomplete="off" type='text' id='email' name="email"
+                                                       value="{{app('request')->input('email')}}" class="input-material"/>
+                                                <label for="name" class="label-material" style="left: 17px">Search by Email </label>
+                                            </div>
+                                            @if ($errors->has('email'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
                                                 <input autocomplete="off" type='text' id='applicant_id' name="applicant_id"
-                                                       value="" class="input-material"/>
-                                                <label for="applicant_id" class="label-material" style="left: 17px">Search with Applicant ID</label>
+                                                       value="{{app('request')->input('applicant_id')}}" class="input-material"/>
+                                                <label for="applicant_id" class="label-material" style="left: 17px">Search by Applicant ID</label>
                                             </div>
                                             @if ($errors->has('applicant_id'))
                                                 <span class="help-block">
                                             <strong>{{ $errors->first('applicant_id') }}</strong>
                                             </span>
                                             @endif
+                                        </div>
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input autocomplete="off" type='text' id='first_name' name="first_name"
+                                                       value="{{app('request')->input('first_name')}}" class="input-material"/>
+                                                <label for="first_name" class="label-material" style="left: 17px">Search by First Name</label>
+                                            </div>
+                                            @if ($errors->has('first_name'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('first_name') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input autocomplete="off" type='text' id='last_name' name="last_name"
+                                                       value="{{app('request')->input('last_name')}}" class="input-material"/>
+                                                <label for="last_name" class="label-material" style="left: 17px">Search by Last Name</label>
+                                            </div>
+                                            @if ($errors->has('last_name'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('last_name') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group-material date" style="margin-top: 23px;">
+                                                <div class=' bootstrap-iso input-group-material date_of_birth'>
+                                                    <input autocomplete="off" type='text' id='date_of_birth' name="date_of_birth" value="{{app('request')->input('date_of_birth')}}"
+                                                           class="input-material"/>
+                
+                                                    <label for="date_of_birth" class="label-material">Search By DOB</label>
+                                                </div>
+                                                @if ($errors->has('date_of_birth'))
+                                                    <span class="help-block">
+                                            <strong>{{ $errors->first('date_of_birth') }}</strong>
+                                        </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @php
+                                            $interview_for=\App\DropDown::all();
+                                        @endphp
+    
+                                        <div class="col-sm-3" style="margin-top: 23px;">
+                                            <div class="form-group-material">
+                                                <div class='input-group-material'>
+                                                    <select  name="search_for_interview" class="form-control " id='search_for_interview' >
+                                                        <option value="">Search by Interview For</option>
+                                                        @foreach($interview_for as $item)
+                                                            <option value="{{$item->id}}">{{$item->interview_for}}</option>
+                    
+                                                        @endforeach
+                
+                                                    </select>
+                                                </div>
+                                                @if ($errors->has('search_for_interview'))
+                                                    <span class="help-block">
+                                            <strong>{{ $errors->first('search_for_interview') }}</strong>
+                                        </span>
+                                                @endif
+                                            </div>
                                         </div>
                                         <div class="col-sm-1 " style="margin-top: 27px;">
                                             <button type="submit" class="btn btn-outline-success">Search</button>
@@ -137,19 +212,29 @@
                         <th>Name</th>
                         <th>Source</th>
                         <th>Contact</th>
+                        <th>Email</th>
                         <th>Area</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     @if(count($applicants)>0)
+                        
                         @foreach($applicants->all() as $applicant)
                             <tr>
                                 <td>{{$applicant->applicantId}}</td>
                                 <td>{{$applicant->date}}</td>
-                                <td>{{$applicant->firstName}}{{$applicant->middleName?$applicant->middleName:''}}{{$applicant->LastName?$applicant->LastName:''}}</td>
+                                <td>@if($applicant->test()->first() ||  $applicant->interview()->first())
+                                        <a href="{{route('get_single_applicant',$applicant->id)}}">{{$applicant->firstName}}{{$applicant->middleName?$applicant->middleName:''}}{{$applicant->LastName?$applicant->LastName:''}}
+                                </a>
+                                        @else
+                                        {{$applicant->firstName}}{{$applicant->middleName?$applicant->middleName:''}}{{$applicant->LastName?$applicant->LastName:''}}
+    
+                                @endif
+                                </td>
                                 <td>{{$applicant->source?$applicant->source:'No Source Defined'}}</td>
                                 <td>{{$applicant->phoneNumber}}</td>
+                                <td>{{$applicant->email}}</td>
                                 <td>{{$applicant->country?$applicant->country.'=>':''}}{{$applicant->city?$applicant->city:''}}</td>
                                 <td>
                                         <a class="cvUploadLink" title="Upload CV" data-id='{{$applicant->id}}'
@@ -219,16 +304,24 @@
                                 aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <form class="form-horizontal" id="timetable" method="POST" action="{{route('applicant.manual')}}">
+                    
+                    <form class="form-horizontal" id="applicantadd" method="POST" action="{{route('applicant.manual')}}">
                         {{ csrf_field() }}
+                        
                         <div class="row">
+                            @if(\Session::get("already_exist") == true)
+                                <div class="alert alert-success">
+                                    <p>The following applicants are similar to new applicant, Please make sure its new applicant If its new then click as new applicant button</p>
+                                </div>
+                                <input autocomplete="off" type='hidden' value="force_submit" name="force_submit"/>
+                            @endif
                             <div class="col-md-3">
                                 <div class="form-group-material ">
                                     <div class='input-group-material'>
                                         <input autocomplete="off" type='text' id='applicantId' name="applicantId"
-                                               value="" class="input-material"/>
+                                               value="{{old('applicantId')}}{{\Session::get("applicantId")?\Session::get("applicantId"):null}}" class="input-material"/>
                                         
-                                        <label for="applicantId" class="label-material">Applicant ID</label>
+                                        <label for="applicantId" class="label-material">Applicant ID (Optional)</label>
                                     </div>
                                     @if ($errors->has('applicantId'))
                                         <span class="help-block">
@@ -240,10 +333,10 @@
                             <div class="col-md-3">
                                 <div class="form-group-material ">
                                     <div class='input-group-material'>
-                                        <input autocomplete="off" type='text' id='firstName' name="firstName" value=""
+                                        <input autocomplete="off" type='text' id='firstName' name="firstName" value="{{old('firstName')}}{{\Session::get("firstName")?\Session::get("firstName"):null}}"
                                                class="input-material"/>
                                         
-                                        <label for="firstName" class="label-material">Applicant`s First Name</label>
+                                        <label for="firstName" class="label-material">First Name</label>
                                     </div>
                                     @if ($errors->has('firstName'))
                                         <span class="help-block">
@@ -255,10 +348,10 @@
                             <div class="col-md-3">
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
-                                        <input autocomplete="off" type='text' id='middleName' name="middleName" value=""
+                                        <input autocomplete="off" type='text' id='middleName' name="middleName" value="{{old('middleName')}}{{\Session::get("middleName")?\Session::get("middleName"):null}}"
                                                class="input-material"/>
                                         
-                                        <label for="middleName" class="label-material">Applicant`s Middle Name
+                                        <label for="middleName" class="label-material">Middle Name
                                             (Optional)</label>
                                     </div>
                                     @if ($errors->has('middleName'))
@@ -271,10 +364,10 @@
                             <div class="col-md-3">
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
-                                        <input autocomplete="off" type='text' id='lastName' name="lastName" value=""
+                                        <input autocomplete="off" type='text' id='lastName' name="lastName" value="{{old('lastName')}}{{\Session::get("LastName")?\Session::get("LastName"):null}}"
                                                class="input-material"/>
                                         
-                                        <label for="lastName" class="label-material">Applicant`s Last Name </label>
+                                        <label for="lastName" class="label-material">Last Name (Optional) </label>
                                     </div>
                                     @if ($errors->has('lastName'))
                                         <span class="help-block">
@@ -288,8 +381,9 @@
                                     <div class="">
                                         <select name="gender" class="form-control ">
                                             <option value="">Select Gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
+                                            
+                                            <option value="male" {{\Session::get("gender") == 'male' ?'selected' :null}} {{old('gender') =='male'?'selected':null}}>Male</option>
+                                            <option value="female" {{\Session::get("gender") =='female'?'selected':null}} {{old('gender') =='male'?'selected':null}}>Female</option>
                                         </select>
                                     </div>
                                     @if ($errors->has('gender'))
@@ -302,7 +396,7 @@
                             <div class="col-md-3">
                                 <div class="form-group-material date">
                                     <div class=' bootstrap-iso input-group-material date'>
-                                        <input autocomplete="off" type='text' id='date' name="date" value=""
+                                        <input autocomplete="off" type='text' id='date' name="date" value="{{old('date')}}{{\Session::get("date")?\Session::get("date"):null}}"
                                                class="input-material"/>
                                         
                                         <label for="date" class="label-material">Date Of Apply</label>
@@ -317,7 +411,7 @@
                             <div class="col-md-3">
                                 <div class="form-group-material date">
                                     <div class=' bootstrap-iso input-group-material date'>
-                                        <input autocomplete="off" type='text' id='dob' name="dob" value=""
+                                        <input autocomplete="off" type='text' id='dob' name="dob" value="{{old('dob')}}{{\Session::get("dob")?\Session::get("dob"):null}}"
                                                class="input-material"/>
                                         
                                         <label for="dob" class="label-material">Date of Birthday</label>
@@ -332,7 +426,7 @@
                             <div class="col-md-3">
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
-                                        <input autocomplete="off" type='number' id='age' name="age" value=""
+                                        <input autocomplete="off" type='number' id='age' name="age" value="{{old('age')}}{{\Session::get("age")?\Session::get("age"):null}}"
                                                class="input-material"/>
                                         
                                         <label for="age" class="label-material">Applicant`s Age</label>
@@ -344,11 +438,12 @@
                                     @endif
                                 </div>
                             </div>
+                            
                             <div class="col-md-3">
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
                                         <input autocomplete="off" type='text' id='nationality' name="nationality"
-                                               value="" class="input-material" placeholder="Pakistani/Indian/American"/>
+                                                class="input-material" value="{{\Session::get("nationality")?\Session::get("nationality"):'Pakistani'}}"/>
                                         
                                         <label for="nationality" class="label-material active">Applicant`s
                                             Nationality</label>
@@ -364,7 +459,7 @@
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
                                         <input autocomplete="off" type='tel' id='phoneNumber' name="phoneNumber"
-                                               value="" class="input-material" placeholder="9230000000000"/>
+                                               value="{{old('phoneNumber')}}{{\Session::get("phoneNumber")?\Session::get("phoneNumber"):null}}" class="input-material" placeholder="9230000000000"/>
                                         
                                         <label for="phoneNumber" class="label-material active">Applicant`s Contact
                                             Number</label>
@@ -380,7 +475,7 @@
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
                                         <input autocomplete="off" type='text' id='currentSalary' name="currentSalary"
-                                               value="" class="input-material"/>
+                                               value="{{old('currentSalary')}} {{\Session::get("currentSalary")?\Session::get("currentSalary"):null}}" class="input-material"/>
                                         
                                         <label for="currentSalary" class="label-material">Current Salary</label>
                                     </div>
@@ -395,7 +490,7 @@
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
                                         <input autocomplete="off" type='text' id='expectedSalary' name="expectedSalary"
-                                               value="" class="input-material"/>
+                                               value="{{old('expectedSalary')}}{{\Session::get("expectedSalary")?\Session::get("expectedSalary"):null}}" class="input-material"/>
                                         
                                         <label for="expectedSalary" class="label-material">Expected Salary</label>
                                     </div>
@@ -409,10 +504,57 @@
                             <div class="col-md-3">
                                 <div class="form-group-material">
                                     <div class='input-group-material'>
-                                        <input autocomplete="off" type='text' id='country' name="country" value=""
-                                               class="input-material" placeholder="Pakistan"/>
+                                        <input autocomplete="off" type='text' id='email' name="email"
+                                               value="{{old('email')}}{{\Session::get("email")?\Session::get("email"):null}}" class="input-material"/>
+                
+                                        <label for="email" class="label-material">Email</label>
+                                    </div>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            @php
+                                $interview_for=\App\DropDown::all();
+                            @endphp
+    
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
                                         
-                                        <label for="country" class="label-material active">Country</label>
+                                        <select  name="applicant_interview_for" class="form-control " id='applicant_interview_for' >
+                                            <option value="">Interview For</option>
+                                            @foreach($interview_for as $item)
+                                                <option value="{{$item->id}}" {{\Session::get("interview_for") == $item->interview_for ?'selected' :null}}>{{$item->interview_for}}</option>
+                    
+                                            @endforeach
+                
+                                        </select>
+                                    </div>
+                                    @if ($errors->has('applicant_interview_for'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('applicant_interview_for') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            @php
+                                $countries=\App\Country::all();
+                            @endphp
+    
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <select  name="country" class="form-control country" id='country' >
+                                            <option value="">Select Country</option>
+                                            @foreach($countries as $country)
+                                                <option value="{{$country->id}}" {{\Session::get("country") == $country->name ?'selected' :null}} >{{$country->name}} </option>
+    
+                                            @endforeach
+                                            
+                                        </select>
                                     </div>
                                     @if ($errors->has('country'))
                                         <span class="help-block">
@@ -421,51 +563,185 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group-material">
-                                    <div class='input-group-material'>
-                                        <input autocomplete="off" type='text' id='city' name="city" value=""
-                                               class="input-material" placeholder="Lahore"/>
-                                        
-                                        <label for="city" class="label-material active">City</label>
+                            <div class="col-md-3 state" style="display: none">
+                                <div  class="form-group-material  " >
+            
+                                    <div class='col-sm-12  mb-12 '>
+                                        <select name='state'  class='form-control  states_get'>
+                                        </select>
+                                        @if ($errors->has('state'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('state') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
-                                    @if ($errors->has('city'))
-                                        <span class="help-block">
+                                </div>
+                            </div>
+                            <div class="col-md-3 city" style="display: none">
+                                <div  class="form-group-material  " >
+            
+                                    <div class='col-sm-12  mb-12 '>
+                                        <select name='city'  class='form-control  city_get'>
+                                        </select>
+                                        @if ($errors->has('city'))
+                                            <span class="help-block">
                                             <strong>{{ $errors->first('city') }}</strong>
                                         </span>
-                                    @endif
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                            
                             <div class="col-md-3">
-                                <div class="form-group-material " style="margin: 7px 0 0 0px">
+                                <div class="form-group-material " >
                                     <div class="">
-                                        <select name="source" class="form-control ">
+                                        <select name="sources" class="form-control ">
                                             <option value="">Select Source</option>
-                                            <option value="Rozee.pk">Rozee.pk</option>
-                                            <option value="Facebook">Facebook</option>
-                                            <option value="Linkedin">Linkedin</option>
-                                            <option value="Gmail">Gmail</option>
-                                            <option value="Management">Management</option>
-                                            <option value="Staff">Staff</option>
-
+                                            <option value="Rozee.pk"{{\Session::get("source") == "Rozee.pk" ?'selected' :null}}>Rozee.pk</option>
+                                            <option value="Facebook" {{\Session::get("source") == "Facebook" ?'selected' :null}}>Facebook</option>
+                                            <option value="Linkedin" {{\Session::get("source") == "Linkedin" ?'selected' :null}}>Linkedin</option>
+                                            <option value="Gmail" {{\Session::get("source") == "Gmail" ?'selected' :null}}>Gmail</option>
+                                            <option value="Management" {{\Session::get("source") == "Management" ?'selected' :null}}>Management</option>
+                                            <option value="Staff" {{\Session::get("source") == "Staff" ?'selected' :null}}>Staff</option>
+                                            <option value="Codility" {{\Session::get("source") == "Codility" ?'selected' :null}}>Codility</option>
                                         </select>
                                     </div>
-                                    @if ($errors->has('source'))
+                                    @if ($errors->has('sources'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('source') }}</strong>
+                                        <strong>{{ $errors->first('sources') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
+                            <div class="bootstrap-iso" >
+                                <div class="form-group ">
+                                    <label for="expertise_in" class='expertise_in' style="color: #aaa;">Expertise In</label>
+                                    <input type="text" value="{{old('expertise_in')}} {{\Session::get("expertise_in")?\Session::get("expertise_in"):null}}" name='expertise_in' data-role="tagsinput" style="    width: 100%;border: none;border-bottom: 1px solid #eee;padding: 10px 0;color: #868e96;font-weight: 300;"/>
+                                </div>
+                                @if ($errors->has('expertise_in'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('expertise_in') }}</strong>
+                                        </span>
+                                @endif
+                            </div>
+                            
 
                         </div>
-                        <button type="submit" class="btn btn-outline-success">Submit</button>
-                        <button type="button" id="button_clear" class="btn btn-outline-danger">
-                            Reset
-                        </button>
+                        @if(\Session::get("already_exist") == true)
+                            <button type="button" class="btn btn-outline-success submit_first">Submit As New Applicant</button>
+    
+                        @else
+                        <button type="button" class="btn btn-outline-success submit_first">Submit</button>
+                        @endif
                     </form>
-                
+                    @if(\Session::get("already_exist") == true)
+                    <form class="form-inline"  method="POST" action="{{route('reject.applicant')}}">
+                        <input  type='hidden' value="reject" name="reject"/>
+                        {{ csrf_field() }}
+    
+                        <button type="submit" class="btn btn-outline-danger ">Reject Applicant</button>
+
+                    </form>
+                    @endif
+                    <br><br><br>
+               @if(\Session::get("already_exist") == true)
+                   
+                   @php
+                   $get_status=\Session::get("duplicate_status");
+                   if ($get_status == 'email'){
+                                      $duplicate_applicants=\App\Applicants::where('email', \Session::get("email"))->get();
+                   }
+                   if ($get_status == 'name'){
+                   $duplicate_applicants=\App\Applicants::where('firstName', \Session::get("firstName"))->where('LastName', \Session::get("LastName"))->get();
+                   }
+                   @endphp
+                    @if(isset($duplicate_applicants))
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Source</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Area</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if(count($duplicate_applicants)>0)
+            
+                            @foreach($duplicate_applicants as $applicant)
+                                <tr>
+                                    <td>{{$applicant->applicantId}}</td>
+                                    <td>{{$applicant->date}}</td>
+                                    <td>@if($applicant->test()->first() ||  $applicant->interview()->first())
+                                            <a href="{{route('get_single_applicant',$applicant->id)}}">{{$applicant->firstName}}{{$applicant->middleName?$applicant->middleName:''}}{{$applicant->LastName?$applicant->LastName:''}}
+                                            </a>
+                                        @else
+                                            {{$applicant->firstName}}{{$applicant->middleName?$applicant->middleName:''}}{{$applicant->LastName?$applicant->LastName:''}}
+                        
+                                        @endif
+                                    </td>
+                                    <td>{{$applicant->source?$applicant->source:'No Source Defined'}}</td>
+                                    <td>{{$applicant->phoneNumber}}</td>
+                                    <td>{{$applicant->email}}</td>
+    
+                                    <td>{{$applicant->country?$applicant->country.'=>':''}}{{$applicant->city?$applicant->city:''}}</td>
+                                    <td>
+                                        <a class="cvUploadLink" title="Upload CV" data-id='{{$applicant->id}}'
+                                           href='{{url("/upload-cv/{$applicant->id}")}}'><i class="fa fa-upload"></i></a>
+                                        &nbsp;
+                                        @if($applicant->cvExt=="pdf")
+                                            <?php $extClass = "far fa-file-pdf";
+                                            $disabled = '';
+                                            ?>
+                                        @elseif($applicant->cvExt=="doc" || $applicant->cvExt=="docx")
+                                            <?php $extClass = "far fa-file-word";
+                                            $disabled = '';
+                                            ?>
+                                        @else
+                                            <?php $extClass = "fas fa-eye-slash";
+                                            $disabled = 'not-active';
+                                            ?>
+                                        @endif
+                                        <a class="viewCvLink {{$disabled}}" title="View CV"
+                                           href='{{url("/view-cv/{$applicant->id}")}}'><i class='{{$extClass}}'></i></a>
+                                        @php
+                                            $interview_check=$applicant->interview()->orderBy('id','desc')->first();
+                        
+                                        @endphp
+                                        &nbsp;
+                        
+                                        @if(isset($interview_check))
+                                            @if($interview_check->sub_status_id == null)
+                                                {{--<a title="Edit Interview status" data-target="#editInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-edit"></i></a>--}}
+                                                <a title="Edit Interview status" data-value='{{$applicant->id}}' class="edit_link" href="javascript://">
+                                                    <span class="fa fa-edit"></span>
+                                                </a>
+                                            @else
+                                                <a title="Add Interview status" data-target="#addInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-plus"></i></a>
+                                                &nbsp;
+                                            @endif
+                                        @else
+                                            <a title="Add Interview status" data-target="#addInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-plus"></i></a>
+                                            &nbsp;
+                                        @endif
+                                        <a class="deleteLink" title="Delete" href='{{url("/delete/{$applicant->id}")}}'><i
+                                                    class="fa fa-trash-alt"></i></a>
+                        
+                                        <a title="Add Test Detail" data-target="#addTest" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-file"></i></a>
+                    
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
+                    @endif
+               @endif
+                    
                 </div>
             
             </div>
@@ -562,6 +838,40 @@
                     </div>
                     <div class="modal-footer">
                         <button id="submitBtn" type="submit" class="btn btn-outline-success ">Submit</button>
+                        <button type="button" class="btn " data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="addDropDownInterviewFor" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="modalTiltle" class="modal-title">Manage Interview For DropDown</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="modalForm" action="{{route('dropdown.store')}}" method="post" enctype="multipart/form-data">
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <div class="col-md-3">
+                            <div class="bootstrap-iso" >
+                                <div class="form-group ">
+                                    <label for="sub_status" class='add_interview_for'>Add Interview for</label>
+                                    <input type="text" value="{{old('add_interview_for')}}" name='add_interview_for' data-role="tagsinput" />
+                                </div>
+                                @if ($errors->has('add_interview_for'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('add_interview_for') }}</strong>
+                                        </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="addinterviewfordropdown" type="submit" class="btn btn-outline-success ">Submit</button>
                         <button type="button" class="btn " data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -782,10 +1092,11 @@
                 // minDate:new Date()
             });
             $('#dates').datetimepicker({
-                
-                minDate:new Date()
+            
             });
-
+            $('#date_of_birth').datetimepicker({
+                format: 'L'
+            });
         });
         $('#button_clear').click(function () {
             $('#timetable input[type="text"]').val('');
@@ -844,5 +1155,62 @@
             });
 
         });
-    </script>
+        $(".submit_first").on('click',function() {
+            $("#applicantadd").submit()
+        });
+                @if (count($errors) > 0)
+                @php
+                $check_error=array('The date is not a valid date.','The date field is required.','The dob is not a valid date.','The dob field is required.','The first name field is required.','The gender field is required.','The phone number field is required.','The city field is required.','The country field is required.','The sources field is required.',);
+                    $bFound = (count(array_intersect($errors->all(), $check_error))) ? true : false;
+                @endphp
+                        @if(isset($bFound))
+                @if($bFound == true || $error=='Applicant Insert UnSuccessful, Please Try Again !')
+                $('#createModal').modal('show');
+        
+                @endif
+                        @endif
+        @endif
+    @if(\Session::get("already_exist") == true)
+                $('#createModal').modal('show');
+                        @endif
+$(".country").change(function() {
+var country=$(this).val();
+$.get('/get_state/'+ country +'/',function (result) {
+if(result.length != 0) {
+// alert('data comming');
+$(".states_get").html("<option value='' >Select State</option>");
+
+for(var i = 0; i < result.length; i++) {
+    var states = result[i];
+    $(".states_get").append("<option value="+states.id+" >"+states.name+"</option>");
+}
+$(".state").css('display', 'block');
+}
+if(result.length == 0) {
+// $(".view").html("asdf");
+$(".state").css('display','none');
+}
+});
+});
+$(".states_get").change(function() {
+var country=$(this).val();
+$.get('/get_city/'+ country +'/',function (result) {
+if(result.length != 0) {
+// alert('data comming');
+$(".city_get").html("<option value='' >Select City</option>");
+
+for(var i = 0; i < result.length; i++) {
+    var city = result[i];
+    $(".city_get").append("<option value="+city.name+" >"+city.name+"</option>");
+}
+$(".city").css('display', 'block');
+}
+if(result.length == 0) {
+// $(".view").html("asdf");
+$(".city").css('display','none');
+}
+});
+});
+</script>
 @endsection
+

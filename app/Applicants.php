@@ -11,7 +11,7 @@ class Applicants extends Model
             'date',
             'firstName',
             'middleName',
-            'lastName',
+            'LastName',
             'gender',
             'age',
             'nationality',
@@ -21,7 +21,10 @@ class Applicants extends Model
             'expectedSalary',
             'city',
             'source',
-            'country'
+            'country',
+            'interview_for',
+            'email',
+            'expertise_in'
     ];
     public function experienceAndEducation()
     {

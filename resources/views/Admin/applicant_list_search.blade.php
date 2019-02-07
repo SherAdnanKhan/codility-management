@@ -33,12 +33,20 @@
                 <table class="table table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Applicant Id</th>
                         <th>Date</th>
                         <th>Name</th>
                         <th>Source</th>
                         <th>Contact</th>
                         <th>Area</th>
+                        {{--<th>Gender</th>--}}
+                        {{--<th>Age</th>--}}
+                        {{--<th>Nationality</th>--}}
+                        <th>DOB</th>
+                        <th>CurrentSalary</th>
+                        <th>ExpectedSalary</th>
+                        <th>Interview For</th>
+                        <th>Expertise In</th>
                        
                     </tr>
                     </thead>
@@ -52,7 +60,16 @@
                                 <td>{{$applicant->source?$applicant->source:'No Source Defined'}}</td>
                                 <td>{{$applicant->phoneNumber}}</td>
                                 <td>{{$applicant->country?$applicant->country.'=>':''}}{{$applicant->city?$applicant->city:''}}</td>
-                              
+                                {{--<td>{{$applicant->gender?$applicant->gender:''}}</td>--}}
+                                {{--<td>{{$applicant->gender?$applicant->gender:''}}</td>--}}
+                                {{--<td>{{$applicant->age?$applicant->age:''}}</td>--}}
+                                {{--<td>{{$applicant->nationality?$applicant->nationality:''}}</td>--}}
+                                <td>{{$applicant->dob?$applicant->dob:''}}</td>
+                                <td>{{$applicant->currentSalary?$applicant->currentSalary:''}}</td>
+                                <td>{{$applicant->expectedSalary?$applicant->expectedSalary:''}}</td>
+                                <td>{{$applicant->interview_for?$applicant->interview_for:''}}</td>
+                                <td>{{$applicant->expertise_in?$applicant->expertise_in:''}}</td>
+
                             </tr>
                         {{--@endforeach--}}
                     @endif
@@ -91,7 +108,7 @@
                     </table>
                     <br>
                     <br>
-                    <p>Interview Logs</p>
+                    <p>Event Logs</p>
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>

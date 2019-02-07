@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
+use App\Country;
+use App\State;
 use App\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,10 +23,30 @@ class ApplicantsController extends Controller
         $query=$request->input('query');
         $source=$request->input('source');
         $applicant_id=$request->input('applicant_id');
+        if (!(Carbon::parse($request->input('date_of_birth'))->isToday())) {
+            $dob = Carbon::parse($request->input('date_of_birth'));
+        }else{
+            $dob="";
+        }
+        $email=$request->input('email');
+        $first_name=$request->input('first_name');
+        $last_name=$request->input('last_name');
+        $interview_search=$request->input('search_for_interview');
+        if ($applicant_id != "" && $source != ""){
+            $applicants=Applicants::where('source',$source)->where('applicantId',$applicant_id)->orderBy('id','desc')->paginate(10);
 
+            if(count($applicants)>0)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'query' => $query,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }
         if($query != "")
         {
-            $applicants=Applicants::where('cvData','LIKE','%'.$query.'%')->paginate(10);
+
+            $applicants=Applicants::where('cvData','LIKE','%'.$query.'%')->orderBy('id','desc')->paginate(10);
             if(count($applicants)>0)
             {
                 return view('Admin.applicant_list',['applicants'=>$applicants,'query' => $query,'statuses'=>$statuses]);
@@ -32,7 +55,7 @@ class ApplicantsController extends Controller
                 return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
             }
         }elseif($source != ""){
-            $applicants=Applicants::where('source',$source)->paginate(10);
+            $applicants=Applicants::where('source',$source)->orderBy('id','desc')->paginate(10);
             if(count($applicants)>0)
             {
                 return view('Admin.applicant_list',['applicants'=>$applicants,'source' => $source,'statuses'=>$statuses]);
@@ -41,16 +64,62 @@ class ApplicantsController extends Controller
                 return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
             }
         }elseif($applicant_id != ""){
-            $applicant=Applicants::where('applicantId',$applicant_id)->first();
-            if($applicant != null)
+            $applicants=Applicants::where('applicantId',$applicant_id)->orderBy('id','desc')->paginate(10);
+            if($applicants)
             {
-                return view('Admin.applicant_list_search',['applicant'=>$applicant,'applicant_id' => $applicant_id,'statuses'=>$statuses]);
+                return view('Admin.applicant_list',['applicants'=>$applicants,'applicant_id' => $applicant_id,'source' => $source,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($dob != ""){
+            $applicants=Applicants::where('dob',$dob)->orderBy('id','desc')->paginate(10);
+            if($applicants)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'applicant_id' => $applicant_id,'source' => $source,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($first_name != ""){
+
+            $applicants=Applicants::where('firstName',$first_name)->orderBy('id','desc')->paginate(10);
+            if($applicants)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'applicant_id' => $applicant_id,'source' => $source,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($last_name != ""){
+            $applicants=Applicants::where('lastName',$last_name)->orderBy('id','desc')->paginate(10);
+            if($applicants)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'applicant_id' => $applicant_id,'source' => $source,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($interview_search != ""){
+            $applicants=Applicants::where('interview_for',$interview_search)->orderBy('id','desc')->paginate(10);
+            if($applicants)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'applicant_id' => $applicant_id,'source' => $source,'statuses'=>$statuses]);
+            }else
+            {
+                return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($email != ""){
+            $applicants=Applicants::where('email',$email)->orderBy('id','desc')->paginate(10);
+            if($applicants)
+            {
+                return view('Admin.applicant_list',['applicants'=>$applicants,'applicant_id' => $applicant_id,'source' => $source,'statuses'=>$statuses]);
             }else
             {
                 return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
             }
         }else{
-            $applicants=Applicants::paginate(10);
+            $applicants=Applicants::orderBy('id','desc')->paginate(10);
             return view('Admin.applicant_list',compact('applicants','statuses'))->with('status','Search Field Empty.');
         }
     }
@@ -151,15 +220,16 @@ class ApplicantsController extends Controller
                     }
                 }
             }
-            if (isset($check)){
-                if ($check == null){
-                $string_version = implode(' ', $text);
+            if ($request->uploadedCv->getClientOriginalExtension()!="pdf") {
+                if ($check == null) {
+                    $string_version = implode(' ', $text);
                 }
             }
+
             $user->cvSlug=$finalFileName;
             $user->cvExt=$request->uploadedCv->getClientOriginalExtension();
             $user->cvUrl=$file;
-            $user->cvData=isset($string_version)?$string_version:null;
+            $user->cvData=isset($string_version)?$string_version:$text;
             $user->save();
 
             return redirect()->route('applicant_list')->with('status','Uploaded Resume of Applicant');
@@ -202,18 +272,68 @@ class ApplicantsController extends Controller
             'gender'            => 'required',
             'nationality'       => 'required',
             'phoneNumber'       => 'required|integer',
-            'city'              => 'required',
             'country'           => 'required',
-            'source'            => 'required',
-            'applicantId'       => 'unique:applicants,applicantId',
-
+            'sources'           => 'required',
+            'email'             => 'required|email',
         ]);
+
+        //check
+        if (!($request->force_submit)) {
+            $check_applicant = Applicants::where('email', $request->email)->first();
+            $check_applicants = Applicants::where('firstName', $request->firstName)->where('LastName', $request->lastName)->first();
+            if ($check_applicant != null || $check_applicants != null) {
+                \Session::put("applicantId", $request->applicantId ? $request->applicantId : null);
+                \Session::put("date", $request->date ? $request->date : null);
+                \Session::put("firstName", $request->firstName ? $request->firstName : null);
+                \Session::put("middleName", $request->middleName ? $request->middleName : null);
+                \Session::put("LastName", $request->lastName ? $request->lastName : null);
+                \Session::put("gender", $request->gender ? $request->gender : null);
+                \Session::put("age", $request->age ? $request->age : null);
+                \Session::put("nationality", $request->nationality ? $request->nationality : null);
+                \Session::put("phoneNumber", $request->phoneNumber ? $request->phoneNumber : null);
+                \Session::put("dob", $request->dob ? $request->dob : null);
+                \Session::put("currentSalary", $request->currentSalary ? $request->currentSalary : null);
+                \Session::put("expectedSalary", $request->expectedSalary ? $request->expectedSalary : null);
+                \Session::put("city", $request->city ? $request->city : null);
+                \Session::put("country", $request->country ? Country::where('id', $request->country)->pluck('name')->first() : null);
+                \Session::put("source", $request->sources ? $request->sources : null);
+                \Session::put("interview_for", $request->applicant_interview_for ? $request->applicant_interview_for : null);
+                \Session::put("expertise_in", $request->expertise_in ? $request->expertise_in : null);
+                \Session::put("email", $request->email ? $request->email : null);
+                \Session::put("already_exist",true);
+                \Session::put("duplicate_status",$check_applicant?'email':'name');
+                return redirect()->back()->with('error', 'Applicant Insert UnSuccessful, Please Try Again !');
+            }
+            }
+            if ($request->force_submit){
+                \Session::forget('applicantId');
+                \Session::forget('date');
+                \Session::forget('firstName');
+                \Session::forget('middleName');
+                \Session::forget('LastName');
+                \Session::forget('gender');
+                \Session::forget('nationality');
+                \Session::forget('phoneNumber');
+                \Session::forget('dob');
+                \Session::forget('age');
+                \Session::forget('currentSalary');
+                \Session::forget('expectedSalary');
+                \Session::forget('country');
+                \Session::forget('source');
+                \Session::forget('interview_for');
+                \Session::forget('expertise_in');
+                \Session::forget('email');
+                \Session::forget('already_exist');
+                \Session::forget('duplicate_status');
+
+            }
+        //check
         $applicant=Applicants::create([
             'applicantId'           => $request->applicantId?$request->applicantId:null,
             'date'                  => $request->date ? Carbon::parse($request->date)->format('Y-m-d'):null,
             'firstName'             => $request->firstName ? $request->firstName:null,
             'middleName'            => $request->middleName ? $request->middleName:null,
-            'lastName'              => $request->lastName ? $request->lastName:null,
+            'LastName'              => $request->lastName ? $request->lastName:null,
             'gender'                => $request->gender ? $request->gender:null ,
             'age'                   => $request->age ? $request->age:null,
             'nationality'           => $request->nationality?$request->nationality:null,
@@ -221,15 +341,67 @@ class ApplicantsController extends Controller
             'dob'                   => $request->dob ? Carbon::parse($request->dob)->format('Y-m-d') :null,
             'currentSalary'         => $request->currentSalary ? $request->currentSalary:null,
             'expectedSalary'        => $request->expectedSalary ? $request->expectedSalary:null,
-            'city'                  => $request->city ? $request->city:null,
-            'country'               => $request->country ? $request->country:null,
-            'source'                => $request->source ? $request->source:null,
+            'city'                  => $request->city ? $request->city:(\Session::get("city")?\Session::get("city"):null),
+            'country'               => $request->country ? Country::where('id',$request->country)->pluck('name')->first():null,
+            'source'                => $request->sources ? $request->sources:null,
+            'interview_for'         => $request->applicant_interview_for ? $request->applicant_interview_for:null,
+            'expertise_in'          => $request->expertise_in ? $request->expertise_in:null,
+            'email'                => $request->email ? $request->email:null,
+
         ]);
+        \Session::forget('city');
+        if ($request->applicantId == null || $request->sources == 'Codility' ){
+            Applicants::whereId($applicant->id)->update([ 'applicantId'=>$applicant->id]);
+        }
         if ($applicant) {
             return redirect('/applicants/lists')->with('status', 'Applicant Insert Successfully');
         }else{
             return redirect('/applicants/lists')->with('status', 'Applicant Insert UnSuccessful, Please Try Again !');
 
+        }
+    }
+    public function getState($id){
+        $result=State::where('country_id',$id)->get();
+        return \response()->json($result);
+    }
+    public function getCity($id){
+        $result=City::where('state_id',$id)->get();
+        return \response()->json($result);
+    }
+    public function get_single_applicant($id){
+        $applicant=Applicants::where('id',$id)->first();
+        if($applicant != null)
+        {
+            return view('Admin.applicant_list_search',['applicant'=>$applicant]);
+        }else
+        {
+            return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+        }
+    }
+    public function reject(Request $request){
+        if ($request->reject){
+            \Session::forget('applicantId');
+            \Session::forget('date');
+            \Session::forget('firstName');
+            \Session::forget('middleName');
+            \Session::forget('LastName');
+            \Session::forget('gender');
+            \Session::forget('nationality');
+            \Session::forget('phoneNumber');
+            \Session::forget('dob');
+            \Session::forget('currentSalary');
+            \Session::forget('expectedSalary');
+            \Session::forget('country');
+            \Session::forget('source');
+            \Session::forget('interview_for');
+            \Session::forget('expertise_in');
+            \Session::forget('email');
+            \Session::forget('already_exist');
+            \Session::forget('duplicate_status');
+            \Session::forget('city');
+            \Session::forget('age');
+
+            return redirect('applicants/lists')->with('status','Reject user successfully');
         }
     }
 }
