@@ -323,7 +323,15 @@ class AttendanceController extends Controller
             $this->public_holiday=0;
             $names = array('name' => $user->name);
             $collection = collect($names);
-            $user_attendance = $user->attendance()->whereBetween('check_in_time', [$start_search_date->timestamp, $end_search_date->timestamp])->orderBy('id', 'desc')->get();
+            //
+            $check_employee_dob=Carbon::parse($user->joiningDate);
+            if ($check_employee_dob->year == $start_search_date->year ){
+                $user_attendance = $user->attendance()->whereBetween('check_in_time', [Carbon::parse($user->joiningDate)->timestamp, $end_search_date->timestamp])->orderBy('id', 'desc')->get();
+
+            }else{
+                $user_attendance = $user->attendance()->whereBetween('check_in_time', [$start_search_date->timestamp, $end_search_date->timestamp])->orderBy('id', 'desc')->get();
+            }
+            //
             if ($user_attendance != null) {
                 foreach ($user_attendance as $attendance) {
 
@@ -361,8 +369,19 @@ class AttendanceController extends Controller
             if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month = 1;
             }
+           //
+            if (Carbon::parse($user->joiningDate)->year == $start_search_date->year ){
+                $this->get_employement_month=Carbon::parse($user->joiningDate)->diffInMonths(Carbon::parse($request->end_date));
 
-            $allowed_absent = abs($this->get_employement_month) * 1.5  ;
+            }
+            //
+
+            if (Carbon::parse($user->joiningDate)->year <= $start_search_date->year) {
+                $allowed_absent = abs($this->get_employement_month) * 1.5 + 1;
+            }else{
+                $allowed_absent = 0;
+
+            }
             $collection->put('allowed_absent', $allowed_absent);
 
             $user_details[] = array($collection->all());

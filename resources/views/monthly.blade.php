@@ -9,7 +9,7 @@ The Following are the Employee list
     | ------------------- | ------------------------------------------------------ | ---------------------------------------------------- | --------------------------------------------------- |--------------------------|----------------- |------------------ |------------------- |
     @foreach($employee_names as $item)
         @foreach($item as $user)
-    | {{$user['name']}}   |{{\App\Attendance::mktimesimple($user['requiredTime'])}}|{{\App\Attendance::mktimesimple($user['loggedTime'])}}|{{\App\Attendance::mktimesimple($user['lessHours'])}}|{{$user['informed_late']}}|{{$user['late']}} |{{$user['leave']}} |{{$user['absent']}} |
+    | {{$user['name']}}   |{{\App\Attendance::mktimesimple($user['requiredWithoutCompansetionTime'])}}|{{\App\Attendance::mktimesimple($user['loggedTime'])}}|{{\App\Attendance::mktimesimple($user['lessHours'])}}|{{$user['informed_late']}}|{{$user['late']}} |{{$user['leave']}} |{{$user['absent']}} |
         @endforeach
     @endforeach
 
