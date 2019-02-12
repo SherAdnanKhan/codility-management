@@ -71,7 +71,13 @@
                                 <option value="">Select Leave Type</option>
                                 </select>
                         </div>
+                        
                         </div>
+                        @if ($errors->has('leave_type'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('leave_type') }}</strong>
+                                    </span>
+                        @endif
                         <div class="form-group-material row">
                             <label for="employee" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Employees</label>
                             <div class="col-sm-12  mb-12 ">
