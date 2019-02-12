@@ -68,7 +68,7 @@
                                     </span>
                             @endif
                         </div>
-                            <div  class="form-group-material row view" >
+                            <div  class="form-group-material row view" style="{{$leave?'display:block':'display: none'}}">
                                 <label for='leave_type' class='select-label col-sm-offset-3 col-sm-11 form-control-label '>Select Leave Type</label>
                                 <div class='col-sm-12  mb-12 '>
                                     <select name='leave_type'  class='form-control  ajax'>
@@ -76,6 +76,11 @@
                                     </select>
                                 </div>
                             </div>
+                            @if ($errors->has('leave_type'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('leave_type') }}</strong>
+                                    </span>
+                            @endif
                         <div class="form-group row">
                             <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Leave Reason</label>
                             <div class="col-sm-12  mb-12 ">
@@ -113,6 +118,9 @@
         
        
         $(".delete_link").change(function() {
+            if ($(this).val() == 'late ') {
+                $(".view").css('display','none');
+            }
             if ($(this).val() == 'leave') {
                 $.get('/leaves',function (result) {
 
@@ -125,9 +133,7 @@
                     $(".none").css('display','none');
                 })
             }
-            if ($(this).val() == 'late') {
-                $(".view").css('display','none');
-            }
+            
         });
     </script>
     <script src="{{asset('scripts/moment.js')}}"></script>

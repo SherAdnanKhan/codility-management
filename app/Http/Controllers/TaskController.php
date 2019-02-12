@@ -113,6 +113,10 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
+        if (\Session::get('task_url') == null) {
+             \Session::put('task_url', url()->previous());
+
+        }
         if (Auth::user()->isEmployee()) {
             $task = Task::whereId($id)->where('user_id', Auth::id())->first();
 
@@ -155,7 +159,13 @@ class TaskController extends Controller
                 'sub_project' => $request->sub_projects?$request->sub_projects:null
 
             ]);
-            return redirect()->route('task.index');
+            if (\Session::get('task_url') != null) {
+                $url=\Session::get('task_url');
+                \Session::forget('task_url');
+                return redirect($url);
+            } else {
+                return redirect()->route('task.index');
+            }
         }elseif(Auth::user()->isEmployee()) {
             $this->validate($request, [
                 'time_taken' => 'required',

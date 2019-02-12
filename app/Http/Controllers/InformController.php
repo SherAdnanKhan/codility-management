@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Null_;
 
 class InformController extends Controller
@@ -52,6 +53,7 @@ class InformController extends Controller
             'employee'          => 'required',
             'reason'            => 'required',
             'inform_type'       => 'required',
+            'leave_type'        =>'required_if:inform_type,==,leave'
         ]);
         $attendance_date = Carbon::parse($request->attendance_date)->timestamp;
         $inform_at = Carbon::parse($request->inform_at)->timestamp;
@@ -103,6 +105,10 @@ class InformController extends Controller
      */
     public function edit($id)
     {
+        if (\Session::get('inform_url') == null) {
+         $infom_url = \Session::put('inform_url', url()->previous());
+
+        }
         $inform=Inform::findOrFail($id);
         $leave=$inform->leaves?$inform->leaves:Null;
         return view('Admin.Inform.edit',compact('inform','leave'));
@@ -118,26 +124,40 @@ class InformController extends Controller
     public function update(Request $request, $id)
     {
 
-        $attendance_date = Carbon::parse($request->attendance_date)->timestamp;
-        $inform_at = Carbon::parse($request->inform_at)->timestamp;
-        $inform= Inform::whereId($id)->update([
-            'attendance_date'=>$attendance_date,
-            'inform_at'      =>$inform_at,
-            'inform_type'    =>$request->inform_type,
-            'reason'         =>$request->reason,
-            'inform_late'    =>$request->late_informed?true:false,
-            'leave_type'     =>$request->inform_type == 'leave'?$request->leave_type:null
+        $this->validate($request, [
+            'attendance_date' => 'required',
+            'inform_at' => 'required',
+            'reason' => 'required',
+            'inform_type' => 'required',
+            'leave_type' => 'required_if:inform_type,==,leave'
 
         ]);
-        $get_inform= Inform::whereId($id)->first();
-        $check_attendance = Attendance::whereBetween('check_in_time',[Carbon::parse($request->attendance_date)->startOfDay()->timestamp ,Carbon::parse($request->attendance_date)->endOfDay()->timestamp])->where('user_id',$get_inform->user_id)->first();
+        $attendance_date = Carbon::parse($request->attendance_date)->timestamp;
+        $inform_at = Carbon::parse($request->inform_at)->timestamp;
+        $inform = Inform::whereId($id)->update([
+            'attendance_date' => $attendance_date,
+            'inform_at' => $inform_at,
+            'inform_type' => $request->inform_type,
+            'reason' => $request->reason,
+            'inform_late' => $request->late_informed ? true : false,
+            'leave_type' => $request->inform_type == 'leave' ? $request->leave_type : null
 
-        if ($check_attendance != null){
-        $check_attendance->late_informed= $get_inform->inform_late;
-        $check_attendance->save();
+        ]);
+        $get_inform = Inform::whereId($id)->first();
+        $check_attendance = Attendance::whereBetween('check_in_time', [Carbon::parse($request->attendance_date)->startOfDay()->timestamp, Carbon::parse($request->attendance_date)->endOfDay()->timestamp])->where('user_id', $get_inform->user_id)->first();
+
+        if ($check_attendance != null) {
+            $check_attendance->late_informed = $get_inform->inform_late;
+            $check_attendance->save();
         }
+        if (\Session::get('inform_url') != null) {
+            $url=\Session::get('inform_url');
+            \Session::forget('inform_url');
+            return redirect($url);
+        } else {
 
         return redirect()->route('inform.index')->with('status', 'Employee Inform Updated !');
+    }
     }
 
     /**

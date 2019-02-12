@@ -133,6 +133,9 @@ class RequestLeaveController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request,[
+            'leave'=> 'required'
+        ]);
         $leave = Leave::whereId($request->leave)->first();
         $request_leave = RequestLeave::whereId($id)->first();
         if($request->status == 'declined'){

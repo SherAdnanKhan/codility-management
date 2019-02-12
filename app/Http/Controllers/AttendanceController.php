@@ -175,6 +175,10 @@ class AttendanceController extends Controller
      */
     public function edit($id)
     {
+        if (\Session::get('attendance_url') == null) {
+            \Session::put('attendance_url', url()->previous());
+
+        }
         $attendance = Attendance::whereId($id)->first();
         return view('Attendance.edit', compact('attendance'));
     }
@@ -231,6 +235,14 @@ class AttendanceController extends Controller
                 'break_interval' => $break_interval,
                 'time_spent' => $time_spent
             ]);
+            if (\Session::get('attendance_url') != null) {
+                $url=\Session::get('attendance_url');
+                \Session::forget('attendance_url');
+                return redirect($url);
+            } else {
+                return redirect()->route('attendance.index');
+
+            }
         }
         return redirect()->route('attendance.index');
     }
