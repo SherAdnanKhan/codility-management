@@ -39,16 +39,18 @@ class TestInterviewController extends Controller
             'applicant_original_id'     => 'required|integer',
             'image'                     => 'required',
             'status'                    => 'required',
-            'marks'                     => 'required',
+//            'marks'                     => 'required',
         ]);
         if ($file = $request->file('image')) {
             $name = time() . $file->getClientOriginalName();
             $file->move('images/test', $name);
         }
+        $status=$request->status == 10 ? 10 :true;
+
         $interview=TestInterview::create([
             'applicant_id'      =>  $request->applicant_original_id,
             'image'             => isset($name)?$name:null,
-            'status'            =>  $request->status?$request->status:null,
+            'status'            =>  $status?$status:null,
             'marks'             =>  $request->marks?$request->marks:null,
             'note'              =>  $request->description?$request->description:null,
         ]);

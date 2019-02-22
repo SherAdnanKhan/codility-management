@@ -96,8 +96,8 @@
                             @foreach($applicant->test as $test)
                             <tr>
                                 
-                                <td>{{$test->marks}}</td>
-                                <td>{{$test->status == true?'Pass':'Fail'}}</td>
+                                <td>{{$test->marks?$test->marks:'No Marks Added'}}</td>
+                                <td>{{$test->status == 10 ?'Fail':'Pass'}}</td>
                                 <td>{{$test->note?$test->note:''}}</td>
                                 <td> <img src="{{url('/')}}/images/test/{{$test->image != null ?$test->image :'avatar_default.png'}}" alt="No Test Image" class="thumbnail" style="height: 150px;width: 200px;">
                                 </td>

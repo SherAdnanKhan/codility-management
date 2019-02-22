@@ -156,8 +156,9 @@ class UserController extends Controller
         $this->validate($request, [
             'image'                 => 'mimes:jpeg,jpg',
             'cnic'                  => 'integer',
-            'ntn'                   => 'integer',
-            'account_no'            => 'integer'
+//            'ntn'                   => 'integer',
+//            'account_no'            => 'integer'
+
         ]);
         $user = User::findOrFail($id);
 

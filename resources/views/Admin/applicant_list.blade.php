@@ -262,7 +262,7 @@
                                     &nbsp;
                                     
                                     @if(isset($interview_check))
-                                        @if($interview_check->sub_status_id == null)
+                                        @if($interview_check->sub_status_id == null && $interview_check->status->sub_status->first() != null)
                                         {{--<a title="Edit Interview status" data-target="#editInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-edit"></i></a>--}}
                                         <a title="Edit Interview status" data-value='{{$applicant->id}}' class="edit_link" href="javascript://">
                                             <span class="fa fa-edit"></span>
@@ -282,6 +282,7 @@
 
                                 </td>
                             </tr>
+                           
                         @endforeach
                     @endif
                     </tbody>
@@ -710,12 +711,12 @@
                                            href='{{url("/view-cv/{$applicant->id}")}}'><i class='{{$extClass}}'></i></a>
                                         @php
                                             $interview_check=$applicant->interview()->orderBy('id','desc')->first();
-                        
+                                        
                                         @endphp
                                         &nbsp;
                         
                                         @if(isset($interview_check))
-                                            @if($interview_check->sub_status_id == null)
+                                            @if($interview_check->sub_statusd)
                                                 {{--<a title="Edit Interview status" data-target="#editInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-edit"></i></a>--}}
                                                 <a title="Edit Interview status" data-value='{{$applicant->id}}' class="edit_link" href="javascript://">
                                                     <span class="fa fa-edit"></span>
@@ -1002,7 +1003,7 @@
                                         <select name="status" class="form-control status_get">
                                             <option value="" >Select Status</option>
                                             <option value="1" >Pass</option>
-                                            <option value="0" >Fail</option>
+                                            <option value="10" >Fail</option>
                                             
                                         </select>
                                     </div>
@@ -1158,17 +1159,33 @@
         $(".submit_first").on('click',function() {
             $("#applicantadd").submit()
         });
+        @if(isset($errors))
                 @if (count($errors) > 0)
                 @php
                 $check_error=array('The date is not a valid date.','The date field is required.','The dob is not a valid date.','The dob field is required.','The first name field is required.','The gender field is required.','The phone number field is required.','The city field is required.','The country field is required.','The sources field is required.',);
                     $bFound = (count(array_intersect($errors->all(), $check_error))) ? true : false;
                 @endphp
                         @if(isset($bFound))
-                @if($bFound == true || $error=='Applicant Insert UnSuccessful, Please Try Again !')
+                @if($bFound == true )
                 $('#createModal').modal('show');
         
                 @endif
                         @endif
+        @endif
+                        @endif
+                @if(isset($errors))
+                @if (count($errors) > 0)
+                @php
+                    $check_error=array('The status field is required.','The image field is required.','The marks field is required.',);
+                        $bFounds = (count(array_intersect($errors->all(), $check_error))) ? true : false;
+                @endphp
+                @if(isset($bFounds))
+                @if($bFounds == true )
+                $('#addTest').modal('show');
+
+        @endif
+        @endif
+        @endif
         @endif
     @if(\Session::get("already_exist") == true)
                 $('#createModal').modal('show');
