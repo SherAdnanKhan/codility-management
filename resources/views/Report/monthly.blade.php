@@ -75,9 +75,9 @@
                                     <th>Total UnInformed Late</th>
                                     <th>Total Informed Late</th>
                                     <th>Total Late</th>
-                                    <th>Total Informed Absent</th>
-                                    <th>Total UnInformed Absent</th>
-                                    <th>Total Absent</th>
+                                    <th>Total Informed Leaves</th>
+                                    <th>Total UnInformed Leaves</th>
+                                    <th>Total Leaves</th>
 
                                 </tr>
                                 </thead>
