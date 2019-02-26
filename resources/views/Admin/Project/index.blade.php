@@ -6,6 +6,7 @@
     
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-tagsinput.css')}}">
+    <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
 @endsection
 @section('body')
     
@@ -24,17 +25,14 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row" style="margin-bottom: 30px">
-                            <div class="col-lg-9">
-                                <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
-                                   href="#createMyModal">New Project</a>
-                            </div>
-                            <div class="col-lg-3">
-                                <form class="form-horizontal" id ="project_report" method="POST" action="{{route('project.print')}}" >
+                            
+                            <div class="col-lg-12">
+                                <form class="form-inline" id ="project_report" method="POST" action="{{route('project.print')}}" >
                                     {{ csrf_field() }}
-                                <div class="form-group-material row">
-                                    <div class="col-sm-12 mb-12 ">
+                                <div class="form-group-material ">
+                                    <div class="col-sm-4 mb-4 ">
                                         <select name="project_id" id="all_projects" class="form-control ">
-                                            <option value="" >Print Project Logged Hours</option>
+                                            <option value="" >Project Logged Hours</option>
                                          @php
                                              $all_projects= \App\ProjectTask::where('is_deleted',false)->get();
                                                  @endphp
@@ -49,13 +47,66 @@
                                 </span>
                                     @endif
                                 </div>
+                                    
+                                    <div class="form-group-material ">
+                                        
+                                        <div class="col-sm-4  mb-4 ">
+                                            <select name="employee"  class="form-control  ">
+                                                <option value="" >Select Employee</option>
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}" >{{$user->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @if ($errors->has('employee'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('employee') }}</strong>
+                                    </span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group-material  col-sm-3" style="margin-top: -23px;" >
+        
+                                        <div class='bootstrap-iso input-group-material' >
+                                            <input autocomplete="off" type='text' id='start_date' name="start_date" value="{{\Request::get('start_date')?\Request::get('start_date'):''}}" class="input-material" />
+            
+                                            <label for="start_date" style="left: 17px" class="label-material">Start Date Form</label>
+                                        </div>
+                                        @if ($errors->has('start_date'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('start_date') }}</strong>
+                                    </span>
+                                        @endif
+    
+                                    </div>
+                                    <div class="form-group-material  col-sm-3" style="margin-top: -23px;" >
+        
+                                        <div class=' bootstrap-iso input-group-material date' >
+                                            <input autocomplete="off" type='text' id='end_date' name="end_date" value="{{\Request::get('end_date')?\Request::get('end_date'):''}}" class="input-material" />
+            
+                                            <label for="end_date" style="left: 17px" class="label-material">End Date Form</label>
+                                        </div>
+                                        @if ($errors->has('end_date'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('end_date') }}</strong>
+                                    </span>
+                                        @endif
+    
+                                    </div>
+                                    <div class="col-sm-1 " style="margin-top: -45px; ">
+                                        <button type="submit" class="btn btn-outline-success">Get Detail</button>
+                                    </div>
                                 </form>
+                                <div class="col-lg-3">
+                                    <a data-target="#createModal" data-toggle="modal" class="btn btn-outline-success" id="MainNavHelp"
+                                       href="#createMyModal">New Project</a>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-lg-12">
                                 <form class="filter_form" id ="filter_form" method="GET" action="{{route('project.search')}}" >
-                                    {{--{{ csrf_field() }}--}}
+                                    {{ csrf_field() }}
                                     <div class="row">
                                         <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
                                             <div class='input-group-material'>
@@ -87,6 +138,7 @@
                                     
                                     </div>
                                 </form>
+                                
                             </div>
                         
                         </div>
@@ -221,7 +273,21 @@
     <script src="{{asset('scripts/bootstrap-tagsinput.min.js')}}"></script>
 
     <script type="text/javascript">
+        $(function () {
+            // var FromEndDate = new Date();
+            $('#start_date').datetimepicker({format:'L',
 
+            });
+            $('#end_date').datetimepicker({
+                format:'L',
+            });
+            $("#start_date").on("dp.change", function (e) {
+                $('#end_date').data("DateTimePicker").minDate(e.date);
+            });
+            $("#end_date").on("dp.change", function (e) {
+                $('#start_date').data("DateTimePicker").maxDate(e.date);
+            });
+        });
        $(".edit_link").on('click',function() {
            var project=$(this).data("value");
 
@@ -234,10 +300,10 @@
 
        });
       
-       $("#all_projects").change(function() {
-           $('#project_report').submit();
-
-       });
+       // $("#all_projects").change(function() {
+       //     $('#project_report').submit();
+       //
+       // });
         $(".delete_link").on('click',function() {
             var project=$(this).data("value");
             $.get('/task/project/'+ project +'/',function (result) {

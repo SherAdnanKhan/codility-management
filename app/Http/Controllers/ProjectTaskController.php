@@ -126,10 +126,27 @@ class ProjectTaskController extends Controller
 
     public function print_report(Request $request)
     {
+        $this->validate($request, [
+            'project_id' => 'required',
+        ]);
+        $start_date=$request->start_date?Carbon::parse($request->start_date):null;
+        $end_date=$request->end_date?Carbon::parse($request->end_date):null;
+        if ($request->project_id) {
+            $projects = ProjectTask::where('id', $request->project_id)->first();
+            if($start_date !=null && $request->employee != null) {
+//                dd($end_date);
+                $get_task = $projects->project_tasks()->whereBetween('date', [$start_date->timestamp, $end_date != null ? $end_date->timestamp : Carbon::now()->timestamp])->where('user_id',$request->employee)->get();
+            }
+            if($start_date !=null && $request->employee == null) {
+                $get_task = $projects->project_tasks()->whereBetween('date', [$start_date->timestamp, $end_date != null ? $end_date->timestamp : Carbon::now()->timestamp])->get();
+            }
+            if ($start_date ==  null && $request->employee != null){
+                $get_task = $projects->project_tasks()->where('user_id',$request->employee)->get();
+            }
+            if ($start_date ==  null && $request->employee == null ){
+                $get_task = $projects->project_tasks;
 
-        if ($request->project_id){
-            $projects=ProjectTask::where('id',$request->project_id)->first();
-            $get_task=$projects->project_tasks;
+            }
 
             $total_minutes=0;
             foreach ($get_task as $task){
@@ -137,18 +154,21 @@ class ProjectTaskController extends Controller
                 if ($task->time_take) {
 
                     $explode = explode(':', $task->time_take);
-                    $total_minutes +=($explode[0]*60) + ($explode[1])  ;
+                    $total_minutes +=($explode[0]*60) + ($explode[1]);
 
                 }
 
             }
-            //
-            return view('Report.task_report',compact('total_minutes','get_task'));
-            //
-        }else{
 
-            return redirect()->back('status','project not found');
+        //
+            return view('Report.task_report',compact('total_minutes','get_task'));
         }
+
+        //
+//        else{
+//
+//            return redirect()->back('status','project not found');
+//        }
     }
     public function project($id)
     {
