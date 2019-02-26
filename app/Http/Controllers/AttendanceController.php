@@ -89,12 +89,13 @@ class AttendanceController extends Controller
         $user = Auth::user()->isEmployee() ? User::findOrFail(Auth::id()) : User::findOrFail($request->employee);
         $time_of_attendance=Carbon::parse($request->check_in_time)->startOfDay();
         $user_time=Carbon::parse($user->checkInTime)->addMinutes(15)->format('H:i');
+//        dd($user_time);
         $time_explode=explode(':',$user_time);
         $default_time = $time_of_attendance->addHours($time_explode[0])->addMinutes($time_explode[1]);
         $attendance_time = Carbon::parse($request->check_in_time);
 
         $compare_time = $attendance_time->gt($default_time);
-
+//dd($compare_time);
         if ($request->check_out_time) {
             $time = $request->break_interval ? Carbon::parse($request->break_interval)->format('H:i') : false;
             $explode_time = explode(':', $time);
@@ -137,9 +138,10 @@ class AttendanceController extends Controller
                         'attendance_type' => 'check_in',
                         'request_id'       =>null
                     ]);
-                    return redirect()->route('attendance.index')->with('status', 'You are on Lave !');
+                    return redirect()->route('attendance.index')->with('status', 'You are on Leave !');
                 }
             }
+
             $attendance = Attendance::create([
                 'check_in_time' => $check_in_time,
                 'check_out_time' => $check_out_time,

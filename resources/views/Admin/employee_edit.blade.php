@@ -71,7 +71,7 @@
                                     <label for="ntn" class="label-material">NTN No</label>
                                 </div>
                                 <div class="form-group-material">
-                                    <input autocomplete="off" id="account_no" type="text"  class="input-material" name="account_no" value="{{ $user->bank_account_no }}" required>
+                                    <input autocomplete="off" id="account_no" type="text"  class="input-material" name="account_no" value="{{ $user->bank_account_no }}" >
             
                                     @if ($errors->has('account_no'))
                                         <span class="help-block">
