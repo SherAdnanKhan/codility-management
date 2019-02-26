@@ -43,10 +43,10 @@ Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::get('/leaves', 'LeaveController@leave');
     Route::get('/delete-task/{id}', 'TaskController@modal');
     Route::delete('/attendance/{id}', 'AttendanceController@destroy')->name('attendance.destroy');
-    Route::resource('/qNA/category', 'QNACategoryController');
-    Route::resource('/question-answers', 'QuestionAnswerController');
-    Route::get('/print', 'QuestionAnswerController@printView')->name('print.view');
-    Route::post('/print', 'QuestionAnswerController@printCreate')->name('print.create');
+//    Route::resource('/qNA/category', 'QNACategoryController');
+//    Route::resource('/question-answers', 'QuestionAnswerController');
+//    Route::get('/print', 'QuestionAnswerController@printView')->name('print.view');
+//    Route::post('/print', 'QuestionAnswerController@printCreate')->name('print.create');
     Route::get('/search/report', 'AttendanceController@getViewAdminReportPage')->name('view.admin.report');
     Route::get('/generate/report', 'AttendanceController@makeReportByAdmin')->name('admin.report.search');
     Route::get('/screen/capture/{id}', 'UserController@screenCapture')->name('screen.capture.get');
@@ -81,6 +81,10 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::get('/get_single_applicant/{id}', 'ApplicantsController@get_single_applicant')->name('get_single_applicant');
     Route::resource('/dropdown','DropDownController');
     Route::post('/reject/applicant', 'ApplicantsController@reject')->name('reject.applicant');
+    Route::resource('/qNA/category', 'QNACategoryController');
+    Route::resource('/question-answers', 'QuestionAnswerController');
+    Route::get('/print', 'QuestionAnswerController@printView')->name('print.view');
+    Route::post('/print', 'QuestionAnswerController@printCreate')->name('print.create');
 });
 Route::group(['middleware' => ['firstLogin', 'auth', 'employee']], function () {
 

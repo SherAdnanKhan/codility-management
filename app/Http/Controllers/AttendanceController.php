@@ -329,8 +329,11 @@ class AttendanceController extends Controller
         foreach ($get_user as $user) {
             $start_search_date = $start_date->startOfDay();
             $end_search_date = $end_date->endOfDay();
-
-            $total_absent = $user->opening_balance ? $user->opening_balance : 0;
+            if (Carbon::parse($request->start_date)->year == 2018) {
+                $total_absent = $user->opening_balance ? $user->opening_balance : 0;
+            }else{
+                $total_absent=0;
+            }
             $current_month_absent = 0;
             $this->public_holiday=0;
             $names = array('name' => $user->name);
@@ -362,6 +365,7 @@ class AttendanceController extends Controller
                             {
                                 $public_holiday_get=$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->public_holiday;
                                 $this->public_holiday+=$public_holiday_get== true?1:0;
+
                             }
 
             }
