@@ -93,11 +93,16 @@
                                             <td>{{isset($user['extraHours'])?$user['extraHours']:''}}</td>
                                             <td>{{isset($user['late'])?$user['late']:''}}</td>
                                             <td>{{isset($user['informed_late'])?$user['informed_late']:''}}</td>
-                                            <td><?php $uninformedLate=isset($user['informed_late'])?$user['informed_late']:0;
+                                            <td><?php $informedLate=isset($user['informed_late'])?$user['informed_late']:0;
                                             $late=isset($user['late'])?$user['late']:0;
-                                            echo $late + $uninformedLate;
-
-                                            ?>
+                                            if ($informedLate >=1 && $informedLate <=2){
+                                            echo $late;
+                                                    }elseif ($informedLate>2){
+                                                echo $late+$informedLate - 2;
+                                            }else{
+                                                echo 0;
+                                            }
+                                                ?>
 
                                             </td>
 
