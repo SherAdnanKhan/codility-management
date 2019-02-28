@@ -50,9 +50,10 @@ class EmployeeAbsent extends Command
                 $inform = \App\Inform::whereBetween('attendance_date',[$attendance, $carbon->endOfDay()->timestamp])->where('user_id',$user->id)->first();
 
                 if(!($inform == null)){
-
-                    $user->attendance()->create(['check_in_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'check_out_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'attendance_type'=>'LeaveBySystem','leave_id'=>$inform->id,'leave_comment'=>$inform->reason,'informed'=>true,'late_informed'=>$inform->inform_late]);
-                }
+                    if ($inform->inform_type == "LEAVE") {
+                        $user->attendance()->create(['check_in_time' => Carbon::today()->addHours(23)->addMinute(59)->timestamp, 'check_out_time' => Carbon::today()->addHours(23)->addMinute(59)->timestamp, 'attendance_type' => 'LeaveBySystem', 'leave_id' => $inform->id, 'leave_comment' => $inform->reason, 'informed' => true, 'late_informed' => $inform->inform_late]);
+                    }
+                    }
                 else{
                     $user->attendance()->create(['check_in_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'check_out_time'=>Carbon::today()->addHours(23)->addMinute(59)->timestamp,'attendance_type'=>'AbsentBySystem',]);
                 }

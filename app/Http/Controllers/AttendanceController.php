@@ -340,6 +340,7 @@ class AttendanceController extends Controller
             $this->public_holiday=0;
             $names = array('name' => $user->name);
             $collection = collect($names);
+            $collection->put('compensatory_leaves',$user->compensatory_leaves);
             //
             $check_employee_dob=Carbon::parse($user->joiningDate);
             if ($check_employee_dob->year == $start_search_date->year ){
@@ -382,25 +383,38 @@ class AttendanceController extends Controller
                 $joiningDate=Carbon::parse($user->joiningDate);
                 $this->get_employement_month = Carbon::parse($request->start_date)->diffInMonths(Carbon::parse($request->end_date));
 
-
             }
             if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month = 1;
             }
            //
             if (Carbon::parse($user->joiningDate)->year == $start_search_date->year ){
-                $this->get_employement_month=Carbon::parse($user->joiningDate)->diffInMonths(Carbon::parse($request->end_date));
+//                $this->get_employement_month=Carbon::parse($user->joiningDate)->diffInMonths(Carbon::parse($request->end_date));
+                $this->get_employement_month=Carbon::parse($request->start_date)->diffInMonths(Carbon::parse($request->end_date));
 
             }
             //
 
             if (Carbon::parse($user->joiningDate)->year <= $start_search_date->year) {
-                $allowed_absent = abs($this->get_employement_month) * 1.5 + 1;
+                $allowed_absent = abs($this->get_employement_month) ;
             }else{
                 $allowed_absent = 0;
 
             }
-            $collection->put('allowed_absent', $allowed_absent);
+
+            $allowed_absent = abs($this->get_employement_month)+1 ;
+            $new=$allowed_absent;
+
+            while ($new >= 1){
+
+                $allowed_absent+=0.5;
+
+                $new --;
+            }
+            if ($user->compensatory_leaves >=1){
+                $final_total_leaves=$allowed_absent + $user->compensatory_leaves ;
+            }
+            $collection->put('allowed_absent', isset($final_total_leaves)?$final_total_leaves:$allowed_absent);
 
             $user_details[] = array($collection->all());
 
