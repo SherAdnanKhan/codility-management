@@ -89,12 +89,13 @@ class AttendanceController extends Controller
         $user = Auth::user()->isEmployee() ? User::findOrFail(Auth::id()) : User::findOrFail($request->employee);
         $time_of_attendance=Carbon::parse($request->check_in_time)->startOfDay();
         $user_time=Carbon::parse($user->checkInTime)->addMinutes(15)->format('H:i');
+//        dd($user_time);
         $time_explode=explode(':',$user_time);
         $default_time = $time_of_attendance->addHours($time_explode[0])->addMinutes($time_explode[1]);
         $attendance_time = Carbon::parse($request->check_in_time);
 
         $compare_time = $attendance_time->gt($default_time);
-
+//dd($compare_time);
         if ($request->check_out_time) {
             $time = $request->break_interval ? Carbon::parse($request->break_interval)->format('H:i') : false;
             $explode_time = explode(':', $time);
@@ -137,9 +138,10 @@ class AttendanceController extends Controller
                         'attendance_type' => 'check_in',
                         'request_id'       =>null
                     ]);
-                    return redirect()->route('attendance.index')->with('status', 'You are on Lave !');
+                    return redirect()->route('attendance.index')->with('status', 'You are on Leave !');
                 }
             }
+
             $attendance = Attendance::create([
                 'check_in_time' => $check_in_time,
                 'check_out_time' => $check_out_time,
@@ -338,6 +340,7 @@ class AttendanceController extends Controller
             $this->public_holiday=0;
             $names = array('name' => $user->name);
             $collection = collect($names);
+            $collection->put('compensatory_leaves',$user->compensatory_leaves);
             //
             $check_employee_dob=Carbon::parse($user->joiningDate);
             if ($check_employee_dob->year == $start_search_date->year ){
@@ -380,25 +383,38 @@ class AttendanceController extends Controller
                 $joiningDate=Carbon::parse($user->joiningDate);
                 $this->get_employement_month = Carbon::parse($request->start_date)->diffInMonths(Carbon::parse($request->end_date));
 
-
             }
             if (Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month = 1;
             }
            //
             if (Carbon::parse($user->joiningDate)->year == $start_search_date->year ){
-                $this->get_employement_month=Carbon::parse($user->joiningDate)->diffInMonths(Carbon::parse($request->end_date));
+//                $this->get_employement_month=Carbon::parse($user->joiningDate)->diffInMonths(Carbon::parse($request->end_date));
+                $this->get_employement_month=Carbon::parse($request->start_date)->diffInMonths(Carbon::parse($request->end_date));
 
             }
             //
 
             if (Carbon::parse($user->joiningDate)->year <= $start_search_date->year) {
-                $allowed_absent = abs($this->get_employement_month) * 1.5 + 1;
+                $allowed_absent = abs($this->get_employement_month) ;
             }else{
                 $allowed_absent = 0;
 
             }
-            $collection->put('allowed_absent', $allowed_absent);
+
+            $allowed_absent = abs($this->get_employement_month)+1 ;
+            $new=$allowed_absent;
+
+            while ($new >= 1){
+
+                $allowed_absent+=0.5;
+
+                $new --;
+            }
+            if ($user->compensatory_leaves >=1){
+                $final_total_leaves=$allowed_absent + $user->compensatory_leaves ;
+            }
+            $collection->put('allowed_absent', isset($final_total_leaves)?$final_total_leaves:$allowed_absent);
 
             $user_details[] = array($collection->all());
 

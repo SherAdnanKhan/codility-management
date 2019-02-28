@@ -82,8 +82,10 @@
                                 <thead>
                                 <tr>
                                     <th>Employee Name</th>
-                                    <th>Total Leaves</th>
-                                    <th>Total allowed Leaves</th>
+                                    <th>Compensatory Leaves</th>
+                                    <th>Use Leaves</th>
+                                    <th>Total Allowed Leaves</th>
+                                    <th>Remaining Leaves</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -93,8 +95,11 @@
                                         @foreach($item as $user)
                                         <tr>
                                             <td>{{$user['name']}}</td>
+                                            <td>{{$user['compensatory_leaves']}}</td>
                                             <td>{{$user['total_absent']}}</td>
                                             <td>{{$user['allowed_absent']}}</td>
+                                            <td>{{$user['allowed_absent'] - $user['total_absent']}}</td>
+
                                         </tr>
                                             @endforeach
                                     @endforeach
