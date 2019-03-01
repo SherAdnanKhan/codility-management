@@ -42,7 +42,7 @@
                                     <th>Allotted Leaves</th>
                                     <th>Compensatory Leaves</th>
                                     <th>Use Leaves</th>
-
+                                    <th>Remaining Leaves</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,6 +54,8 @@
                                             <td>{{$user->allotted_leaves}}</td>
                                             <td>{{$user->compensatory_leaves}}</td>
                                             <td>{{$user->count_use_leaves}}</td>
+                                            <td>{{($user->compensatory_leaves + $user->allotted_leaves ) - $user->count_use_leaves}}</td>
+                                            
                                         </tr>
                                         
                                     @endforeach
