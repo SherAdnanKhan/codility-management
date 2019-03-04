@@ -28,7 +28,9 @@
 
                             </div>
                             <div class="col-lg-9 hidden-print">
-                            
+                                <div class="col-lg-offset-6 " style=" float: right;margin-bottom: -30px">
+                                    <button type="button" class="btn btn-outline-dark printReport" onclick="myFunction()"><span class="fa fa-print"></span> Print Report</button>
+                                </div>
                             </div>
                         </div>
                         
@@ -42,7 +44,7 @@
                                     <th>Allotted Leaves</th>
                                     <th>Compensatory Leaves</th>
                                     <th>Use Leaves</th>
-
+                                    <th>Remaining Leaves</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,6 +56,8 @@
                                             <td>{{$user->allotted_leaves}}</td>
                                             <td>{{$user->compensatory_leaves}}</td>
                                             <td>{{$user->count_use_leaves}}</td>
+                                            <td>{{($user->compensatory_leaves + $user->allotted_leaves ) - $user->count_use_leaves}}</td>
+                                            
                                         </tr>
                                         
                                     @endforeach
@@ -69,3 +73,21 @@
         </div>
     </div>
 @endsection
+@section('page_scripts')
+    <script>
+        function myFunction() {
+            window.print();
+        }
+    </script>
+    <script src="{{asset('scripts/moment.js')}}"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
+    <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // var FromEndDate = new Date();
+            $('#month').datetimepicker({format:'Y/M'
+            });
+        });
+    
+    </script>
+
