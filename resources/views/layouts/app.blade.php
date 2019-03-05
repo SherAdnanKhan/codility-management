@@ -127,29 +127,29 @@
                                 <li {{\Route::current()->getName() == 'request.index'?"class=active ":''}}><a href="{{route('request.index')}}">Leave Request</a></li>
                             </ul>
                         </li>
-                        <li><a href="#qna" <?php
-                            if (\Route::current()->getName() =='category.index' || \Route::current()->getName() == 'question-answers.index' || \Route::current()->getName() == 'print.view' || \Route::current()->getName()== 'question.page'){
-                                echo "aria-expanded='true'";
-                            }
-                            ?> data-toggle="collapse">
-                                <i class="fa fa-question-circle"></i> Question&Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
-                            </a>
-                            <ul id="qna" class="collapse list-unstyled <?php
-                            if (\Route::current()->getName() =='category.index' || \Route::current()->getName() == 'question-answers.index' || \Route::current()->getName() == 'print.view' || \Route::current()->getName()== 'question.page'){
-                                echo 'show';
-                            }
-                            ?>
-                                    "
-                            >
-                                <li {{\Route::current()->getName() == 'category.index'?"class=active ":''}}><a href="{{route('category.index')}}"><i class="fa fa-list-alt"></i>Categories</a></li>
-                                <li {{\Route::current()->getName() == 'question-answers.index'?"class=active ":''}}><a href="{{route('question-answers.index')}}"><i class="fa fa-question-circle"></i>Question Answers</a></li>
-                                <li {{\Route::current()->getName() == 'print.view'?"class=active ":''}}><a href="{{route('print.view')}}"><i class="fa fa-print"></i>Print QuestionAnswer</a></li>
-                                <li {{\Route::current()->getName() == 'question.page'?"class=active ":''}}><a href="{{route('question.page')}}"><i class="fa fa-search"></i>Search Question</a></li>
-                            </ul>
-                        </li>
+                        {{--<li><a href="#qna" <?php--}}
+                            {{--if (\Route::current()->getName() =='category.index' || \Route::current()->getName() == 'question-answers.index' || \Route::current()->getName() == 'print.view' || \Route::current()->getName()== 'question.page' || \Route::current()->getName()=='searchQuestionByCategory'){--}}
+                                {{--echo "aria-expanded='true'";--}}
+                            {{--}--}}
+                            {{--?> data-toggle="collapse">--}}
+                                {{--<i class="fa fa-question-circle"></i> Question&Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>--}}
+                            {{--</a>--}}
+                            {{--<ul id="qna" class="collapse list-unstyled <?php--}}
+                            {{--if (\Route::current()->getName() =='category.index' || \Route::current()->getName() == 'question-answers.index' || \Route::current()->getName() == 'print.view' || \Route::current()->getName()== 'question.page' || \Route::current()->getName()=='searchQuestionByCategory'){--}}
+                                {{--echo 'show';--}}
+                            {{--}--}}
+                            {{--?>--}}
+                                    {{--"--}}
+                            {{-->--}}
+                                {{--<li {{\Route::current()->getName() == 'category.index'?"class=active ":''}}><a href="{{route('category.index')}}"><i class="fa fa-list-alt"></i>Categories</a></li>--}}
+                                {{--<li {{\Route::current()->getName() == 'question-answers.index'?"class=active ":''}}><a href="{{route('question-answers.index')}}"><i class="fa fa-question-circle"></i>Question Answers</a></li>--}}
+                                {{--<li {{\Route::current()->getName() == 'print.view'?"class=active ":''}}><a href="{{route('print.view')}}"><i class="fa fa-print"></i>Print QuestionAnswer</a></li>--}}
+                                {{--<li {{\Route::current()->getName() == 'question.page'?"class=active ":''}} {{\Route::current()->getName() == 'searchQuestionByCategory'?"class=active ":''}}><a href="{{route('question.page')}}"><i class="fa fa-search"></i>Search Question</a></li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
 
                         <li><a href="#exampledropdownDropdowns" <?php
-                            if (\Route::current()->getName() =='view.admin.report' || \Route::current()->getName() == 'view.admin.report.compensatory' || \Route::current()->getName() == 'view.admin..monthly.report' || \Route::current()->getName()== 'view.admin.inaccuracy.report' || \Route::current()->getName() == 'view.time.tracking'){
+                            if (\Route::current()->getName() =='view.admin.report' || \Route::current()->getName() == 'view.admin.report.compensatory' || \Route::current()->getName() == 'view.admin..monthly.report' || \Route::current()->getName()== 'view.admin.inaccuracy.report' || \Route::current()->getName() == 'view.time.tracking' || \Route::current()->getName() == 'admin.report.search' || \Route::current()->getName() == 'admin.monthly.report.search' || \Route::current()->getName() == 'admin.monthly.inaccuracy.search' || \Route::current()->getName() ==  'time.tracking.search'){
                                 echo "aria-expanded='true'";
                             }
                             ?>
@@ -158,17 +158,17 @@
                             </a>
                             <ul id="exampledropdownDropdowns" class="collapse list-unstyled
                             <?php
-                                if (\Route::current()->getName() =='view.admin.report' || \Route::current()->getName() == 'view.admin.report.compensatory' || \Route::current()->getName() == 'view.admin..monthly.report' || \Route::current()->getName()== 'view.admin.inaccuracy.report' || \Route::current()->getName() == 'view.time.tracking'){
+                                if (\Route::current()->getName() =='view.admin.report' || \Route::current()->getName() == 'view.admin.report.compensatory' || \Route::current()->getName() == 'view.admin..monthly.report' || \Route::current()->getName()== 'view.admin.inaccuracy.report' || \Route::current()->getName() == 'view.time.tracking' || \Route::current()->getName() == 'admin.report.search' || \Route::current()->getName() == 'admin.monthly.report.search' || \Route::current()->getName() == 'admin.monthly.inaccuracy.search' || \Route::current()->getName() ==  'time.tracking.search'){
                              echo 'show';
                                 }
                                 ?>
                             "
                             >
-                                <li {{\Route::current()->getName() == 'view.admin.report'?"class=active ":''}}><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Leave Monthly</a></li>
+                                <li {{\Route::current()->getName() == 'view.admin.report'?"class=active ":''}} {{\Route::current()->getName() == 'admin.report.search'?"class=active ":''}} ><a href="{{route('view.admin.report')}}"><i class="fa fa-file"></i>Generate Leave Monthly</a></li>
                                 <li {{\Route::current()->getName() == 'view.admin.report.compensatory'?"class=active ":''}}><a href="{{route('view.admin.report.compensatory')}}"><i class="fa fa-file"></i>Generate Leave Yearly</a></li>
-                                <li {{\Route::current()->getName() == 'view.admin..monthly.report'?"class=active ":''}}><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Hours Detail</a></li>
-                                <li {{\Route::current()->getName() == 'view.admin.inaccuracy.report'?"class=active ":''}}><a href="{{route('view.admin.inaccuracy.report')}}"><i class="fa fa-file"></i>Monthly Inaccuracy  </a></li>
-                                <li {{\Route::current()->getName() == 'view.time.tracking'?"class=active ":''}}><a href="{{route('view.time.tracking')}}"><i class="fa fa-clock"></i>Time Tracking </a></li>
+                                <li {{\Route::current()->getName() == 'view.admin..monthly.report'?"class=active ":''}} {{\Route::current()->getName() == 'admin.monthly.report.search'?"class=active ":''}}><a href="{{route('view.admin..monthly.report')}}"><i class="fa fa-file"></i>Monthly Hours Detail</a></li>
+                                <li {{\Route::current()->getName() == 'view.admin.inaccuracy.report'?"class=active ":''}} {{\Route::current()->getName() == 'admin.monthly.inaccuracy.search'?"class=active ":''}}><a href="{{route('view.admin.inaccuracy.report')}}"><i class="fa fa-file"></i>Monthly Inaccuracy  </a></li>
+                                <li {{\Route::current()->getName() == 'view.time.tracking'?"class=active ":''}} {{\Route::current()->getName() == 'time.tracking.search'?"class=active ":''}}><a href="{{route('view.time.tracking')}}"><i class="fa fa-clock"></i>Time Tracking </a></li>
                             </ul>
                         </li>
                         <li {{\Route::current()->getName() == 'project.index'?"class=active ":''}}><a href="{{route('project.index')}}"><i class="fa fa-file"></i>Projects</a></li>
@@ -176,6 +176,26 @@
                     @endif
                     @if (\Auth::user()->checkHr() || \Auth::user()->isAdmin())
                     <li {{\Route::current()->getName() == 'applicant_list'?"class=active ":''}}><a href="{{route('applicant_list')}}" ><i class="fa fa-male"></i>Applicants list</a></li>
+                        <li><a href="#qna" <?php
+                            if (\Route::current()->getName() =='category.index' || \Route::current()->getName() == 'question-answers.index' || \Route::current()->getName() == 'print.view' || \Route::current()->getName()== 'question.page' || \Route::current()->getName()=='searchQuestionByCategory'){
+                                echo "aria-expanded='true'";
+                            }
+                            ?> data-toggle="collapse">
+                                <i class="fa fa-question-circle"></i> Question&Answer &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul id="qna" class="collapse list-unstyled <?php
+                            if (\Route::current()->getName() =='category.index' || \Route::current()->getName() == 'question-answers.index' || \Route::current()->getName() == 'print.view' || \Route::current()->getName()== 'question.page' || \Route::current()->getName()=='searchQuestionByCategory'){
+                                echo 'show';
+                            }
+                            ?>
+                                    "
+                            >
+                                <li {{\Route::current()->getName() == 'category.index'?"class=active ":''}}><a href="{{route('category.index')}}"><i class="fa fa-list-alt"></i>Categories</a></li>
+                                <li {{\Route::current()->getName() == 'question-answers.index'?"class=active ":''}}><a href="{{route('question-answers.index')}}"><i class="fa fa-question-circle"></i>Question Answers</a></li>
+                                <li {{\Route::current()->getName() == 'print.view'?"class=active ":''}}><a href="{{route('print.view')}}"><i class="fa fa-print"></i>Print QuestionAnswer</a></li>
+                                <li {{\Route::current()->getName() == 'question.page'?"class=active ":''}} {{\Route::current()->getName() == 'searchQuestionByCategory'?"class=active ":''}}><a href="{{route('question.page')}}"><i class="fa fa-search"></i>Search Question</a></li>
+                            </ul>
+                        </li>
                        @endif
 
                 </ul>
