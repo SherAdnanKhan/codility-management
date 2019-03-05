@@ -29,12 +29,9 @@ Following employees are not marked CHECK IN or not present in office Yet .
             $inform=$user->informs()->whereBetween('attendance_date', [\Carbon\Carbon::now()->startOfDay()->timestamp, \Carbon\Carbon::now()->timestamp])->first();
         @endphp
         @if($inform->inform_type == "LEAVE")
-        |     {{$user->name}}       | {{$inform?\Carbon\Carbon::parse($inform->inform_at)->format('M ,d g:i A'):''}}|{{$inform?($inform->request_id != null ? ($inform->get_request_leave->approved):''):''}}{{$inform?$inform->inform_type:''}}  {{$inform?($inform->leaves?' ON '.$inform->leaves->name:''):''}} | {{$inform?($inform->inform_late?'Yes Late Informed':'No Late Informed'):''}} | @php $reason=str_replace("<br />", "\n",$inform?$inform->reason:''); echo $reason; @endphp |
+    |     {{$user->name}} | {{$inform?\Carbon\Carbon::parse($inform->inform_at)->format('M ,d g:i A'):''}}|{{$inform?($inform->request_id != null ? ($inform->get_request_leave->approved):''):''}}{{$inform?$inform->inform_type:''}}  {{$inform?($inform->leaves?' ON '.$inform->leaves->name:''):''}} | {{$inform?($inform->inform_late?'Yes Late Informed':'No Late Informed'):''}} | @php $reason=str_replace("<br />", "\n",$inform?$inform->reason:''); echo $reason; @endphp |
         @endif
-
     @endforeach
-
-    
 @endcomponent
 
 @endif
@@ -52,11 +49,9 @@ The following list having those employees who have Informed Late
                 $inform=$user->informs()->whereBetween('attendance_date', [\Carbon\Carbon::now()->startOfDay()->timestamp, \Carbon\Carbon::now()->timestamp])->first();
             @endphp
             @if($inform->inform_type == "LATE")
-                |     {{$user->name}}       |{{$inform?\Carbon\Carbon::parse($inform->inform_at)->format('M ,d g:i A'):''}}|{{$inform?($inform->request_id != null ? ($inform->get_request_leave->approved):''):''}}{{$inform?$inform->inform_type:''}}  {{$inform?($inform->leaves?' ON '.$inform->leaves->name:''):''}} | {{$inform?($inform->inform_late?'Yes Late Informed':'No Late Informed'):''}} | @php $reason=str_replace("<br />", "\n",$inform?$inform->reason:''); echo $reason; @endphp |
+        |     {{$user->name}}       |{{$inform?\Carbon\Carbon::parse($inform->inform_at)->format('M ,d g:i A'):''}}|{{$inform?($inform->request_id != null ? ($inform->get_request_leave->approved):''):''}}{{$inform?$inform->inform_type:''}}  {{$inform?($inform->leaves?' ON '.$inform->leaves->name:''):''}} | {{$inform?($inform->inform_late?'Yes Late Informed':'No Late Informed'):''}} | @php $reason=str_replace("<br />", "\n",$inform?$inform->reason:''); echo $reason; @endphp |
             @endif
         @endforeach
-    
-    
 @endcomponent
 
 @endif
