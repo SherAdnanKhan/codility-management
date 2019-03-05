@@ -650,7 +650,7 @@ progress::-moz-progress-bar {
     background-color: green !important;
 }
 
-.active{
-    color: #292929 !important;
-    background: #f4f7fa !important;
-}
+/*.active{*/
+    /*color: #292929 !important;*/
+    /*background: #f4f7fa !important;*/
+/*}*/
