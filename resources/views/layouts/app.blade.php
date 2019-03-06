@@ -80,7 +80,9 @@
                         </li>
                     <li {{\Route::current()->getName() == 'view.time.tracking'?"class=active ":''}}><a href="{{route('view.time.tracking')}}">Time Tracking </a></li>
                         <li {{\Route::current()->getName() == 'request.index'?"class=active ":''}}><a href="{{route('request.index')}}">Request For Leave Approval </a></li>
-
+                        @if (!(\Auth::user()->checkHr()))
+                        <li {{\Route::current()->getName() == 'question.page'?"class=active ":''}} {{\Route::current()->getName() == 'searchQuestionByCategory'?"class=active ":''}}><a href="{{route('question.page')}}"><i class="fa fa-search"></i>Search Question</a></li>
+                            @endif
                     @endif
                 @if (\Auth::user()->isAdmin())
                     <li><a href="#exampledropdownDropdown" <?php
