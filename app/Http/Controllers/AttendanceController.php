@@ -339,6 +339,7 @@ class AttendanceController extends Controller
             }
             $current_month_absent = 0;
             $this->public_holiday=0;
+            $final_total_leaves=0;
             $names = array('name' => $user->name);
             $collection = collect($names);
             $collection->put('compensatory_leaves',$user->compensatory_leaves);
@@ -413,16 +414,20 @@ class AttendanceController extends Controller
 //                $new --;
 //            }
             $allowed_absent= $new * Helper::leave_cotta();
+//var_dump( $allowed_absent);
+//dd('ad');
 
             if ($user->compensatory_leaves >=1){
+
                 $final_total_leaves=$allowed_absent + $user->compensatory_leaves ;
             }
-            $collection->put('allowed_absent', isset($final_total_leaves)?$final_total_leaves:$allowed_absent);
 
+            $collection->put('allowed_absent', $final_total_leaves != false?$final_total_leaves:$allowed_absent);
             $user_details[] = array($collection->all());
 
         }
-
+echo($final_total_leaves);
+//        dd('adsf');
         if (!empty($user_details)) {
             Session::flash('status', 'Employee Detail of required ERA ');
 
