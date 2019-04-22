@@ -405,13 +405,15 @@ class AttendanceController extends Controller
 
             $allowed_absent = abs($this->get_employement_month)+1 ;
             $new=$allowed_absent;
+//dd($new*1.5);
+//            while ($new >= 1){
+//
+//                $allowed_absent+=1.5;
+//echo "asdf";
+//                $new --;
+//            }
+            $allowed_absent= $new * Helper::leave_cotta();
 
-            while ($new >= 1){
-
-                $allowed_absent+=0.5;
-
-                $new --;
-            }
             if ($user->compensatory_leaves >=1){
                 $final_total_leaves=$allowed_absent + $user->compensatory_leaves ;
             }
