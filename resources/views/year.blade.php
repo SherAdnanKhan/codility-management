@@ -5,7 +5,7 @@
 The Following are the Employee list
 @endcomponent
 @component('mail::table')
-    |      Employee  Name |      Total Absents  |     Current Month Absents  |     Allowed Absents |
+    |      Employee  Name |      Total Absents  |     Current Month Leaves   |     Allowed Leaves  |
     | ------------------- | ------------------- | -------------------------- | ------------------- |
     @foreach($user_details as $item)
         @foreach($item as $user)

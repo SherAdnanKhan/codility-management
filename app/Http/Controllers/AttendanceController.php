@@ -7,6 +7,7 @@ use App\Inform;
 use App\User;
 use Carbon\Carbon;
 
+use function Composer\Autoload\includeFile;
 use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -525,7 +526,14 @@ class AttendanceController extends Controller
                 $total_break_minutes = ($explode_break_time[0] * 60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
                 //edit
-                $this->days = Carbon::parse($request->month . '/1')->endOfMonth()->day;
+                $get_month_dates = Carbon::parse($request->month . '/1')->endOfMonth()->isSunday();
+                if ($get_month_dates == true){
+                    $this->days=Carbon::parse($request->month . '/1')->endOfMonth()->day - 2;
+                }else{
+                    $this->days=Carbon::parse($request->month . '/1')->endOfMonth()->day;
+
+                }
+//                dd($this->days);
                 $workdays = array();
                 $type = CAL_GREGORIAN;
                 $month =Carbon::parse($request->month . '/1')->endOfMonth()->month; // Month ID, 1 through to 12.
@@ -565,14 +573,16 @@ class AttendanceController extends Controller
 
                     }
                 }
-
+//echo($this->days);
+//                dd($workdays);
                 $collect = collect($workdays);
-                $collect->each(function ($item, $key) {;
+                $collect->each(function ($item, $key) {
+                    echo($item."</br>");
                     if ($item == $this->days) {
-                        $this->total_days_form = $key;
+                        $this->total_days_form = $key  ;
                     }
                 });
-
+//dd($this->total_days_form);
                 $subtract_absent_days = $this->total_days_form + 1 - ($absent + $sum_leaves);
                 $total_day_time = $subtract_time * $subtract_absent_days;
                 $total_minutes_display=$total_day_time;

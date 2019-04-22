@@ -40,6 +40,6 @@ class WeeklyReport extends Mailable
         $employee_names=$this->names;
         $to = Helper::all_admins();
 
-        return $this->markdown('monthly',compact('employee_names'))->to($to)->subject("Monthly Assessment Report From ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".Carbon::now()->subDay(1)->format('d-m-Y'));
+        return $this->markdown('monthly',compact('employee_names'))->to($to)->subject("Monthly Assessment Report From ".Carbon::now()->startOfMonth()->format('d-m-Y')."  TO  ".\Carbon\Carbon::now()->endOfWeek()->subDays(1)->subHours(16)->format('d-m-Y'));
     }
 }
