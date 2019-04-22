@@ -12,7 +12,7 @@ class Helper extends User
             $all_admins = 'atta.ur.rehman@codility.co';
         }
         else{
-            $all_admins=array('amir@codility.co','hr@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
+            $all_admins=array('amir@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
         }
         return $all_admins;
     }

@@ -117,23 +117,51 @@ class FridayReport extends Command
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
                 //edit
-                $this->days=Carbon::now()->day -1;
+                $get_month_dates = Carbon::now()->endOfMonth()->isSunday();
+                if ($get_month_dates == true){
+                    $this->days=Carbon::now()->endOfMonth()->day - 2;
+                }else{
+                    $this->days=Carbon::now()->endOfMonth()->day;
+
+                }
                 $workdays = array();
                 $type = CAL_GREGORIAN;
-                $month = date('n'); // Month ID, 1 through to 12.
-                $year = date('Y'); // Year in 4 digit 2018 format.
+                $month =Carbon::now()->endOfMonth()->month; // Month ID, 1 through to 12.
+                $year = Carbon::now()->endOfMonth()->year; // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
-                for ($i = 1; $i <= $day_count; $i++) {
+                $get_date=Carbon::parse($user_attendance->joiningDate)->month;
+                if ($get_date == $month){
+                    $start_date=Carbon::parse($user_attendance->joiningDate)->day;
+                }else
+                {
+                    $start_date =1;
+                }
+                if ($user_attendance->workingDays == 5) {
+                    for ($i = $start_date; $i <= $day_count; $i++) {
 
-                    $date = $year.'/'.$month.'/'.$i; //format date
-                    $get_name = date('l', strtotime($date)); //get week day
-                    $day_name = substr($get_name, 0, 3); // Trim day name to 3 chars
+                        $date = $year . '/' . $month . '/' . $i; //format date
+                        $get_name = date('l', strtotime($date)); //get week day
+                        $day_name = substr($get_name, 0, 3); // Trim day name to 3 chars
 
-                    //if not a weekend add day to array
-                    if($day_name != 'Sun' && $day_name != 'Sat'){
-                        $workdays[] = $i;
+                        //if not a weekend add day to array
+                        if ($day_name != 'Sun' && $day_name != 'Sat') {
+                            $workdays[] = $i;
+                        }
+
                     }
+                } elseif ($user_attendance->workingDays == 6) {
+                    for ($i = $start_date; $i <= $day_count; $i++) {
 
+                        $date = $year . '/' . $month . '/' . $i; //format date
+                        $get_name = date('l', strtotime($date)); //get week day
+                        $day_name = substr($get_name, 0, 3); // Trim day name to 3 chars
+
+                        //if not a weekend add day to array
+                        if ($day_name != 'Sun') {
+                            $workdays[] = $i;
+                        }
+
+                    }
                 }
                 $collect=collect($workdays);
 
@@ -142,6 +170,7 @@ class FridayReport extends Command
                         $this->total_days_form=$key;
                     }
                 });
+//                dd($this->total_days_form);
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
                 $total_day_time =$subtract_time * abs($subtract_absent_days);
                 $asdf=$total_day_time;
@@ -180,7 +209,13 @@ class FridayReport extends Command
                 $explode_break_time = explode(':', $break_time);
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes ;
-                $this->days=Carbon::now()->day;
+                $get_month_dates = Carbon::now()->endOfMonth()->isSunday();
+                if ($get_month_dates == true){
+                    $this->days=Carbon::now()->endOfMonth()->day - 2;
+                }else{
+                    $this->days=Carbon::now()->endOfMonth()->day;
+
+                }
                 $workdays = array();
                 $type = CAL_GREGORIAN;
                 $month = date('n'); // Month ID, 1 through to 12.
@@ -200,12 +235,14 @@ class FridayReport extends Command
                     }
 
                 }
+
                 $collect=collect($workdays);
                 $collect->each(function ($item, $key) {
                     if ($item == $this->days) {
                         $this->total_days_form=$key;
                     }
                 });
+
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
                 $total_day_time =$subtract_time * abs($subtract_absent_days);
                 $lessTimeWithoutCompensation=abs($total_day_time - $total_minutes);
@@ -233,11 +270,12 @@ class FridayReport extends Command
 
             }
         }
+//dd($user_name);
         if (!(empty($emails) && empty($user_name))){
             Mail::send(new WeeklyReport($user_name));
-            foreach ($user_name as $get_user_detail){;
+            foreach ($user_name as $get_user_detail){
                 foreach ($get_user_detail as $item) {
-                    Mail::send(new EmployeeLessTimeConsumed($item,$emails));
+//                    Mail::send(new EmployeeLessTimeConsumed($item,$emails));
 
                 }
             }

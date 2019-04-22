@@ -46,8 +46,14 @@ class YearlyReport extends Command
 
 
         foreach($get_user as $user){
-            $start_office=Carbon::parse($user->joiningDate)->startOfDay();
-            $total_absent=$user->abended?$user->abended:0;
+            $user_joining_date=Carbon::parse($user->joiningDate)->year;
+            $current_year=Carbon::now()->year;
+            if ($user_joining_date == $current_year) {
+                $start_office = Carbon::parse($user->joiningDate)->startOfDay();
+            }else{
+                $start_office = Carbon::now()->startOfYear();
+            }
+            $total_absent=0;
             $current_month_absent=0;
             $names=array('name'=>$user->name);
             $collection=collect($names);
