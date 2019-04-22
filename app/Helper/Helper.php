@@ -61,4 +61,12 @@ class Helper extends User
         }
     }
 
+    public static function leave_cotta(){
+        $total_months = 12;
+        $total_allowed_leaves = 17;
+        $per_month_leaves = $total_allowed_leaves / $total_months ;
+
+        return substr($per_month_leaves,0,5);
+    }
+
 }

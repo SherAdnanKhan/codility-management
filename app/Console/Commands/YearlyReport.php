@@ -95,7 +95,7 @@ class YearlyReport extends Command
             if(Carbon::parse($user->joiningDate)->month == $now_month && Carbon::parse($user->joiningDate)->year == Carbon::now()->year) {
                 $this->get_employement_month =1;
             }
-            $allowed_absent=abs($this->get_employement_month) *1.5;
+            $allowed_absent=abs($this->get_employement_month) * Helper::leave_cotta() ;
             $collection->put('allowed_absent',$allowed_absent);
             $user_details[]=array($collection->all());
 
