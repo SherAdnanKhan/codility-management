@@ -117,25 +117,29 @@ class FridayReport extends Command
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
                 //edit
-                $get_month_dates = Carbon::now()->endOfMonth()->isSunday();
-                if ($get_month_dates == true){
-                    $this->days=Carbon::now()->endOfMonth()->day - 2;
-                }else{
-                    $this->days=Carbon::now()->endOfMonth()->day;
+//                $get_month_dates = Carbon::now()->endOfMonth()->isSunday();
+//                if ($get_month_dates == true){
+//                    $this->days=Carbon::now()->endOfMonth()->day - 2;
+//                }else{
+//                    $this->days=Carbon::now()->day - 1 ;
+//
+//                }
 
-                }
+                $this->days=Carbon::now()->day - 1 ;
+
                 $workdays = array();
                 $type = CAL_GREGORIAN;
                 $month =Carbon::now()->endOfMonth()->month; // Month ID, 1 through to 12.
                 $year = Carbon::now()->endOfMonth()->year; // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
                 $get_date=Carbon::parse($user_attendance->joiningDate)->month;
-                if ($get_date == $month){
+                if ($get_date == $month && Carbon::parse($user_attendance->joiningDate)->year == Carbon::now()->year){
                     $start_date=Carbon::parse($user_attendance->joiningDate)->day;
                 }else
                 {
                     $start_date =1;
                 }
+
                 if ($user_attendance->workingDays == 5) {
                     for ($i = $start_date; $i <= $day_count; $i++) {
 
@@ -163,14 +167,14 @@ class FridayReport extends Command
 
                     }
                 }
-                $collect=collect($workdays);
 
+                $collect=collect($workdays);
                 $collect->each(function ($item, $key) {
+
                     if ($item == $this->days) {
                         $this->total_days_form=$key;
                     }
                 });
-//                dd($this->total_days_form);
                 $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
                 $total_day_time =$subtract_time * abs($subtract_absent_days);
                 $asdf=$total_day_time;

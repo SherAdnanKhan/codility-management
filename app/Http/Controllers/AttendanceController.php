@@ -426,7 +426,7 @@ class AttendanceController extends Controller
             $user_details[] = array($collection->all());
 
         }
-echo($final_total_leaves);
+//echo($final_total_leaves);
 //        dd('adsf');
         if (!empty($user_details)) {
             Session::flash('status', 'Employee Detail of required ERA ');
