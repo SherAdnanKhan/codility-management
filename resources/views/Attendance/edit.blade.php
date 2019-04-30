@@ -94,11 +94,12 @@
        <?php
        }
        ?>
+       var get_dates=new Date();
        $(function () {
            $('#check_out_time').datetimepicker({
                useCurrent: false,
                minDate:today,
-               maxDate: new Date()
+               maxDate: get_dates.setMinutes(get_dates.getMinutes() + 1)
            });
            $('#check_in_time').datetimepicker({
                // minDate:new Date()
@@ -120,10 +121,11 @@
         });
     </script> @else
        <script type="text/javascript">
+           var get_dates=new Date();
            $(function () {
                $('#check_out_time').datetimepicker({
                    useCurrent:false,
-                   maxDate:new Date()
+                   maxDate:get_dates.setMinutes(get_dates.getMinutes() + 1)
                });
                $('#check_in_time').datetimepicker({
                    // minDate:new Date()

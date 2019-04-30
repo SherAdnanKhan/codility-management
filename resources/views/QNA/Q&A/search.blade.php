@@ -101,12 +101,6 @@
                                             <td>{{$question_answer->variation}}</td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->question}}</textarea></td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->answer}}</textarea></td>
-                            
-                                            <td><a  style="color:green "data-value="{{$question_answer->id}}"  class="edit_link" href="#" >
-                                                    <span class="fa fa-edit"></span>
-                                                </a>
-                                                <a   style="color:red;" data-value="{{$question_answer->id}}"  class="delete_link" href="#" >
-                                                    <span class="fa fa-times"></span></a></td>
                         
                                         </tr>
                                     @endforeach
@@ -197,17 +191,27 @@
                 }else {
                     var data_image='';
                 }
-                $('.unique').show();
-                $('.table_show').hide();
-                $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">'+
-                    '<p class="card-text"><b>Question # '+data.id+' :</b>'+ data_question.replace(new RegExp('\r?\n','g'), '<br />') +'</p>'+
-                    '<img style="width: 100px;height: 100px" class="img-responsive " src='+data_image+' alt='+data_question+'>'+
-
-                    '<p class="card-text"><b>Answer :</b>'+data_answer.replace(new RegExp('\r?\n','g'), '<br />')+'</p>'+
-                    '</div>'+
-                    '</div>'+
-                    '</div>');
-                console.log(data);
+                if (data.image != null) {
+                    $('.unique').show();
+                    $('.table_show').hide();
+                    $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">' +
+                            '<p class="card-text"><b>Question # ' + data.id + ' :</b>' + data_question.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '<img style="width: 100px;height: 100px" class="img-responsive " src=' + data_image + ' alt=' + data_question + '>' +
+                
+                            '<p class="card-text"><b>Answer :</b>' + data_answer.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+                }else {
+                    $('.unique').show();
+                    $('.table_show').hide();
+                    $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">' +
+                            '<p class="card-text"><b>Question # ' + data.id + ' :</b>' + data_question.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '<p class="card-text"><b>Answer :</b>' + data_answer.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+                }
 
             })
 
