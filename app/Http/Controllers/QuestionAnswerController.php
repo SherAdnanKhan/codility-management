@@ -132,6 +132,9 @@ class QuestionAnswerController extends Controller
     public function show($id)
     {
         if ($id){
+            if (\Session::get('delete_question_url') == null) {
+                $question_url = \Session::put('delete_question_url', url()->previous());
+            }
             $result=QuestionAnswer::whereId($id)->first();
             return \response()->json($result);
         }
@@ -145,9 +148,13 @@ class QuestionAnswerController extends Controller
      */
     public function edit($id)
     {
+        if (\Session::get('question_url') == null) {
+            $question_url = \Session::put('question_url', url()->previous());
+        }
+
         $question = QuestionAnswer::whereId($id)->first();
-        $data= view('layouts.modal-view',compact('question'))->render();
-        return \response()->json($data);
+        return view('QNA.Q&A.edit',compact('question'));
+
     }
 
     /**
@@ -159,6 +166,9 @@ class QuestionAnswerController extends Controller
      */
     public function update(Request $request,$id)
     {
+
+        $haystack=url()->previous();
+        $needle="search/categories/questions";
         $this->validate($request, [
             'answer'    => 'required',
             'category'  => 'required|exists:q_n_a_categories,id',
@@ -187,12 +197,19 @@ class QuestionAnswerController extends Controller
             }
         }
         if ($question ==true){
-            return redirect()->route('question-answers.index')->with('status','Question and Answer  Updated !');
+            if (\Session::get('question_url') != null) {
+                $url=\Session::get('question_url');
+                \Session::forget('question_url');
+                return redirect($url);
+            }else{
+                return redirect()->route('question-answers.index')->with('status','Question and Answer  Updated !');
 
+            }
         }else{
             return redirect()->route('question-answers.index')->with('status','Question and Answer Not Updated !');
 
         }
+
     }
 
     /**
@@ -204,7 +221,14 @@ class QuestionAnswerController extends Controller
     public function destroy($id)
     {
         $attendance= QuestionAnswer::whereId($id)->delete();
-        return redirect()->route('question-answers.index')->with('status','Question and Answer Deleted !');
+        if (\Session::get('delete_question_url') != null) {
+            $url=\Session::get('delete_question_url');
+            \Session::forget('delete_question_url');
+            return redirect($url);
+        }else{
+            return redirect()->route('question-answers.index')->with('status','Question and Answer Deleted !');
+
+        }
     }
     public function showEmployeeTestSearch($id)
     {
@@ -220,19 +244,45 @@ class QuestionAnswerController extends Controller
     }
     public function searchQuestionByCategory(Request $request)
     {
+        if ($request->category) {
+
+            $category = QNACategory::whereId($request->category)->first();
+
+//dd('asdf');
+                $question_answers = $category->qnA()->paginate(50);
+                $question_answers->withPath("question-answers?category=$category->id&text=");
+                return view('QNA.Q&A.index', compact('question_answers'));
+
+        }
+        if ($request->text){
+
+                $question_answers = QuestionAnswer::where('question', 'Like', '%' . $request->text . '%')->paginate(50);
+                $question_answers->withPath("question-answers?category=&text=$request->text");
+                return view('QNA.Q&A.index', compact('question_answers'));
+
+        }
+
+    }
+        public function searchQuestionByCategoryAdmin(Request $request)
+    {
 
         if ($request->category) {
 
             $category = QNACategory::whereId($request->category)->first();
+
+
             $question_answers = $category->qnA()->paginate(50);
+            $question_answers->withPath("?category=$category->id&text=");
+            return view('QNA.Q&A.index', compact('question_answers'));
+
         }
-            if ($request->text){
-                $question_answers=QuestionAnswer::where('question','Like','%'.$request->text.'%')->paginate(50);
-            }
-            return view('QNA.Q&A.search', compact('question_answers'));
+        if ($request->text){
 
+            $question_answers = QuestionAnswer::where('question', 'Like', '%' . $request->text . '%')->paginate(50);
+            $question_answers->withPath("?category=&text=$request->text");
+            return view('QNA.Q&A.index', compact('question_answers'));
 
-
+        }
 
     }
 

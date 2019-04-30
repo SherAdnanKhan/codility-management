@@ -26,14 +26,58 @@
                             <div class="col-lg-9 ">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                
+                        <div class="row" style="margin-bottom: 30px">
+                            <div class="col-lg-3">
+                                <div class="input-group input-group-md">
+                                    <input class="form-control" placeholder="Search by Question No" id="name" type="number" name="name">
+                                    <div class="input-group-append">
+                                        <button type="button" class="print btn btn-outline-success ">Search</button>
+                                    </div>
+                                </div>
+        
                             </div>
-
+                            <div class="col-lg-8 ">
+                                <form class="form-horizontal form-inline" id ="searchByCategory" method="GET" action="{{route('searchQuestionByCategoryAdmin')}}" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
+                                    <div class="form-group-material">
+                    
+                                        <select name="category" id="category" class="form-control filters ">
+                                            <option value="">Search By Category Type</option>
+                                            @php
+                                                $categories=\App\QNACategory::all()->sortByDesc('id');
+                                            @endphp
+                                            @if(isset($categories))
+                                                @foreach($categories as $category)
+                                                    <option value="{{$category->id}}" {{\Request::get('category')==$category->id?'selected ':''}}>{{$category->name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                    
+                                        @if ($errors->has('category'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('category') }}</strong>
+                                    </span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group-material input-group input-group-md searchByText">
+                                        <input class="form-control" placeholder="Search by Text" id="text" type="text" name="text" value="{{\Request::get('text')?\Request::get('text'):''}}">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="print btn btn-outline-success ">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+        
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body unique">
+    
+    
+    
+                    </div>
+                    
+    
+                    <div class="card-body table_show">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -48,7 +92,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if($question_answers)
+                                @if (session('search_question_answers'))
+                                    @foreach(session('search_question_answers') as $question_answer)
+                                        <tr>
+                                            <td>{{$question_answer->id}}</td>
+                                            <td>{{$question_answer->category?$question_answer->category->name:'Without Category'}}</td>
+                                            <td>{{$question_answer->proved?'Yes':'No'}}</td>
+                                            <td>{{$question_answer->variation}}</td>
+                                            <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->question}}</textarea></td>
+                                            <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->answer}}</textarea></td>
+            
+                                            <td><a  style="color:green "data-value="{{$question_answer->id}}"  class="edit_link" href="#" >
+                                                    <span class="fa fa-edit"></span>
+                                                </a>
+                                                <a   style="color:red;" data-value="{{$question_answer->id}}"  class="delete_link" href="#" >
+                                                    <span class="fa fa-times"></span></a></td>
+        
+                                        </tr>
+                                    @endforeach
+                                    @endif
+                                @if($question_answers && session('search_question_answers') == null)
                                     @foreach($question_answers as $question_answer)
                                         <tr>
                                             <td>{{$question_answer->id}}</td>
@@ -58,7 +121,7 @@
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->question}}</textarea></td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->answer}}</textarea></td>
 
-                                            <td><a  style="color:green "data-value="{{$question_answer->id}}"  class="edit_link" href="#" >
+                                            <td><a  style="color:green "data-value="{{$question_answer->id}}"  class="edit_link" href="{{route('question-answers.edit',$question_answer->id)}}" >
                                                     <span class="fa fa-edit"></span>
                                                 </a>
                                                 <a   style="color:red;" data-value="{{$question_answer->id}}"  class="delete_link" href="#" >
@@ -71,9 +134,12 @@
                             </table>
                         </div>
                     </div>
-                    <div class="bootstrap-iso">
+                    @if($question_answers && session('search_question_answers') == null)
+                    <div class="bootstrap-iso table_show">
                         {{$question_answers->links()}}
                     </div>
+                    @endif
+                    
                 </div>
             </div>
         </div>
@@ -213,21 +279,90 @@
 
             })
         });
-        $(".edit_link").on('click',function() {
-            var question_answer=$(this).data("value");
-
-            $.get('/question-answers/'+question_answer+'/edit',function (data) {
-                // $.each(data,function (index,state) {
-                $('#update-modal-body').html(data);
-                $('#updateModal').modal();
-                console.log(data);
-
+        // $(".edit_link").on('click',function() {
+        //     var question_answer=$(this).data("value");
+        //
+        //     $.get('/question-answers/'+question_answer+'/edit',function (data) {
+        //         // $.each(data,function (index,state) {
+        //         $('#update-modal-body').html(data);
+        //         $('#updateModal').modal();
+        //         console.log(data);
+        //
+        //     })
+        //
+        // });
+        $("#category").on('change',function() {
+            $('#searchByCategory').submit();
+            $('.unique').hide();
+    
+        });
+        $(".print").on('click',function() {
+            var question_answer= $('#name').val();
+            $.get('/search/question/'+question_answer+'/',function (data) {
+                var data_question=data.question;
+                var data_answer=data.answer;
+                
+                if (data.image != null){
+                    var data_image= "{!! asset('images/question') !!}"+'/'+data.image;
+                }else {
+                    var data_image='';
+                }
+                if (data.image != null) {
+                    $('.unique').show();
+                    $('.table_show').hide();
+                    $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">' +
+                            '<p class="card-text"><b>Question # ' + data.id + ' :</b>' + data_question.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '<img style="width: 100px;height: 100px" class="img-responsive " src=' + data_image + ' alt=' + data_question + '>' +
+            
+                            '<p class="card-text"><b>Answer :</b>' + data_answer.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+                }else {
+                    $('.unique').show();
+                    $('.table_show').hide();
+                    $('.unique').html('<div class=""> <div class=""> <div class="card custom-print"> <div class="card-body">' +
+                            '<p class="card-text"><b>Question # ' + data.id + ' :</b>' + data_question.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '<p class="card-text"><b>Answer :</b>' + data_answer.replace(new RegExp('\r?\n', 'g'), '<br />') + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+                }
+                
             })
-
+    
         });
         $('#button_clear').click(function(){
             $('#category input[type="text"]').val('');
-
+    
+        })
+        $( "body" ).on( "click", "#comment", function() {
+            alert($("#category").val());
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                    type: "PATCH",
+                    url: $("#url").val(),
+                    data: { category:$("#category").val()},
+                    success: function(msg) {
+                        alert(msg);
+                    }
+                });
         });
+        // $('#comment').on('submit', function(e) {
+        //    alert('s');
+        //     // e.preventDefault();
+        //     // $.ajax({
+        //     //     type: "POST",
+        //     //     url: host+'/comment/add',
+        //     //     data: $(this).serialize(),
+        //     //     success: function(msg) {
+        //     //         alert(msg);
+        //     //     }
+        //     // });
+        // });
     </script>
 @endsection

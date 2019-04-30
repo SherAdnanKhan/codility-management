@@ -104,10 +104,10 @@
 
 @endif
 @if(isset($question))
-    <form class="form-horizontal" id ="question-answer" method="POST" action="{{route('question-answers.update',$question->id)}}" enctype="multipart/form-data" >
-        {{ csrf_field() }}
-        {{ method_field('PATCH') }}
+    <form class="form-horizontal" id ="question-answer form-sdf " method="POST" action="{{route('question-answers.update',$question->id)}}" enctype="multipart/form-data" >
+        
         <div class="row">
+            <input type="hidden" id="url" value="{{route('question-answers.update',$question->id)}}">
         <div class="form-group-material col-md-4">
             <label for="category" class="select-label form-control-label ">Category Type</label>
             <select name="category" id="category" class="form-control filters ">
@@ -191,7 +191,7 @@
                                         </span>
             @endif
         </div>
-        <button type="submit" class="btn btn-outline-success">Update Question</button>
+        <a class="btn btn-outline-success" href="javascript:;" id="comment">Update Question</a>
         <button type="button" id="button_clear" class="btn btn-outline-danger">
             Reset
         </button>

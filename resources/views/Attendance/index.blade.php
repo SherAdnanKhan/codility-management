@@ -139,8 +139,9 @@
                                             {{--<td style= "color:{{$attendance->attendance_type == 'UnInformed Late'? 'red':''}}">--}}
                                                     {{$attendance->attendance_type}}
                                                     @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp))
+                                            {{$attendance->getOriginal('attendance_type') != 'check_in'?$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"?'LATE':'':''}}
 
-                                                    {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"?'LATE':''}}
+{{--                                                    {{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LATE"?'LATE':''}}--}}
                                                     </br><p style="color: darkgoldenrod">{{$attendance->late_informed?$attendance->late_informed:''}}</p>
                                                     @endif
                                                     @if($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp) && $attendance->leave_comment != null)

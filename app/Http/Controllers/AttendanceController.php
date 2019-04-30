@@ -547,12 +547,13 @@ class AttendanceController extends Controller
                 $year = Carbon::parse($request->month . '/1')->endOfMonth()->year; // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
                 $get_date=Carbon::parse($user_attendance->joiningDate)->month;
-                if ($get_date == $month){
+                if ($get_date == $month && Carbon::parse($user_attendance->joiningDate)->month == Carbon::now()->year){
                     $start_date=Carbon::parse($user_attendance->joiningDate)->day;
                 }else
                 {
                     $start_date =1;
                 }
+
                 if ($user_attendance->workingDays == 5) {
                     for ($i = $start_date; $i <= $day_count; $i++) {
 
@@ -584,7 +585,7 @@ class AttendanceController extends Controller
 //                dd($workdays);
                 $collect = collect($workdays);
                 $collect->each(function ($item, $key) {
-                    echo($item."</br>");
+//                    echo($item."</br>");
                     if ($item == $this->days) {
                         $this->total_days_form = $key  ;
                     }
@@ -609,6 +610,8 @@ class AttendanceController extends Controller
                     $lessHours = '00:00';
 
                 }
+
+
                     $loggedTime = sprintf("%02d:%02d", floor($total_minutes / 60), $total_minutes % 60);
                     $requiredWithoutCompansetionTime = sprintf("%02d:%02d", floor($total_minutes_display / 60), $total_minutes_display % 60);
                     $requiredTime = sprintf("%02d:%02d", floor($total_day_time / 60), $total_day_time % 60);

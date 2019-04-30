@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth:web', 'admin']], function () {
 //    Route::get('/view-cv/{id}','ApplicantsController@viewCv');
 //    Route::get('/delete/{id}','ApplicantsController@delete');
 //    Route::post('/add/manually/applicant','ApplicantsController@addApplicant')->name('applicant.manual');
+    Route::get('/question-answers/search', 'QuestionAnswerController@searchQuestionByCategoryAdmin')->name('searchQuestionByCategoryAdmin');
 
     Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('/register', 'Auth\RegisterController@register');
@@ -114,6 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('approval/request', 'RequestLeaveController');
     Route::get('/project/project/{id}', 'ProjectTaskController@project')->name('project.project');
     Route::post('/search/categories/questions', 'QuestionAnswerController@searchQuestionByCategory')->name('searchQuestionByCategory');
+
 
 });
 
