@@ -37,4 +37,11 @@ class Applicants extends Model
     public function interview(){
         return $this->hasMany('App\Interview','applicant_id','id');
     }
+    public function call_statuses(){
+
+        return $this->hasMany('App\CallStatus','applicant_id','id');
+    }
+    public function interview_for_get(){
+        return $this->hasOne('App\DropDown','id','interview_for');
+    }
 }

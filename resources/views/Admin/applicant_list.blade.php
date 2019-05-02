@@ -279,7 +279,7 @@
                                                 class="fa fa-trash-alt"></i></a>
                                     
                                     <a title="Add Test Detail" data-target="#addTest" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-file"></i></a>
-
+                                    <a title="Add Call Detail" data-target="#addCall" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id_call"><i class="fa fa-phone"></i></a>
                                 </td>
                             </tr>
                            
@@ -1074,7 +1074,64 @@
             </div>
         </div>
     </div>
-
+    <div id="addCall" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+         class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Call Details</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                                aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <form class="form-horizontal" id="timetable" method="POST" action="{{route('call_status.store')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            
+                            <div class="col-md-3">
+                                <div class="form-group-material date">
+                                    <div class=' bootstrap-iso input-group-material date'>
+                                        <input autocomplete="off" type='text' id='call_date' name="call_date" value="{{old('call_date')}}{{\Session::get("call_date")?\Session::get("call_date"):null}}"
+                                               class="input-material"/>
+            
+                                        <label for="call_date" class="label-material">DateTime of Call</label>
+                                    </div>
+                                    @if ($errors->has('call_date'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('call_date') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                    
+                        </div>
+                        <div class="form-group row">
+                            <label for="reason" class="select-label col-sm-offset-3 col-sm-11 form-control-label ">Brief Review On Call</label>
+                            <div class="col-sm-12  mb-12 ">
+                                <textarea  name="description" class="form-control">{{old('description')}}</textarea>
+                            </div>
+                            @if ($errors->has('description'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+                        <div id="applicant_id_for_call">
+    
+                        </div>
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                        <button type="button" id="button_clear" class="btn btn-outline-danger">
+                            Reset
+                        </button>
+                    </form>
+            
+                </div>
+        
+            </div>
+        </div>
+    </div>
+  
 @endsection
 @section('page_scripts')
     <script src="{{asset('scripts/moment.js')}}"></script>
@@ -1086,6 +1143,9 @@
         $(function () {
             $('#dob').datetimepicker({
                 format: 'L'
+            });
+            $('#call_date').datetimepicker({
+            
             });
             $('#date').datetimepicker({
                 format: 'L',
@@ -1125,6 +1185,10 @@
         $(".applicant_id").on('click',function() {
             var applicant_id=$(this).data("value");
             $(".applicant_core_id").html("<input  type='hidden' id='applicant_original_id' style='display:none' name='applicant_original_id' value= "+applicant_id+"    />");
+        });
+        $(".applicant_id_call").on('click',function() {
+            var applicant_id=$(this).data("value");
+            $("#applicant_id_for_call").html("<input  type='hidden' id='applicant_original_id' style='display:none' name='applicant_original_id' value= "+applicant_id+"    />");
         });
         $(".status_get").change(function() {
             var status=$(this).val();
@@ -1179,6 +1243,7 @@
                     $check_error=array('The status field is required.','The image field is required.','The marks field is required.',);
                         $bFounds = (count(array_intersect($errors->all(), $check_error))) ? true : false;
                 @endphp
+                
                 @if(isset($bFounds))
                 @if($bFounds == true )
                 $('#addTest').modal('show');
@@ -1187,7 +1252,20 @@
         @endif
         @endif
         @endif
-    @if(\Session::get("already_exist") == true)
+        @if(isset($errors))
+        @if(count($errors) >0 )
+                @php
+                    $check_error=array('The call date field is required.','The description field is required.','The marks field is required.','The call date is not a valid date.');
+                            $call_error = (count(array_intersect($errors->all(), $check_error))) ? true : false;
+                @endphp
+        @if(isset($call_error))
+        @if($call_error == true )
+        $('#addCall').modal('show');
+        @endif
+                @endif
+        @endif
+        @endif
+        @if(\Session::get("already_exist") == true)
                 $('#createModal').modal('show');
                         @endif
 $(".country").change(function() {
