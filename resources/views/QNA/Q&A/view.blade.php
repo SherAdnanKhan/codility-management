@@ -29,6 +29,7 @@
     </style>
 </head>
 <body>
+<p style="margin-left: 68%;"> Serial Number : @php echo (uniqid()); @endphp</p>
         <img style="height:100px;width: 100px; float: left; margin: -30px 40px 0px 0px;" class="img-responsive " src="file:///<?= base_path()?>/public/images/favicon.png" alt="{{env('APP_NAME')}}">
     <h2 style="float: right" > INTERVIEW TEST</h2>
 

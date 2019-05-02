@@ -248,17 +248,16 @@ class QuestionAnswerController extends Controller
 
             $category = QNACategory::whereId($request->category)->first();
 
-//dd('asdf');
                 $question_answers = $category->qnA()->paginate(50);
-                $question_answers->withPath("question-answers?category=$category->id&text=");
-                return view('QNA.Q&A.index', compact('question_answers'));
+                $question_answers->withPath("?category=$category->id&text=");
+                return view('QNA.Q&A.search', compact('question_answers'));
 
         }
         if ($request->text){
 
                 $question_answers = QuestionAnswer::where('question', 'Like', '%' . $request->text . '%')->paginate(50);
-                $question_answers->withPath("question-answers?category=&text=$request->text");
-                return view('QNA.Q&A.index', compact('question_answers'));
+                $question_answers->withPath("?category=&text=$request->text");
+                return view('QNA.Q&A.search', compact('question_answers'));
 
         }
 

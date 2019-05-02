@@ -11,7 +11,11 @@ class TestInterview extends Model
         'marks',
         'status',
         'note',
+        'serial_number',
         'applicant_id'
 
     ];
+    public function applicants(){
+        return $this->belongsTo('App\Applicants','applicant_id','id');
+    }
 }

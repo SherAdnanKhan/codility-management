@@ -53,6 +53,7 @@ class TestInterviewController extends Controller
             'status'            =>  $status?$status:null,
             'marks'             =>  $request->marks?$request->marks:null,
             'note'              =>  $request->description?$request->description:null,
+            'serial_number'     =>  $request->serial_number?$request->serial_number:null
         ]);
         if ($interview){
             return redirect('applicants/lists')->with('status','Test record insert successfully');

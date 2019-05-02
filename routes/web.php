@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('tracking/report', 'TimeTrackerController@index')->name('view.time.tracking');
     Route::resource('approval/request', 'RequestLeaveController');
     Route::get('/project/project/{id}', 'ProjectTaskController@project')->name('project.project');
-    Route::post('/search/categories/questions', 'QuestionAnswerController@searchQuestionByCategory')->name('searchQuestionByCategory');
+    Route::get('/search/categories/questions', 'QuestionAnswerController@searchQuestionByCategory')->name('searchQuestionByCategory');
 
 
 });
