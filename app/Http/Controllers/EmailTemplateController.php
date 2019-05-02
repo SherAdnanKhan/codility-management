@@ -14,7 +14,8 @@ class EmailTemplateController extends Controller
      */
     public function index()
     {
-        //
+        $email_templates=EmailTemplate::paginate(10);
+        return view('Admin.EmailTemplates.admin_index',compact('email_templates'));
     }
 
     /**
@@ -35,7 +36,21 @@ class EmailTemplateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'email_body' => 'required'
+        ]);
+
+        $email_template=EmailTemplate::create([
+
+            'body'      => $request->email_body?$request->email_body:null,
+            'header'    => $request->email_subject?$request->email_subject:null
+        ]);
+        if ($email_template){
+            return redirect()->route('email_template.index')->with('success','Email Template Added successful');
+        }else{
+            return redirect()->route('email_template.index')->with('success','Email Template Added unsuccessful');
+
+        }
     }
 
     /**
