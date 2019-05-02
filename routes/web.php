@@ -86,6 +86,8 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::resource('/question-answers', 'QuestionAnswerController');
     Route::get('/print', 'QuestionAnswerController@printView')->name('print.view');
     Route::post('/print', 'QuestionAnswerController@printCreate')->name('print.create');
+    Route::resource('/call_status', 'CallStatusController');
+
 });
 Route::group(['middleware' => ['firstLogin', 'auth', 'employee']], function () {
 

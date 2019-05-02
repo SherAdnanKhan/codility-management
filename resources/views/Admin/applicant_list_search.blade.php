@@ -7,6 +7,11 @@
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-tagsinput.css')}}">
+    <style>
+        hr {
+            border-top: 2px dashed rgba(0, 0, 0, 0.62) !important;
+        }
+    </style>
 @endsection
 @section('body')
     
@@ -67,7 +72,7 @@
                                 <td>{{$applicant->dob?$applicant->dob:''}}</td>
                                 <td>{{$applicant->currentSalary?$applicant->currentSalary:''}}</td>
                                 <td>{{$applicant->expectedSalary?$applicant->expectedSalary:''}}</td>
-                                <td>{{$applicant->interview_for?$applicant->interview_for:''}}</td>
+                                <td>{{$applicant->interview_for?($applicant->interview_for != null?$applicant->interview_for_get->interview_for:''):''}}</td>
                                 <td>{{$applicant->expertise_in?$applicant->expertise_in:''}}</td>
 
                             </tr>
@@ -128,13 +133,36 @@
                                     
                                     <td>{{$interview_status->status ? $interview_status->status->status_name:''}}{{$interview_status->substatus ? '=>'.$interview_status->substatus->name:''}}</td>
                                     <td>{{$interview_status->note?$interview_status->note:''}}</td>
-                                    <td>{{$interview_status->date != null ?\Carbon\Carbon::createFromTimestamp($interview_status->date):''}}
+                                    <td>{{$interview_status->date != null ?\Carbon\Carbon::createFromTimestamp($interview_status->date)->toDayDateTimeString():''}}
                                     </td>
                                 </tr>
                             @endforeach
                         @endif
                         </tbody>
                     </table>
+                   
+                @if(count($applicant->call_statuses)>0)
+                        <hr>
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>Brief Note On Call</th>
+                                <th>Call DateTime</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+            
+                            @if($applicant->call_statuses)
+                                @foreach($applicant->call_statuses as $call_status)
+                                    <tr>
+                                        <td>{{$call_status->description?$call_status->description:''}}</td>
+                                        <td>{{$call_status->date != null ?\Carbon\Carbon::createFromTimestamp($call_status->date)->toDayDateTimeString():''}}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                @endif
             </div>
         </div>
     </div>
