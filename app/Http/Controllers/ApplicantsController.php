@@ -6,6 +6,7 @@ use App\City;
 use App\Country;
 use App\State;
 use App\Status;
+use App\TestInterview;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -32,6 +33,7 @@ class ApplicantsController extends Controller
         $first_name=$request->input('first_name');
         $last_name=$request->input('last_name');
         $interview_search=$request->input('search_for_interview');
+        $test_serial_number=$request->input('serial_number')?$request->input('serial_number'):1;
         if ($applicant_id != "" && $source != ""){
             $applicants=Applicants::where('source',$source)->where('applicantId',$applicant_id)->orderBy('id','desc')->paginate(10);
 
@@ -117,6 +119,18 @@ class ApplicantsController extends Controller
             }else
             {
                 return redirect('applicants/lists')->with('status','Sorry,Nothing Found.');
+            }
+        }elseif($test_serial_number != 1){
+            $get_test=TestInterview::whereSerialNumber($test_serial_number)->first();
+            if ($get_test != null) {
+                $applicants = $get_test->applicants()->paginate(10);
+                if ($applicants) {
+                    return view('Admin.applicant_list', ['applicants' => $applicants, 'applicant_id' => $applicant_id, 'source' => $source, 'statuses' => $statuses]);
+                } else {
+                    return redirect('applicants/lists')->with('status', 'Sorry,Nothing Found.');
+                }
+            }else{
+                return redirect('applicants/lists')->with('status', 'Sorry,Serial Number not found.');
             }
         }else{
             $applicants=Applicants::orderBy('id','desc')->paginate(10);

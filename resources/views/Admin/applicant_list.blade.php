@@ -188,6 +188,18 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="form-group-material col-sm-3 "style="margin-top: 23px;">
+                                            <div class='input-group-material'>
+                                                <input autocomplete="off" type='text' id='serial_number' name="serial_number"
+                                                       value="{{app('request')->input('serial_number')}}" class="input-material"/>
+                                                <label for="serial_number" class="label-material" style="left: 17px">Search by Serial Number of Test</label>
+                                            </div>
+                                            @if ($errors->has('serial_number'))
+                                                <span class="help-block">
+                                            <strong>{{ $errors->first('serial_number') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
                                         <div class="col-sm-1 " style="margin-top: 27px;">
                                             <button type="submit" class="btn btn-outline-success">Search</button>
                                         </div>
@@ -1045,7 +1057,21 @@
                                     @endif
                                 </div>
                             </div>
-
+                            <div class="col-md-3">
+                                <div class="form-group-material">
+                                    <div class='input-group-material'>
+                                        <input autocomplete="off" type='text' id='serial_number' name="serial_number" value=""
+                                               class="input-material"/>
+                
+                                        <label for="marks" class="label-material">Serial Number</label>
+                                    </div>
+                                    @if ($errors->has('serial_number'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('serial_number') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     
                         <div class="form-group row">

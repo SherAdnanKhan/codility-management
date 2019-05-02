@@ -30,38 +30,38 @@
                                     </div>
 
                                 </div>
-                                <div class="col-lg-8 ">
-                                    <form class="form-horizontal form-inline" id ="searchByCategory" method="POST" action="{{route('searchQuestionByCategory')}}" enctype="multipart/form-data">
-                                        {{ csrf_field() }}
-                                        <div class="form-group-material">
-                                            
-                                            <select name="category" id="category" class="form-control filters ">
-                                                <option value="">Search By Category Type</option>
-                                                @php
-                                                    $categories=\App\QNACategory::all()->sortByDesc('id');
-                                                @endphp
-                                                @if(isset($categories))
-                                                    @foreach($categories as $category)
-                                                        <option value="{{$category->id}}">{{$category->name}}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-            
-                                            @if ($errors->has('category'))
-                                                <span class="help-block">
-                                        <strong>{{ $errors->first('category') }}</strong>
-                                    </span>
-                                            @endif
-                                        </div>
-                                        <div class="form-group-material input-group input-group-md searchByText">
-                                            <input class="form-control" placeholder="Search by Text" id="text" type="text" name="text">
-                                            <div class="input-group-append">
-                                                <button type="submit" class="print btn btn-outline-success ">Search</button>
-                                            </div>
-                                        </div>
-                                    </form>
+{{--                                <div class="col-lg-8 ">--}}
+{{--                                    <form class="form-horizontal form-inline" id ="searchByCategory" method="GET" action="{{route('searchQuestionByCategory')}}" enctype="multipart/form-data">--}}
+{{--                                        {{ csrf_field() }}--}}
+{{--                                        <div class="form-group-material">--}}
+{{--                                            --}}
+{{--                                            <select name="category" id="category" class="form-control filters ">--}}
+{{--                                                <option value="">Search By Category Type</option>--}}
+{{--                                                @php--}}
+{{--                                                    $categories=\App\QNACategory::all()->sortByDesc('id');--}}
+{{--                                                @endphp--}}
+{{--                                                @if(isset($categories))--}}
+{{--                                                    @foreach($categories as $category)--}}
+{{--                                                        <option value="{{$category->id}}"{{\Request::get('category')==$category->id?'selected ':''}}>{{$category->name}}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                @endif--}}
+{{--                                            </select>--}}
+{{--            --}}
+{{--                                            @if ($errors->has('category'))--}}
+{{--                                                <span class="help-block">--}}
+{{--                                        <strong>{{ $errors->first('category') }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                            @endif--}}
+{{--                                        </div>--}}
+{{--                                        <div class="form-group-material input-group input-group-md searchByText">--}}
+{{--                                            <input class="form-control" placeholder="Search by Text" id="text" type="text" name="text" value="{{\Request::get('text')?\Request::get('text'):''}}">--}}
+{{--                                            <div class="input-group-append">--}}
+{{--                                                <button type="submit" class="print btn btn-outline-success ">Search</button>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </form>--}}
 
-                                </div>
+{{--                                </div>--}}
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -84,11 +84,9 @@
                                 <tr>
                                     <th>Question No</th>
                                     <th>Category Name</th>
-                                    <th>Approved</th>
-                                    <th>Variation type </th>
                                     <th>Question</th>
                                     <th>Answer</th>
-                                    <th>Action</th>
+                                    
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -97,8 +95,6 @@
                                         <tr>
                                             <td>{{$question_answer->id}}</td>
                                             <td>{{$question_answer->category?$question_answer->category->name:'Without Category'}}</td>
-                                            <td>{{$question_answer->proved?'Yes':'No'}}</td>
-                                            <td>{{$question_answer->variation}}</td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->question}}</textarea></td>
                                             <td><textarea class="form-control" cols="40" disabled="disabled">{{$question_answer->answer}}</textarea></td>
                         
