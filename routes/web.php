@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::post('/task/project/print', 'ProjectTaskController@print_report')->name('project.print');
     Route::get('/all/admins', 'UserController@indexAdmin')->name('admin.list');
     Route::get('/view/leave/compensatory', 'AttendanceController@compensatory')->name('view.admin.report.compensatory');
+    Route::resource('/email_template', 'EmailTemplateController');
 
 
 });
@@ -87,7 +88,11 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::get('/print', 'QuestionAnswerController@printView')->name('print.view');
     Route::post('/print', 'QuestionAnswerController@printCreate')->name('print.create');
     Route::resource('/call_status', 'CallStatusController');
-    Route::resource('/email_template', 'EmailTemplateController');
+    Route::get('/select/email/template/{id}', 'EmailTemplateController@select_template')->name('select_template');
+    Route::get('/email_template/{id}', 'EmailTemplateController@show')->name('email_template.show');
+
+        Route::post('/send/email/interview', 'EmailTemplateController@sendEmail')->name('email_template.send_email');
+    Route::post('/send/customized/email/interview', 'EmailTemplateController@sendCustomizedEmail')->name('email_template.send_customized_email');
 
 });
 Route::group(['middleware' => ['firstLogin', 'auth', 'employee']], function () {
