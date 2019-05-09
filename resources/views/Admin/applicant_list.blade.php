@@ -292,7 +292,8 @@
                                     
                                     <a title="Add Test Detail" data-target="#addTest" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-file"></i></a>
                                     <a title="Add Call Detail" data-target="#addCall" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id_call"><i class="fa fa-phone"></i></a>
-                                </td>
+    
+                                    <a class="applicant_id" title="Send Email" href='{{url("/select/email/template/{$applicant->id}")}}'><i class='fa fa-paper-plane'></i></a></td>
                             </tr>
                            
                         @endforeach

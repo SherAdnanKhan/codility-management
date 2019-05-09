@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-<title> {{config('app.name')}} | Manage Leaves</title>
+<title> {{config('app.name')}} | Manage Email Templates</title>
 @endsection
 @section('page_styles')
     

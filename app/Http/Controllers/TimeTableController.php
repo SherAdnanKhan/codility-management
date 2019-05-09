@@ -52,11 +52,19 @@ class TimeTableController extends Controller
         $time = TimeTable::whereId(1)->first();
         $get_start_time = Carbon::parse($time->start_time )->timestamp;
         $get_end_time   =Carbon::parse($time->end_time )->timestamp;
-        $user =User::where(['checkInTime'=>$get_start_time,'checkOutTime'=>$get_end_time])->update([
-            'checkInTime' => $start_time,
-            'checkOutTime' => $end_time,
-            'breakAllowed' => $non_working_hour,
-        ]);
+        $users =User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
+        $check_start_time=Carbon::parse($time->start_time)->format('H:i');
+        $check_end_time=Carbon::parse($time->end_time)->format('H:i');
+        foreach ($users as $user){
+            if ($check_start_time == Carbon::parse($user->checkInTime)->format('H:i') && $check_end_time == Carbon::parse($user->checkOutTime)->format('H:i')){
+
+                $user->update([
+                    'checkInTime'           => Carbon::parse($request->start_time )->timestamp,
+                    'checkOutTime'          => Carbon::parse($request->end_time )->timestamp,
+                    'breakAllowed'          => Carbon::parse($request->non_working_hour)->timestamp
+                ]);
+            }
+        }
         $time_table= TimeTable::whereId(1)->update([
             'start_time'         =>$start_time,
             'end_time'           =>$end_time,

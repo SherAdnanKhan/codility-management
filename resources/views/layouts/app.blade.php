@@ -85,7 +85,8 @@
                             @endif
                     @endif
                 @if (\Auth::user()->isAdmin())
-                    <li><a href="#exampledropdownDropdown" <?php
+                        <li {{\Route::current()->getName() == 'email_template.index'?"class=active ":''}}><a href="{{route('email_template.index')}}"><i class="fa fa-file"></i>Email Templates</a></li>
+                        <li><a href="#exampledropdownDropdown" <?php
                         if (\Route::current()->getName() =='profile.index' || \Route::current()->getName() == 'register' || \Route::current()->getName() == 'register.admin.form' || \Route::current()->getName()== 'admin.list'){
 
                             echo "aria-expanded='true'";
@@ -155,7 +156,6 @@
                             </ul>
                         </li>
                         <li {{\Route::current()->getName() == 'project.index'?"class=active ":''}}><a href="{{route('project.index')}}"><i class="fa fa-file"></i>Projects</a></li>
-                        <li {{\Route::current()->getName() == 'email_template.index'?"class=active ":''}}><a href="{{route('email_template.index')}}"><i class="fa fa-file"></i>Email Templates</a></li>
 
                     @endif
                     @if (\Auth::user()->checkHr() || \Auth::user()->isAdmin())

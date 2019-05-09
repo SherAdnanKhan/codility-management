@@ -12,7 +12,7 @@ class Helper extends User
             $all_admins = 'atta.ur.rehman@codility.co';
         }
         else{
-            $all_admins=array('amir@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co');
+            $all_admins=array('amir@codility.co','ejaz@codility.co','khurram@codility.co','hussnain.raza@codility.co','aqsa.ch@codility.co');
         }
         return $all_admins;
     }
@@ -67,6 +67,29 @@ class Helper extends User
         $per_month_leaves = $total_allowed_leaves / $total_months ;
 
         return substr($per_month_leaves,0,5);
+    }
+    public static function get_string_between($string, $start, $end){
+//        $string = " ".$string;
+
+        $ini = strpos($string,$start);
+        if ($ini == 0) return false;
+        $ini += strlen($start);
+        $len = strpos($string,$end,$ini) - $ini;
+        return substr($string,$ini,$len);
+    }
+//    public static function replace_between($string, $start, $end, $replacement) {
+//        $ini = strpos($string,$start);
+//        if ($ini == 0) return false;
+//        $ini += strlen($start);
+//        $left_content= substr($string,0,$ini-1 );
+//        $len = strpos($string,$end,$ini) - $ini;
+//        $right_content= substr($string,$ini+$len+1,strlen($string));
+//        return $left_content .$replacement .$right_content;
+//    }
+    public static function replace_between($string, $start, $end, $replacement,$orignal) {
+        $word=$start.$orignal.$end;
+        $get_string=str_replace($word, $replacement,$string);
+        return $get_string;
     }
 
 }

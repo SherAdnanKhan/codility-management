@@ -11,4 +11,11 @@ class EmailTemplate extends Model
         'body',
         'footer'
     ];
+    public function getHeaderAttribute($value){
+        if ($value == null){
+            return 'Email To Applicant';
+        }else{
+            return $value;
+        }
+    }
 }
