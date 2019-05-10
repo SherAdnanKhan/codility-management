@@ -729,7 +729,7 @@
                                         &nbsp;
                         
                                         @if(isset($interview_check))
-                                            @if($interview_check->sub_statusd)
+                                            @if($interview_check->sub_status)
                                                 {{--<a title="Edit Interview status" data-target="#editInterview" data-toggle="modal" href='#' data-value='{{$applicant->id}}' class="applicant_id"><i class="fa fa-edit"></i></a>--}}
                                                 <a title="Edit Interview status" data-value='{{$applicant->id}}' class="edit_link" href="javascript://">
                                                     <span class="fa fa-edit"></span>

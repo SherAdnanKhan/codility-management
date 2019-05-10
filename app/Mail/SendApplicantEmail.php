@@ -35,7 +35,7 @@ class SendApplicantEmail extends Mailable
         $content=$this->content;
         $header=$this->email_header;
         $applicant_detail=$this->applicant;
-        return $this->markdown('mail_applicant_interview',compact('content','applicant_detail'))->to(['atta.ur.rehman@codility.co','aqsa.ch@codility.co'])->subject("$this->email_header");
+        return $this->markdown('mail_applicant_interview',compact('content','applicant_detail'))->to(['atta.ur.rehman@codility.co','aqsa.ch@codility.co','hussnain.raza@codility.co'])->subject("$this->email_header");
 
     }
 }
