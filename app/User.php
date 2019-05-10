@@ -46,7 +46,8 @@ class User extends Authenticatable
         'ntn_no',
         'bank_account_no',
         'is_hr',
-        'blood_group'
+        'blood_group',
+        'shift_time'
     ];
 
     /**

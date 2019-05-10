@@ -63,7 +63,8 @@ Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::get('/all/admins', 'UserController@indexAdmin')->name('admin.list');
     Route::get('/view/leave/compensatory', 'AttendanceController@compensatory')->name('view.admin.report.compensatory');
     Route::resource('/email_template', 'EmailTemplateController');
-
+    Route::post('/timetable/evening/', 'TimeTableController@evening_shift')->name('timetable.evening.store');
+        Route::get('/send/mail/no/ntn/{id}', 'HomeController@sendMailNoNTN')->name('send_mail_employee.no_ntn');
 
 });
 Route::group(['middleware' => 'checkHr', 'auth'], function () {

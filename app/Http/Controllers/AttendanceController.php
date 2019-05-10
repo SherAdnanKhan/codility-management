@@ -89,7 +89,7 @@ class AttendanceController extends Controller
         $break_interval = $request->break_interval ? Carbon::parse($request->break_interval)->timestamp : false;
         $user = Auth::user()->isEmployee() ? User::findOrFail(Auth::id()) : User::findOrFail($request->employee);
         $time_of_attendance=Carbon::parse($request->check_in_time)->startOfDay();
-        $user_time=Carbon::parse($user->checkInTime)->addMinutes(15)->format('H:i');
+        $user_time=Carbon::parse($user->checkInTime)->addMinutes(15)->format('h:i');
 //        dd($user_time);
         $time_explode=explode(':',$user_time);
         $default_time = $time_of_attendance->addHours($time_explode[0])->addMinutes($time_explode[1]);
@@ -528,7 +528,7 @@ class AttendanceController extends Controller
 
                 $default_check_in_time = Carbon::parse($user_attendance->checkInTime);
                 $default_check_out_time = Carbon::parse($user_attendance->checkOutTime);
-                $break_time = Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("h:i");
+                $break_time = Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("H:i");
                 $explode_break_time = explode(':', $break_time);
                 $total_break_minutes = ($explode_break_time[0] * 60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
@@ -631,7 +631,7 @@ class AttendanceController extends Controller
 
                 $default_check_in_time = Carbon::parse($user_attendance->checkInTime);
                 $default_check_out_time = Carbon::parse($user_attendance->checkOutTime);
-                $break_time = Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("h:i");
+                $break_time = Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("H:i");
                 $explode_break_time = explode(':', $break_time);
                 $total_break_minutes = ($explode_break_time[0] * 60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;

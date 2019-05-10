@@ -112,7 +112,7 @@ class FridayReport extends Command
 
                 $default_check_in_time  = Carbon::parse($user_attendance->checkInTime);
                 $default_check_out_time = Carbon::parse($user_attendance->checkOutTime);
-                $break_time= Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("h:i");
+                $break_time= Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("H:i");
                 $explode_break_time = explode(':', $break_time);
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
@@ -209,7 +209,7 @@ class FridayReport extends Command
 
                 $default_check_in_time  = Carbon::parse($user_attendance->checkInTime);
                 $default_check_out_time = Carbon::parse($user_attendance->checkOutTime);
-                $break_time= Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("h:i");
+                $break_time= Carbon::createFromTimestamp($user_attendance->breakAllowed)->format("H:i");
                 $explode_break_time = explode(':', $break_time);
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes ;

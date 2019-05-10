@@ -9,7 +9,7 @@ class TimeTable extends Model
 {
     protected $fillable =[
         'start_time', 'end_time', 'working_hour', 'non_working_hour', 'monday', 'tuesday', 'wednesday',
-        'thursday', 'friday', 'saturday','sunday'
+        'thursday', 'friday', 'saturday','sunday',
     ];
 
 
@@ -28,6 +28,6 @@ class TimeTable extends Model
     }
     public function getNonWorkingHourAttribute($value)
     {
-        return date('h:i',$value);
+        return date('H:i',$value);
     }
 }
