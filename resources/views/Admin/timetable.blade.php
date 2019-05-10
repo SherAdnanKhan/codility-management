@@ -60,7 +60,7 @@
                         </div>
                         <div class="form-group-material">
                             <div class='input-group-material date' >
-                                <input autocomplete="off" type='text' id='non_working_hour' value="{{$time->non_working_hour}}" name ="non_working_hour" class="input-material" />
+                                <input autocomplete="off" type='text' id='non_working_hour'  name ="non_working_hour" class="input-material" />
                                 @if ($errors->has('non_working_hour'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('non_working_hour') }}</strong>
@@ -115,9 +115,10 @@
 <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
 <script type="text/javascript">
     $(function () {
+        $('#non_working_hour').datetimepicker({format:'H:mm'})
         $('#start_time').datetimepicker({format: 'LT', format: 'hh:mm A'});
         $('#working_hour').datetimepicker({format: 'LT', format: 'hh:mm'});
-        $('#non_working_hour').datetimepicker({format: 'LT', format: 'hh:ss'});
+
         $('#end_time').datetimepicker({format: 'LT', format: 'hh:mm A', useCurrent: false });
         $("#start_time").on("dp.change", function (e) {
             $('#end_time').data("DateTimePicker").minDate(e.date);
