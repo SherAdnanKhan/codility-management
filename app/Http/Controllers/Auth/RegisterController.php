@@ -110,8 +110,8 @@ class RegisterController extends Controller
             'ntn_no'                => $data['ntn']?$data['ntn']:null,
             'bank_account_no'       => $data['account_no']?$data['account_no']:null,
             'blood_group'           => $data['blood_group']?$data['blood_group']:null,
-            'allotted_leaves'       => 17
-
+            'allotted_leaves'       => 17,
+            'shift_time'            => 1
 
         ]);
         $role = Role::findOrFail(1);
