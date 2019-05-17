@@ -43,6 +43,7 @@
                                     <th>Address</th>
                                     <th>Qualification</th>
                                     <th>Phone Number</th>
+                                    <th>Shift</th>
                                     <th>Action</th>
 
                                 </tr>
@@ -51,7 +52,6 @@
                                 @if($users)
                                     @foreach($users as $user)
                                         <tr>
-
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->designation?$user->designation: 'Administrator'}}</td>
@@ -59,7 +59,9 @@
                                         <td>{{$user->address?$user->address:'Codility'}}</td>
                                         <td>{{$user->qualification?$user->qualification :''}}</td>
                                         <td>{{$user->phoneNumber?$user->phoneNumber:'Codility Number'}}</td>
-                                        <td class="text-primary lead">
+                                        <td>{{$user->shift_time != null?($user->shift_time == 1?'Morning':'Evening' ):'Random'}}</td>
+
+                                            <td class="text-primary lead">
                                             <a href="{{route('profile.edit',$user->id)}}"><span class="fa fa-edit"></span></a>
                                             <form class="form-horizontal" method="POST" action = "{{ route('profile.destroy', $user->id) }}"  enctype="multipart/form-data" >
                                                 {{ method_field('DELETE') }}

@@ -38,11 +38,12 @@ class QuestionAnswerController extends Controller
         ]);
 
         $all_categories=$request->print;
+        $all_quantities=$request->quant;
 
         $category=QNACategory::whereIn('id',$request->print)->get();
-        $pdf=PDF::loadView('QNA.Q&A.view',compact('category','all_categories'));
+        $pdf=PDF::loadView('QNA.Q&A.view',compact('category','all_categories','all_quantities'));
         return $pdf->stream('CodilityTest.pdf');
-        return view('QNA.Q&A.print',compact('category','all_categories'));
+        return view('QNA.Q&A.print',compact('category','all_categories','all_quantities'));
 
 
     }
