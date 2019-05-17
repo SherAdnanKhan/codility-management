@@ -130,8 +130,12 @@
 
                                         @foreach($category as $get_category)
                                     <label class="checkbox-inline">
-                                        <input id="{{$get_category->name}}" name="print[]"  type="checkbox" value="{{$get_category->id}}"> {{$get_category->name}}
+                                        @if($get_category->name == 'Algorithms' || $get_category->name == 'Javascript' || $get_category->name == 'Database')
+                                            <input id="{{$get_category->name}}" name="print[]"  type="checkbox" value="{{$get_category->id}}" checked > {{$get_category->name}}
 
+                                            @else
+                                        <input id="{{$get_category->name}}" name="print[]"  type="checkbox" value="{{$get_category->id}}"> {{$get_category->name}}
+                                            @endif
                                     </label>
                                         <div class="input-group">
                                                 <span class="input-group-btn">
@@ -170,7 +174,9 @@
 @endsection
 @section('page_scripts')
     <script>
-
+        $('input[name="print"]:checked').each(function() {
+            alert(this.value);
+        });
         $('.btn-number').click(function(e){
             e.preventDefault();
 
