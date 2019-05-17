@@ -23,9 +23,7 @@
             margin-top: 1cm;
             margin-bottom: 5cm;
         }
-        htmlpagefooter{
-
-        }
+        .dblUnderlined { border-bottom: 3px double; text-align: center }
     </style>
 </head>
 <body>
@@ -37,7 +35,7 @@
     <tr>
         <td width="20%">Candidate Name:</td>
         <td width="30%">&nbsp;</td>
-        <td width="20%">Date Of Interview:</td>
+        <td width="20%">Date Of Interview:  </td>
         <td width="30%">&nbsp;</td>
 
     </tr>
@@ -61,6 +59,18 @@
     <tr>
         <td width="50%">Expected Salary: &nbsp;</td>
         <td width="50%">When you Join: &nbsp;</td>
+
+    </tr>
+</table>
+<table cellpadding="5" cellspacing="0" border="1">
+    <tr>
+        <td width="20%">Interview For: &nbsp;</td>
+        <td width="80%"> &nbsp;</td>
+
+    </tr>
+    <tr>
+        <td width="20%">Selected For: &nbsp;</td>
+        <td width="80%"> &nbsp;</td>
 
     </tr>
 </table>
@@ -123,7 +133,7 @@
     </table>
 </div>
 <br>
-<br>
+
 <table cellpadding="5" cellspacing="0" border="1">
     <tr>
         <td width="40%">Remarks By &nbsp;</td>
@@ -158,16 +168,16 @@
 </table>
 <br>
 <br>
-<br>
+
 
 @foreach($items_lists as $item_name)
     @php
         $question_category_name=\App\QNACategory::whereId($item_name)->first();
     @endphp
 
-    <h3> {{$question_category_name->name}}</h3>
+    <h3 class="dblUnderlined"> {{$question_category_name->name}}</h3>
     <br>
-    <br>
+
     @php
         $split_question=array_chunk($questions_lists ,3 ,true)
     @endphp
