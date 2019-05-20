@@ -30,22 +30,17 @@
 <p style="margin-left: 68%;"> Serial Number : @php echo (uniqid()); @endphp</p>
 <img style="height:100px;width: 100px; float: left; margin: -30px 40px 0px 0px;" class="img-responsive " src="file:///<?= base_path()?>/public/images/favicon.png" alt="{{env('APP_NAME')}}">
 <h2 style="float: right" > INTERVIEW TEST</h2>
+<h5>To be fill by Candidate :</h5>
 
 <table cellpadding="5" cellspacing="0" border="1">
     <tr>
         <td width="20%">Candidate Name:</td>
         <td width="30%">&nbsp;</td>
-        <td width="20%">Date Of Interview:  </td>
+        <td width="20%">Job Post:  </td>
         <td width="30%">&nbsp;</td>
 
     </tr>
-    <tr>
-        <td>Test start & end time:</td>
-        <td>&nbsp;</td>
-        <td>Test Checked By:</td>
-        <td>&nbsp;</td>
 
-    </tr>
 
 
 </table>
@@ -62,17 +57,18 @@
 
     </tr>
 </table>
+<br>
+<h5>For Office use only :</h5>
 <table cellpadding="5" cellspacing="0" border="1">
-    <tr>
-        <td width="20%">Interview For: &nbsp;</td>
-        <td width="80%"> &nbsp;</td>
 
-    </tr>
     <tr>
-        <td width="20%">Selected For: &nbsp;</td>
-        <td width="80%"> &nbsp;</td>
 
+        <td width="20%">Test start & end time:</td>
+        <td width="30%">&nbsp;</td>
+        <td width="20%">Test Checked By:  </td>
+        <td width="30%">&nbsp;</td>
     </tr>
+
 </table>
 <br>
 @php
