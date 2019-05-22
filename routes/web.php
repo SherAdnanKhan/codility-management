@@ -92,7 +92,7 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::get('/select/email/template/{id}', 'EmailTemplateController@select_template')->name('select_template');
     Route::get('/email_template/{id}', 'EmailTemplateController@show')->name('email_template.show');
 
-        Route::post('/send/email/interview', 'EmailTemplateController@sendEmail')->name('email_template.send_email');
+        Route::patch('/send/email/interview/{id}', 'EmailTemplateController@sendEmail')->name('email_template.send_email');
     Route::post('/send/customized/email/interview', 'EmailTemplateController@sendCustomizedEmail')->name('email_template.send_customized_email');
 
 });

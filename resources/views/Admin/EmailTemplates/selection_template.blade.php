@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-<title> {{config('app.name')}} | Manage Leaves</title>
+<title> {{config('app.name')}} | Email Templates</title>
 @endsection
 @section('page_styles')
     
@@ -14,10 +14,18 @@
             margin-right: 30px;
             margin-left: 50px;
             padding: 20px;
+            margin-top: 20px;
             
         }
         b{
             font-size: 20px;
+        }
+        .send_button{
+            background: transparent;
+            border: transparent;
+            color: white;
+            margin: 15px 0 0 0;
+            float: right;
         }
     </style>
 @endsection
@@ -33,11 +41,11 @@
         <div class="col-lg-12" >
             <div class="card">
                 <div class="card-header">
-                   <h4>Select Email Template </h4>
+                   <h4>Email Templates </h4>
                 </div>
                  @if(isset($email_templates))
      
-                 <form  action="{{route('email_template.send_email')}}" method="POST" enctype="multipart/form-data">
+                 {{--<form  action="{{route('email_template.send_email')}}" method="POST" enctype="multipart/form-data">--}}
                  
                 <div class="card-body">
                     <h5>Variables for adding data in Email Body</h5>
@@ -46,28 +54,25 @@
                     <p style=""> <i>5:</i> <b>$</b> Address <b>$</b> for adding an Address </p>
 
                     <div class="row">
-                            
                                 {{csrf_field()}}
                             @foreach($email_templates as $email_template)
                         <div class="col-md-5 gradiant_custom">
-                             <a title="Edit Email Template"  href='#' data-value='{{$email_template->id}}' class="applicant_id"><i class="fa fa-edit"></i></a>
-     
-                             <input type="radio" name="selected_template" class="radio" value="{{$email_template->id}}">
-                            
-
-                            <textarea class="form-control" disabled  cols="40" rows="2" name="email_header"  style="background-color: #ffffff !important;">{{$email_template->header}}</textarea>
+                            <form  action="{{route('email_template.send_email',$email_template->id)}}" method="POST" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                {{ method_field('PATCH') }}
+                            <textarea class="form-control"   cols="40" rows="2" name="email_header"  style="background-color: #ffffff !important;">{{$email_template->header}}</textarea>
                             <br>
-                            <textarea class="form-control"  disabled cols="40" rows="4"  name="emai_body" style="background-color: #ffffff !important;">{{$email_template->body}}</textarea>
+                            <textarea class="form-control"   cols="40" rows="4"  name="email_body" style="background-color: #ffffff !important;">{{$email_template->body}}</textarea>
+                                <button type="submit" class="fa fa-paper-plane send_button"> Send Email</button>
+
+                            </form>
                         </div>
                             
                             @endforeach
-                        <br><br><br>
-                        <div class="col-md-1">
-                        <button type="submit" class="btn btn-outline-success" style="margin-top: 15px;"> <i class="fa fa-send"></i>Send Email</button>
-                        </div>
+
                         </div>
                 </div>
-                 </form>
+                 {{--</form>--}}
                  @endif
 
             </div>

@@ -155,7 +155,7 @@ class TimeTableController extends Controller
         $end_time = Carbon::parse($request->evening_end_time )->timestamp;
         $working_hour = Carbon::parse($request->evening_working_hour )->timestamp;
         $non_working_hour = Carbon::parse($request->evening_non_working_hour)->timestamp;
-        $time = TimeTable::whereId(1)->first();
+        $time = TimeTable::whereId(2)->first();
         $get_start_time = Carbon::parse($time->start_time )->timestamp;
         $get_end_time   =Carbon::parse($time->end_time )->timestamp;
         $users =User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
