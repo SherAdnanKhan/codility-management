@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Helper\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -30,6 +31,6 @@ class MailEmployeeNoNtn extends Mailable
     public function build()
     {
         $employee_detail=$this->employee_detail;
-        return $this->markdown('mail_to_employee_no_ntn',compact('employee_detail'))->to($this->employee_detail->email)->subject('Codility Alert !');
+        return $this->markdown('mail_to_employee_no_ntn',compact('employee_detail'))->to($this->employee_detail->email)->cc(Helper::all_admins())->subject('Codility Alert !');
     }
 }
