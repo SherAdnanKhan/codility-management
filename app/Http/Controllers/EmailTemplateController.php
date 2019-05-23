@@ -109,7 +109,6 @@ class EmailTemplateController extends Controller
         //
     }
     public function select_template($id){
-
         if(\Session::get('applicant_id') != null){
             \Session::forget('applicant_id');
         }
@@ -119,16 +118,15 @@ class EmailTemplateController extends Controller
         if (\Session::get('previous_url_applicant') == null){
             \Session::put('previous_url_applicant',url()->previous());
         }
+        $email=$_GET['email']?$_GET['email']:'Unknown Applicant';
         $email_templates=EmailTemplate::all();
-        return view('Admin.EmailTemplates.selection_template',compact('email_templates'));
+        return view('Admin.EmailTemplates.selection_template',compact('email_templates','email'));
     }
     public function sendEmail(Request $request ,$id){
 
-        $user_id=\Session::get('applicant_id');
-//        dd($request->email_body);
+        $user_id=$request->email;
         if($user_id){
-            $get_applicant=Applicants::whereId($user_id)->first();
-
+            $get_applicant=Applicants::whereEmail($user_id)->first();
             $get_date = Helper::get_string_between($request->email_body,'@','@');
             $get_time = Helper::get_string_between($request->email_body,'*','*');
             $get_job_title=Helper::get_string_between($request->email_body,'#','#');

@@ -21,6 +21,11 @@
                 width: 100% !important;
             }
         }
+        .heading_{
+            text-align: left;
+            padding: 10px;
+            padding-bottom: 2px;
+        }
     </style>
 
     <table class="wrapper" width="100%" cellpadding="0" cellspacing="0">

@@ -89,7 +89,7 @@ Route::group(['middleware' => 'checkHr', 'auth'], function () {
     Route::get('/print', 'QuestionAnswerController@printView')->name('print.view');
     Route::post('/print', 'QuestionAnswerController@printCreate')->name('print.create');
     Route::resource('/call_status', 'CallStatusController');
-    Route::get('/select/email/template/{id}', 'EmailTemplateController@select_template')->name('select_template');
+    Route::get('/select/email/template/{id}/', 'EmailTemplateController@select_template')->name('select_template');
     Route::get('/email_template/{id}', 'EmailTemplateController@show')->name('email_template.show');
 
         Route::patch('/send/email/interview/{id}', 'EmailTemplateController@sendEmail')->name('email_template.send_email');

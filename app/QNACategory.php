@@ -12,4 +12,7 @@ class QNACategory extends Model
     public function qNA(){
         return $this->hasMany('App\QuestionAnswer','category_id','id');
     }
+    public function approvedQuestions(){
+        return $this->hasMany('App\QuestionAnswer','category_id','id')->where('proved',true)->count();
+    }
 }
