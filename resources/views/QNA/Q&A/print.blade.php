@@ -143,7 +143,8 @@
                                                         <span class="fa fa-minus"></span>
                                                     </a>
                                                 </span>
-                                            <input type="text" name="quant[{{$get_category->id}}]" class="form-control input-number" value="3" min="3" max="10">
+
+                                            <input type="text" name="quant[{{$get_category->id}}]" class="form-control input-number" value="{{$get_category->approvedQuestions() >= 3 ?3:$get_category->approvedQuestions()}}" min="{{$get_category->approvedQuestions() >= 3 ?3:0}}" max="{{$get_category->approvedQuestions()}}">
                                             <span class="input-group-btn">
                                                     <a type="button" class="btn btn-outline-primary btn-number" data-type="plus" data-field="quant[{{$get_category->id}}]" >
                                                       <span class="fa fa-plus"></span>

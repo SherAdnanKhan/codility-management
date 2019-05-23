@@ -42,6 +42,9 @@
             <div class="card">
                 <div class="card-header">
                    <h4>Email Templates </h4>
+                    @if(isset($email))
+                        <p>You are sending email To <b>{{$email}}</b> From <b>{{config('mail.from.address')}}</b></p>
+                    @endif
                 </div>
                  @if(isset($email_templates))
      
@@ -60,6 +63,7 @@
                             <form  action="{{route('email_template.send_email',$email_template->id)}}" method="POST" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 {{ method_field('PATCH') }}
+                                <input type="hidden" value="{{$email}}" name="email">
                             <textarea class="form-control"   cols="40" rows="2" name="email_header"  style="background-color: #ffffff !important;">{{$email_template->header}}</textarea>
                             <br>
                             <textarea class="form-control"   cols="40" rows="4"  name="email_body" style="background-color: #ffffff !important;">{{$email_template->body}}</textarea>

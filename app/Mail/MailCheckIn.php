@@ -66,6 +66,6 @@ class MailCheckIn extends Mailable
 
         }
         $to = Helper::all_admins();
-        return $this->markdown('mail_checkin',compact('users' ,'get_users_collection','uninform'))->to($to)->subject("Late Employee ".Carbon::now()->format('d-m-Y h:i'));
+        return $this->markdown('mail_checkin',compact('users' ,'get_users_collection','uninform'))->to($to)->subject("Employees Attendance Status ".Carbon::now()->format('d-m-Y h:i'));
     }
 }
