@@ -540,7 +540,7 @@ class AttendanceController extends Controller
                     $this->days=Carbon::parse($request->month . '/1')->endOfMonth()->day;
 
                 }
-//                dd($this->days);
+
                 $workdays = array();
                 $type = CAL_GREGORIAN;
                 $month =Carbon::parse($request->month . '/1')->endOfMonth()->month; // Month ID, 1 through to 12.
