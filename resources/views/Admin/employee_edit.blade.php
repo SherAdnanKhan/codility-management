@@ -111,6 +111,28 @@
                                     </div>
                                 </div>
                                     <div class="form-group-material">
+                                        <div class='input-group-material date' >
+                                            <input autocomplete="off" type='text' id='non_working_hour'  name ="non_working_hour" class="input-material" value="{{\Carbon\Carbon::createFromTimestamp($user->breakAllowed)->format('H:i')}}"/>
+                                            @if ($errors->has('non_working_hour'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('non_working_hour') }}</strong>
+                                    </span>
+                                            @endif
+                                            <label for="non_working_hour" class="label-material">Break Interval</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-material">
+                                        <div class='input-group-material ' >
+                                            <input autocomplete="off" type='number' id='workingDays'  name ="workingDays" class="input-material" value="{{$user->workingDays}}"/>
+                                            @if ($errors->has('workingDays'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('workingDays') }}</strong>
+                                    </span>
+                                            @endif
+                                            <label for="non_working_hour" class="label-material">Working Days</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-material">
 
                                         <input autocomplete="off" type='number' id="opening_balance" name="opening_balance"   value="{{$user->opening_balance?$user->opening_balance:''}}" class="input-material" />
                                         @if ($errors->has('opening_balance'))
@@ -214,6 +236,7 @@
                 $('#check_in_time').data("DateTimePicker").maxDate(e.date);
             });
         });
+        $('#non_working_hour').datetimepicker({format:'H:mm'})
         $('#button_clear').click(function(){
             $('#employee input[type="text"]').val('');
             $('#employee input[type="email"]').val('');

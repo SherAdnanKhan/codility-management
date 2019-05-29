@@ -15,6 +15,7 @@ class FridayReport extends Command
 {
     public $total_days_form;
     public $days;
+    public $public_holiday;
     /**
      * The name and signature of the console command.
      *
@@ -48,10 +49,19 @@ class FridayReport extends Command
     {
         $emails=array();
         $names=array();
-        $start_date=Carbon::now()->startOfMonth()->timestamp;
-        $end_date=Carbon::now()->timestamp;
+        $current_month=Carbon::now()->month;
+        $previous_month=Carbon::now()->subDays(6)->month;
+        if($current_month != $previous_month){
+            $start_date_carbon=Carbon::parse($previous_month . '/1');
+            $end_date_carbon=Carbon::parse($previous_month . '/1')->endOfMonth();
+        }else{
+            $start_date_carbon=Carbon::now();
+            $end_date_carbon=Carbon::now()->subDays(1);
+        }
+
         //Get All Employee
         $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
+
         foreach ($users as $user_attendance){
             $total_minutes = 0;
             $sum_lates=0;
@@ -60,8 +70,10 @@ class FridayReport extends Command
             $absent=0;
             $names=array('name'=>$user_attendance->name);
             $collection=collect($names);
-            $check_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[Carbon::now()->startOfMonth()->timestamp,Carbon::now()->timestamp])->first();
-            $get_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[Carbon::now()->startOfMonth()->timestamp,Carbon::now()->timestamp])->orderBy('id','desc')->get();
+            $sub_of_public_holiday=0;
+            $this->public_holiday=0;
+            $check_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[$start_date_carbon->startOfMonth()->timestamp,$end_date_carbon->timestamp])->first();
+            $get_attendance=$user_attendance->attendance()->whereBetween('check_in_time',[$start_date_carbon->startOfMonth()->timestamp,$end_date_carbon->timestamp])->orderBy('id','desc')->get();
             //Check employee marked attendance at least one in a  whole week
             if ($check_attendance != null){
                 foreach ($get_attendance as $attendance){
@@ -87,6 +99,15 @@ class FridayReport extends Command
                                 $informed_late+=1;
                             }
                         }
+                        $inform_get =$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp);
+                        if ($inform_get != null){
+                            if ($attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->inform_type == "LEAVE")
+                            {
+                                $public_holiday_get=$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->public_holiday;
+                                $this->public_holiday+=$public_holiday_get== true?1:0;
+                            }
+
+                        }
                         //check employee if have schedule task during their attendance check in and checkout time
                         if($attendance->task_friday(Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,Carbon::parse($attendance->check_out_time)->timestamp)->first() != null)
                         {
@@ -103,8 +124,11 @@ class FridayReport extends Command
                         }
                     }
                 }
+
+                    $sub_of_public_holiday = $sum_leaves - $this->public_holiday;
+
                 $concatinate=$collection->put('late',$sum_lates);
-                $concatinate=$collection->put('leave',$sum_leaves);
+                $concatinate=$collection->put('leave',$sub_of_public_holiday);
                 $concatinate=$collection->put('informed_late',$informed_late);
                 $concatinate=$collection->put('absent',$absent);
                 $concatinate=$collection->put('email',$user_attendance->email);
@@ -116,24 +140,26 @@ class FridayReport extends Command
                 $explode_break_time = explode(':', $break_time);
                 $total_break_minutes=($explode_break_time[0]*60) + ($explode_break_time[1]);
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
+
                 //edit
 //                $get_month_dates = Carbon::now()->endOfMonth()->isSunday();
 //                if ($get_month_dates == true){
 //                    $this->days=Carbon::now()->endOfMonth()->day - 2;
 //                }else{
+//                }else{
 //                    $this->days=Carbon::now()->day - 1 ;
 //
 //                }
 
-                $this->days=Carbon::now()->day - 1 ;
+                $this->days=$end_date_carbon->day ;
 
                 $workdays = array();
                 $type = CAL_GREGORIAN;
-                $month =Carbon::now()->endOfMonth()->month; // Month ID, 1 through to 12.
-                $year = Carbon::now()->endOfMonth()->year; // Year in 4 digit 2018 format.
+                $month =$start_date_carbon->endOfMonth()->month; // Month ID, 1 through to 12.
+                $year = $start_date_carbon->endOfMonth()->year; // Year in 4 digit 2018 format.
                 $day_count = cal_days_in_month($type, $month, $year); // Get the amount of days
                 $get_date=Carbon::parse($user_attendance->joiningDate)->month;
-                if ($get_date == $month && Carbon::parse($user_attendance->joiningDate)->year == Carbon::now()->year){
+                if ($get_date == $month && Carbon::parse($user_attendance->joiningDate)->year == $start_date_carbon->year){
                     $start_date=Carbon::parse($user_attendance->joiningDate)->day;
                 }else
                 {
@@ -167,7 +193,6 @@ class FridayReport extends Command
 
                     }
                 }
-
                 $collect=collect($workdays);
                 $collect->each(function ($item, $key) {
 
@@ -175,16 +200,19 @@ class FridayReport extends Command
                         $this->total_days_form=$key;
                     }
                 });
-                $subtract_absent_days=$this->total_days_form + 1 -($absent +$sum_leaves);
-                $total_day_time =$subtract_time * abs($subtract_absent_days);
+
+                $subtract_absent_days=$this->total_days_form + 1 -($absent + $sum_leaves);
+
+                $total_day_time = $subtract_time * abs($subtract_absent_days);
                 $asdf=$total_day_time;
+
                 $lessTimeWithoutCompensation=abs($total_day_time - $total_minutes);
                 $division = $total_day_time/100;
                 $mulitpication= $division * 10;
                 $compensate = $total_day_time - $mulitpication;
                 $getlessTime= +($compensate - $total_minutes);
                 $lessTime=abs($getlessTime);
-                if ($total_minutes <= $compensate){
+                if ($total_minutes <= $compensate && $total_minutes > 0){
                     $lessTimeWithoutCompensationTime=sprintf("%02d:%02d", floor($lessTimeWithoutCompensation/60), $lessTimeWithoutCompensation%60);
                     $loggedTime=sprintf("%02d:%02d", floor($total_minutes/60), $total_minutes%60);
                     $requiredWithoutCompansetionTime=sprintf("%02d:%02d", floor($asdf/60), $asdf%60);
@@ -201,6 +229,7 @@ class FridayReport extends Command
 
                     $names []=array('name'=>$user_attendance->name,'loggedTime'=>$loggedTime,'requiredTime'=>$requiredTime,'lessHours'=>$lessHours);
                     $emails[]=$user_attendance->email;
+//                    var_dump($user_name);
                 }
 
             }

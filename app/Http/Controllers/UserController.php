@@ -156,8 +156,8 @@ class UserController extends Controller
         $this->validate($request, [
             'image'                 => 'mimes:jpeg,jpg',
             'cnic'                  => 'integer',
-//            'ntn'                   => 'integer',
-//            'account_no'            => 'integer'
+            'workingDays'           => 'integer|required|max:7|min:5',
+            'non_working_hour'      => 'required'
 
         ]);
         $user = User::findOrFail($id);
@@ -179,7 +179,9 @@ class UserController extends Controller
                 'blood_group'           => $request->blood_group?$request->blood_group:null,
                 'is_hr'                 => $request->is_hr?true:false,
                 'compensatory_leaves'   => $request->compensatory_leaves?$request->compensatory_leaves:$user->compensatory_leaves,
-            ]);
+                'workingDays'           => $request->workingDays?$request->workingDays:5,
+                'breakAllowed'          => Carbon::parse($request->non_working_hour)->timestamp
+                ]);
         } else{
             $update= User::whereId($id)->update([
                 'name'              => $request->name,
@@ -187,7 +189,6 @@ class UserController extends Controller
                 'address'           => $request->address,
                 'qualification'     => $request->qualification,
                 'phoneNumber'       => $request->contact,
-                'address'           => $request->name
 
             ]);
         }
