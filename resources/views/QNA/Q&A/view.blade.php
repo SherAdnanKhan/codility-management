@@ -9,11 +9,11 @@
             font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
-            margin-top: 5px; margin-bottom: 5px;
+            margin-top: 0px; margin-bottom: 0px;
         }
 
         td, th {
-            border: 1px solid #dddddd;
+            border: 1px solid #000;
             text-align: left;
             padding: 4px;
         }
@@ -22,12 +22,16 @@
             footer: page-footer;
             size: 210mm 297mm;
             margin-top: 1cm;
-            margin-bottom: 5cm;
+            margin-bottom: 0cm;
         }
         .dblUnderlined { border-bottom: 3px double; text-align: left }
         h5{
             margin: 0px;
         }
+        span{
+            width: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -144,6 +148,14 @@
         <td width="100%"> &nbsp;</td>
 
     </tr>
+    <tr>
+        <td width="100%"> &nbsp;</td>
+
+    </tr>
+    <tr>
+        <td width="100%"> &nbsp;</td>
+
+    </tr>
 </table>
 
 
@@ -153,34 +165,39 @@
     @endphp
 
     <h3 class="dblUnderlined"> {{$question_category_name->name}}</h3>
-    <br>
+
     @php
         $split_question=array_chunk($questions_lists ,3 ,true)
     @endphp
+    <table cellpadding="5" cellspacing="0" border="0" >
     @foreach($questions_lists as $print_get_question)
 
         @php
             $get_question=\App\QuestionAnswer::where(['id'=>$print_get_question,'category_id'=>$item_name,'proved'=>true])->first();
         @endphp
+
         @if($get_question != null)
-            <span style=""> {{$get_question?'Q#'.$get_question->id:''}} &nbsp; &nbsp;</span><p style="margin-left: 90%; margin-top: -30px; "> {{$get_question?'('.$get_question->marks.')':''}} </p><br>{!! html_entity_decode(nl2br(e($get_question?$get_question->question:''))) !!}
+                <tr style="border: 0" >
+                    <td width="90%" style="border: 0">{{$get_question?'Q#'.$get_question->id.' : ':''}}{!! html_entity_decode(nl2br(e($get_question?$get_question->question:''))) !!}
+                        @if( $get_question->image != null)
 
-            @if( $get_question->image != null)
+                            <img  class="img-responsive " src="file:///<?= base_path()?>/public/images/question/{{$get_question?$get_question->image:''}}" alt="{{env('APP_NAME')}}">
+                        @else
 
-                <img  class="img-responsive " src="file:///<?= base_path()?>/public/images/question/{{$get_question?$get_question->image:''}}" alt="{{env('APP_NAME')}}">
-            @else
-
+                    </td>
+                    <td width="10%" style="border: 0 ;text-align: right;">{{$get_question?'('.$get_question->marks.')':''}}</td>
+                </tr>
             @endif
 
-            <br><br><br><br><br><br><br><br><br>
+
         @endif
     @endforeach
-
+    </table>
 @endforeach
 
-<htmlpagefooter name="page-footer">
-    <p style="text-align: center;">Codility © {{\Carbon\Carbon::now()->format('Y')}}, All rights reserved</p>
-</htmlpagefooter>
+{{--<htmlpagefooter name="page-footer" >--}}
+    {{--<p style="text-align: center;">Codility © {{\Carbon\Carbon::now()->format('Y')}}, All rights reserved</p>--}}
+{{--</htmlpagefooter>--}}
 
 </body>
 </html>
