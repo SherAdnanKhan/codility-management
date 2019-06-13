@@ -1,10 +1,6 @@
 @component('mail::message')
 # Employees Attendance Status at {{Carbon\Carbon::now()->toDayDateTimeString()}}
 
-@component('mail::panel')
-Following employees are not marked CHECK IN or not present in office Yet .
-@endcomponent
-
 @if(isset($get_users_collection))
     @foreach($get_users_collection as $user)
         @php
