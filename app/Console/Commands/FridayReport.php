@@ -53,12 +53,11 @@ class FridayReport extends Command
         $previous_month=Carbon::now()->subDays(6)->month;
         if($current_month != $previous_month){
             $start_date_carbon=Carbon::parse($previous_month . '/1');
-            $end_date_carbon=Carbon::parse($previous_month . '/1')->endOfMonth();
+            $end_date_carbon=Carbon::parse($previous_month . '/1')->endOfMonth()->endOfDay();
         }else{
             $start_date_carbon=Carbon::now();
-            $end_date_carbon=Carbon::now()->subDays(1);
+            $end_date_carbon=Carbon::now()->subDays(1)->endOfDay();
         }
-
         //Get All Employee
         $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']); })->where('abended',false)->get();
 
