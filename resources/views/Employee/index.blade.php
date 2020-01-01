@@ -19,12 +19,16 @@
                                     <span class="fa fa-plus"></span></a>
                             </div>
                             <div class="col-lg-3">
-                                <form action="{{route('employee.show')}}" method="GET">
+                                <form action="{{route('employee.search')}}" method="GET">
                                     <div class="input-group input-group-md">
-                                        <input class="form-control" placeholder="Search by Name" type="text" name="name">
+                                        <input class="form-control" placeholder="Search by Name" type="text" name="name" id ="search">
+
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-outline-success ">Search</button>
                                         </div>
+                                    </div>
+                                    <div  id="name_listing">
+
                                     </div>
                                 </form>
                             </div>
@@ -85,4 +89,33 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection
+@section('page_scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#search').on('keyup',function() {
+                var query = $(this).val();
+                $.ajax({
+                    url:"{{ route('profile.index') }}",
+                    type:"GET",
+                    data:{'search':query,'listing_json':true},
+                    success:function (data) {
+                        $('#name_listing').fadeIn();
+                        $('#name_listing').html(data);
+                    }
+                })
+            });
+            $(document).on('click', 'li', function(){
+                var value = $(this).text();
+                if ( value == 'No results') {
+                    $('#search').val('');
+                    $('#name_listing').html("");
+                }else{
+                    $('#search').val(value);
+                    $('#name_listing').html("");
+
+                }
+            });
+        });
+    </script>
+@endsection

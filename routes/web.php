@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register', 'UserController@showRegisterForm')->name('register.admin.form');
     Route::get('/attendance/search', 'AttendanceController@search')->name('attendance.search');
-    Route::get('/employee', 'UserController@show')->name('employee.show');
+    Route::get('/employee/search', 'UserController@employee_search')->name('employee.search');
     Route::post('/admin/register/success/', 'UserController@store')->name('admin.register');
 //    Route::post('/upload-cv/','ApplicantsController@uploadCvPost');
 //    Route::get('/upload-csv/view','ApplicantsController@uploadCsv')->name('upload.cvs');
