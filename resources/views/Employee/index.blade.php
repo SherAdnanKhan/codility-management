@@ -7,7 +7,7 @@
     <div class="container">
         <!-- Page Header-->
         <header>
-            <h1 class="h3 display">Employee Detail</h1>
+            <h1 class="h3 display">Employee Lists</h1>
         </header>
         <div class="row">
             <div class="col-lg-12">
