@@ -45,3 +45,4 @@ class Applicants extends Model
         return $this->hasOne('App\DropDown','id','interview_for');
     }
 }
+
