@@ -101,8 +101,8 @@
                         ?>
                                 "
                         >
-                            <li {{\Route::current()->getName() == 'profile.index'?"class=active ":''}}><a href="{{route('profile.index')}}"><i class="fa fa-users"></i>Employee Lists</a></li>
-                            <li {{\Route::current()->getName() == 'admin.list'?"class=active ":''}}><a href="{{route('admin.list')}}"><i class="fa fa-users"></i>Administrator List</a></li>
+                            <li {{\Route::current()->getName() == 'profile.index'?"class=active ":''}}><a href="{{route('profile.index')}}"><i class="fa fa-users"></i>Employees List</a></li>
+                            <li {{\Route::current()->getName() == 'admin.list'?"class=active ":''}}><a href="{{route('admin.list')}}"><i class="fa fa-users"></i>Administrators List</a></li>
 
                         </ul>
                     </li>
