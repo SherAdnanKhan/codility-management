@@ -11,15 +11,20 @@
 |
 */
 
-//Auth::routes();
 Route::get('/', function () {
     return view('auth.login');
 });
-/*--------------------------------
-Employee Resources
-_________________________________*/
+
 Route::group(['middleware' =>'auth:web'], function (){
-    Route::resources('employee','EmployeeController');
+    /*--------------------------------
+        Employee Resources
+    _________________________________*/
+    Route::resources('employees','EmployeeController');
+    /*--------------------------------
+        Admin Resources
+    _________________________________*/
+    Route::resources('admins','AdminController');
+
 });
 
 Route::group(['middleware' => ['auth:web', 'admin']], function () {
