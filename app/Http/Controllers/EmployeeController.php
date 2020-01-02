@@ -9,6 +9,7 @@ use App\TimeTable;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -20,13 +21,15 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $employees = Employee::get_employees($request->auto_complete_search,'name');
-            return $employees;
+            $employees = Employee::where('name','like','%' . $request->auto_complete_search . '%')->select("name")->get();
+            return response()->json([
+                'data' => $employees
+            ]);
         } elseif($request->search) {
-            $employees = Employee::get_employees($request->auto_complete_search)->paginate(10);
+            $employees = Employee::whereName($request->auto_complete_search)->paginate(10);
             return view('Employee.index', compact('employees'));
         } else {
-            $employees = Employee::get_employees()->paginate(10);
+            $employees = Employee::paginate(10);
             return view('Employee.index', compact('employees'));
         }
     }
@@ -95,7 +98,12 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (Auth::user()->isAdmin()) {
+            $user = Employee::findOrFail($id);
+        } else {
+            $user = Employee::findOrFail(Auth::user()->id);
+        }
+        return view('Employee.edit', compact('user'));
     }
 
     /**

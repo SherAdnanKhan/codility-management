@@ -65,7 +65,7 @@
                                         <td>{{$employee->shift_time != null?($employee->shift_time == 1?'Morning':'Evening' ):'Random'}}</td>
 
                                             <td class="text-primary lead">
-                                            <a href="{{route('profile.edit',$employee->id)}}"><span class="fa fa-edit"></span></a>
+                                            <a href="{{route('employees.edit',$employee->id)}}"><span class="fa fa-edit"></span></a>
                                             <form class="form-horizontal" method="POST" action = "{{ route('profile.destroy', $employee->id) }}"  enctype="multipart/form-data" >
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
