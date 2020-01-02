@@ -15,6 +15,13 @@
 Route::get('/', function () {
     return view('auth.login');
 });
+/*--------------------------------
+Employee Resources
+_________________________________*/
+Route::group(['middleware' =>'auth:web'], function (){
+    Route::resources('employee','EmployeeController');
+});
+
 Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::get('/screen/capture/change/', 'UserController@screenCapturePage')->name('screen.capture.page');
     Route::patch('/screen/capture/update/{id}', 'UserController@screenCaptureUpdate')->name('screen.capture.update');
@@ -146,4 +153,5 @@ Route::group(['middleware' => ['web', 'guest']], function () {
     Route::get('/password/reset/{token?}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
 });
+
 
