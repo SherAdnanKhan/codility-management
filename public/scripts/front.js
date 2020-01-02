@@ -132,7 +132,7 @@ $(document).ready(function () {
     $('#search').on('keyup',function() {
         var query = $(this).val();
         $.ajax({
-            url:"{{ route('profile.index') }}",
+            url:"/profile",
             type:"GET",
             data:{'search':query,'listing_json':true},
             success:function (data) {
@@ -162,4 +162,3 @@ $(document).ready(function () {
         }
     });
 });
-    
