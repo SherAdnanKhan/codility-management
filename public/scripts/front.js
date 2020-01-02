@@ -129,12 +129,12 @@ $(document).ready(function () {
 
         return false;
     });
-    $('#search').on('keyup',function() {
+    $('#auto_complete_search').on('keyup',function() {
         var query = $(this).val();
         $.ajax({
-            url:"/profile",
+            url:"/employees",
             type:"GET",
-            data:{'search':query,'listing_json':true},
+            data:{'auto_complete_search':query,'listing_json':true},
             success:function (data) {
                 $('#name_listing').show();
                 if (data.data != false) {
@@ -154,10 +154,10 @@ $(document).ready(function () {
     $(document).on('click', 'li', function(){
         var value = $(this).text();
         if ( value == 'No results') {
-            $('#search').val('');
+            $('#auto_complete_search').val('');
             $('#name_listing').html("");
         }else{
-            $('#search').val(value);
+            $('#auto_complete_search').val(value);
             $('#name_listing').html("");
         }
     });

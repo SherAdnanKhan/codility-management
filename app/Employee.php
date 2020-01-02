@@ -16,7 +16,7 @@ class Employee extends User
         }elseif($search){
             return User::whereHas('role', function ($q){
                 $q->whereIn('name',['Employee']);
-            })->where('name','==',$search )->get();
+            })->whereName($search)->orderByDesc('id');
         }else{
             return User::whereHas('role', function ($q){
                 $q->whereIn('name',['Employee']);

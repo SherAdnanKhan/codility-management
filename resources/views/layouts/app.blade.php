@@ -59,7 +59,7 @@
             <div class="main-menu">
                 <h5 class="sidenav-heading">MAIN MENU</h5>
                 <ul id="side-main-menu" class="side-menu list-unstyled <?php
-                if (\Route::current()->getName() =='profile.index' || \Route::current()->getName() == 'register' || \Route::current()->getName() == 'register.admin.form' || \Route::current()->getName()== 'admin.list'){
+                if (\Route::current()->getName() =='employees.index' || \Route::current()->getName() == 'register' || \Route::current()->getName() == 'register.admin.form' || \Route::current()->getName()== 'admin.list'){
                     echo 'show';
                 }
                 ?>
@@ -95,13 +95,13 @@
                             <i class="fa fa-users"></i> Admin &nbsp;&nbsp;<i class="fa fa-caret-down"></i>
                         </a>
                         <ul id="exampledropdownDropdown" class="collapse list-unstyled <?php
-                        if (\Route::current()->getName() =='profile.index' || \Route::current()->getName() == 'register' || \Route::current()->getName() == 'register.admin.form' || \Route::current()->getName()== 'admin.list'){
+                        if (\Route::current()->getName() =='employees.index' || \Route::current()->getName() == 'register' || \Route::current()->getName() == 'register.admin.form' || \Route::current()->getName()== 'admin.list'){
                             echo 'show';
                         }
                         ?>
                                 "
                         >
-                            <li {{\Route::current()->getName() == 'profile.index'?"class=active ":''}}><a href="{{route('profile.index')}}"><i class="fa fa-users"></i>Employees List</a></li>
+                            <li {{\Route::current()->getName() == 'employees.index'?"class=active ":''}}><a href="{{route('employees.index')}}"><i class="fa fa-users"></i>Employees List</a></li>
                             <li {{\Route::current()->getName() == 'admin.list'?"class=active ":''}}><a href="{{route('admin.list')}}"><i class="fa fa-users"></i>Administrators List</a></li>
 
                         </ul>

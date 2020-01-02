@@ -19,11 +19,11 @@ Route::group(['middleware' =>'auth:web'], function (){
     /*--------------------------------
         Employee Resources
     _________________________________*/
-    Route::resources('employees','EmployeeController');
+    Route::resource('employees','EmployeeController');
     /*--------------------------------
         Admin Resources
     _________________________________*/
-    Route::resources('admins','AdminController');
+    Route::resource('admins','AdminController');
 
 });
 

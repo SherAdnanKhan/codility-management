@@ -17,10 +17,10 @@ class EmployeeController extends Controller
         if ($request->ajax()) {
             $employees = Employee::get_employees($request->auto_complete_search,'name');
             return $employees;
-        } elseif($request->search){
-            $users = Employee::get_employees($request->search)->paginate(10);
-            return view('Employee.index', compact('users'));
-        }else {
+        } elseif($request->search) {
+            $employees = Employee::get_employees($request->search)->paginate(10);
+            return view('Employee.index', compact('employees'));
+        } else {
             $employees = Employee::get_employees()->paginate(10);
             return view('Employee.index', compact('employees'));
         }
