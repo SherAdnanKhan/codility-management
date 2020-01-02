@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Http\Requests\EmployeeRequest;
+use App\Role;
+use App\TimeTable;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -14,11 +19,11 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        if ($employee->ajax()) {
-            $employees = Employee::get_employees($employee->auto_complete_search,'name');
+        if ($request->ajax()) {
+            $employees = Employee::get_employees($request->auto_complete_search,'name');
             return $employees;
-        } elseif($employee->search) {
-            $employees = Employee::get_employees($employee->auto_complete_search)->paginate(10);
+        } elseif($request->search) {
+            $employees = Employee::get_employees($request->auto_complete_search)->paginate(10);
             return view('Employee.index', compact('employees'));
         } else {
             $employees = Employee::get_employees()->paginate(10);
@@ -33,41 +38,41 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('Employee.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param EmployeeRequest $employeeRequest
      * @return \Illuminate\Http\Response
      */
-    public function store(Employee $employee)
+    public function store(EmployeeRequest $employeeRequest)
     {
-        $timing  = TimeTable::whereId(1)->first();
-        $user = Employee::create([
-            'name'                  => $employee->name,
-            'email'                 => $employee->email,
-            'password'              => bcrypt($employee->password),
-            'address'               => $employee->address,
-            'qualification'         => $employee->qualification,
-            'designation'           => $employee->designation,
-            'phoneNumber'           => $employee->phoneNumber,
-            'joiningDate'           => $employee->joiningDate,
-            'checkInTime'           => Carbon::parse($timing->start_time)->timestamp,
-            'checkOutTime'          => Carbon::parse($timing->end_time)->timestamp,
-            'breakAllowed'          => Carbon::parse($timing->non_working_hour)->timestamp,
-            'workingDays'           => $count,
-            'cnic_no'               => $employee->cnic?$employee->cnic:null,
-            'ntn_no'                => $employee->ntn?$employee->ntn:null,
-            'bank_account_no'       => $employee->account_no?$employee->account_no:null,
-            'blood_group'           => $employee->blood_group?$employee->blood_group:null,
+        $time_table  = TimeTable::getAllowedDays();
+        $employee = User::create([
+            'name'                  => $employeeRequest->name,
+            'email'                 => $employeeRequest->email,
+            'password'              => bcrypt($employeeRequest->password),
+            'address'               => $employeeRequest->address,
+            'qualification'         => $employeeRequest->qualification,
+            'designation'           => $employeeRequest->designation,
+            'phoneNumber'           => $employeeRequest->phoneNumber,
+            'joiningDate'           => $employeeRequest->joiningDate,
+            'checkInTime'           => Carbon::parse($time_table['time_table']->start_time)->timestamp,
+            'checkOutTime'          => Carbon::parse($time_table['time_table']->end_time)->timestamp,
+            'breakAllowed'          => Carbon::parse($time_table['time_table']->non_working_hour)->timestamp,
+            'workingDays'           => $time_table['days_count'],
+            'cnic_no'               => $employeeRequest->cnic?$employeeRequest->cnic:null,
+            'ntn_no'                => $employeeRequest->ntn?$employeeRequest->ntn:null,
+            'bank_account_no'       => $employeeRequest->account_no?$employeeRequest->account_no:null,
+            'blood_group'           => $employeeRequest->blood_group?$employeeRequest->blood_group:null,
             'allotted_leaves'       => 17,
             'shift_time'            => 1
 
         ]);
         $role = Role::findOrFail(1);
-        $user->role()->attach($role);
+        $employee->role()->attach($role);
         return view('Admin.index');
     }
 

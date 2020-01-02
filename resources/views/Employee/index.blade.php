@@ -15,7 +15,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <a href="{{route('register')}}" class="btn btn-outline-success ">Add New Employee
+                                <a href="{{route('employees.create')}}" class="btn btn-outline-success ">Add New Employee
                                     <span class="fa fa-plus"></span></a>
                             </div>
                             <div class="col-lg-3">
