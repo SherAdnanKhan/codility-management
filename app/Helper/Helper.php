@@ -91,9 +91,5 @@ class Helper extends User
         $get_string=str_replace($word, $replacement,$string);
         return $get_string;
     }
-    public static function get_all_employees(){
-        return User::whereHas('role',function ($q){
-            $q->whereIn('name',['Employee']);
-        });
-    }
+
 }
