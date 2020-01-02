@@ -14,11 +14,11 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $employees = Employee::get_employees($request->auto_complete_search,'name');
+        if ($employee->ajax()) {
+            $employees = Employee::get_employees($employee->auto_complete_search,'name');
             return $employees;
-        } elseif($request->search) {
-            $employees = Employee::get_employees($request->auto_complete_search)->paginate(10);
+        } elseif($employee->search) {
+            $employees = Employee::get_employees($employee->auto_complete_search)->paginate(10);
             return view('Employee.index', compact('employees'));
         } else {
             $employees = Employee::get_employees()->paginate(10);
@@ -42,9 +42,33 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Employee $employee)
     {
-        //
+        $timing  = TimeTable::whereId(1)->first();
+        $user = Employee::create([
+            'name'                  => $employee->name,
+            'email'                 => $employee->email,
+            'password'              => bcrypt($employee->password),
+            'address'               => $employee->address,
+            'qualification'         => $employee->qualification,
+            'designation'           => $employee->designation,
+            'phoneNumber'           => $employee->phoneNumber,
+            'joiningDate'           => $employee->joiningDate,
+            'checkInTime'           => Carbon::parse($timing->start_time)->timestamp,
+            'checkOutTime'          => Carbon::parse($timing->end_time)->timestamp,
+            'breakAllowed'          => Carbon::parse($timing->non_working_hour)->timestamp,
+            'workingDays'           => $count,
+            'cnic_no'               => $employee->cnic?$employee->cnic:null,
+            'ntn_no'                => $employee->ntn?$employee->ntn:null,
+            'bank_account_no'       => $employee->account_no?$employee->account_no:null,
+            'blood_group'           => $employee->blood_group?$employee->blood_group:null,
+            'allotted_leaves'       => 17,
+            'shift_time'            => 1
+
+        ]);
+        $role = Role::findOrFail(1);
+        $user->role()->attach($role);
+        return view('Admin.index');
     }
 
     /**
