@@ -18,7 +18,7 @@ class EmployeeController extends Controller
             $employees = Employee::get_employees($request->auto_complete_search,'name');
             return $employees;
         } elseif($request->search) {
-            $employees = Employee::get_employees($request->search)->paginate(10);
+            $employees = Employee::get_employees($request->auto_complete_search)->paginate(10);
             return view('Employee.index', compact('employees'));
         } else {
             $employees = Employee::get_employees()->paginate(10);
