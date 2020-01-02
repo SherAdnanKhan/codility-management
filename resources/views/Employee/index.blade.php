@@ -27,9 +27,8 @@
                                             <button type="submit" class="btn btn-outline-success ">Search</button>
                                         </div>
                                     </div>
-                                    <div  id="name_listing">
-
-                                    </div>
+                                        <ul class="list-group" style="display: none;" id="name_listing">
+                                        </ul>
                                 </form>
                             </div>
                         </div>
@@ -89,33 +88,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('page_scripts')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#search').on('keyup',function() {
-                var query = $(this).val();
-                $.ajax({
-                    url:"{{ route('profile.index') }}",
-                    type:"GET",
-                    data:{'search':query,'listing_json':true},
-                    success:function (data) {
-                        $('#name_listing').fadeIn();
-                        $('#name_listing').html(data);
-                    }
-                })
-            });
-            $(document).on('click', 'li', function(){
-                var value = $(this).text();
-                if ( value == 'No results') {
-                    $('#search').val('');
-                    $('#name_listing').html("");
-                }else{
-                    $('#search').val(value);
-                    $('#name_listing').html("");
-
-                }
-            });
-        });
-    </script>
 @endsection

@@ -52,21 +52,15 @@ class UserController extends Controller
     {
         if (isset($request->listing_json)){
             $employee_list= Helper::get_all_employees();
-            $output = '';
             if (!empty($employee_list)){
                 $filter_user=$employee_list->where('name','like','%' . $request->search . '%')->select('name')->get();
             }
-            if (count($filter_user) >= 1 ){
-                $output = '<ul class="list-group" style="display: block;">';
-                foreach ($filter_user as $row){
-                    $output .= '<li class="list-group-item">'.$row->name.'</li>';
-                }
-                $output .= '</ul>';
-            }else{
-
-                $output .= '<li class="list-group-item">'.'No results'.'</li>';
+            if (!count($filter_user) >= 1){
+                $filter_user = false;
             }
-            return $output;
+            return response()->json([
+                'data'=> $filter_user
+            ]);
         }else{
             $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->orderByDesc('id')->paginate(10);
             return view('Employee.index', compact('users'));

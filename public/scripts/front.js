@@ -129,5 +129,37 @@ $(document).ready(function () {
 
         return false;
     });
+    $('#search').on('keyup',function() {
+        var query = $(this).val();
+        $.ajax({
+            url:"{{ route('profile.index') }}",
+            type:"GET",
+            data:{'search':query,'listing_json':true},
+            success:function (data) {
+                $('#name_listing').show();
+                if (data.data != false) {
+                    $.each(data, function (i, j) {
+                        $("#name_listing").html(``);
+                        for (l = 0; l < j.length; l++) {
+                            $("#name_listing").append(`<li class="list-group-item">${j[l].name}</li>`);
+                        }
+                    });
+                }else{
+                    $("#name_listing").html(`<li class="list-group-item">No results</li>`);
 
+                }
+            }
+        })
+    });
+    $(document).on('click', 'li', function(){
+        var value = $(this).text();
+        if ( value == 'No results') {
+            $('#search').val('');
+            $('#name_listing').html("");
+        }else{
+            $('#search').val(value);
+            $('#name_listing').html("");
+        }
+    });
 });
+    
