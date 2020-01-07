@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\Helper\Helper;
 
 class UserController extends Controller
 {
@@ -47,11 +48,24 @@ class UserController extends Controller
         return view('Admin.index');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->orderByDesc('id')->paginate(10);
+//        if (isset($request->listing_json)){
+//            $employee_list= Helper::get_all_employees();
+//            if (!empty($employee_list)){
+//                $filter_user=$employee_list->where('name','like','%' . $request->search . '%')->select('name')->get();
+//            }
+//            if (!count($filter_user) >= 1){
+//                $filter_user = false;
+//            }
+//            return response()->json([
+//                'data'=> $filter_user
+//            ]);
+//        }else{
+//            $users = User::whereHas('role',function ($q){$q->whereIn('name',['Employee']);})->orderByDesc('id')->paginate(10);
+//            return view('Employee.index', compact('users'));
+//        }
 
-        return view('Employee.index', compact('users'));
     }
 
     /**
@@ -280,5 +294,9 @@ class UserController extends Controller
 
         return view('Admin.admin_list', compact('admins'));
     }
+//    public function employee_search(Request $request){
+//        $users=User::whereName($request->name)->paginate(10);
+//        return view('Employee.index', compact('users'));
+//    }
 }
 

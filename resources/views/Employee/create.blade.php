@@ -16,7 +16,7 @@
                         <h4>Employee Register</h4>
                     </div>
                     <div class="card-body">
-                        <form class="form-horizontal" id="register" method="POST" action="{{ route('register') }}">
+                        <form class="form-horizontal" id="register" method="POST" action="{{ route('employees.store') }}">
                             {{ csrf_field() }}
                             <div class="form-group-material">
                                 <input autocomplete="off" id="name" type="text"  class="input-material" name="name" value="{{ old('name') }}" required autofocus>
