@@ -134,7 +134,7 @@ $(document).ready(function () {
         $.ajax({
             url:"/employees",
             type:"GET",
-            data:{'auto_complete_search':query,'listing_json':true},
+            data:{'s':query,'listing_json':true},
             success:function (data) {
                 $('#name_listing').show();
                 if (data.data != false) {

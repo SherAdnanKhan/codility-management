@@ -21,15 +21,16 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $employees = Employee::where('name','like','%' . $request->auto_complete_search . '%')->select("name")->get();
+            $employees = Employee::where('name','like','%' . $request->s . '%')->select("name")->get();
             return response()->json([
                 'data' => $employees
             ]);
-        } elseif($request->search) {
-            $employees = Employee::whereName($request->auto_complete_search)->paginate(10);
-            return view('Employee.index', compact('employees'));
-        } else {
-            $employees = Employee::paginate(10);
+        }else{
+            $employees = Employee::query();
+            if ($request->s){
+                $employees->whereName($request->s);
+            }
+            $employees = $employees->paginate(10);
             return view('Employee.index', compact('employees'));
         }
     }

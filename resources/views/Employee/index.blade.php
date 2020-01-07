@@ -21,7 +21,7 @@
                             <div class="col-lg-3">
                                 <form action="{{route('employees.index')}}" method="GET">
                                     <div class="input-group input-group-md">
-                                        <input class="form-control" placeholder="Search by Name" type="text" name="auto_complete_search" id ="auto_complete_search">
+                                        <input class="form-control" placeholder="Search by Name" type="text" name="s" id ="auto_complete_search">
 
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-outline-success ">Search</button>
