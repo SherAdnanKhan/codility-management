@@ -54,7 +54,7 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $employeeRequest)
     {
         $time_table  = TimeTable::getAllowedDays();
-        $employee = User::create([
+        $employee = Employee::create([
             'name'                  => $employeeRequest->name,
             'email'                 => $employeeRequest->email,
             'password'              => bcrypt($employeeRequest->password),
