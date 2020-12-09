@@ -1,0 +1,25 @@
+version: '3.3'
+volumes: 
+  codility-management-app-dir:
+    driver: local
+    driver_opts: 
+      o: bind
+      type: none
+      device: /home/sarah/projects/codility-management
+services:
+  codility-management:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    volumes:
+      - codility-management-app-dir:/codility-management
+    environment:
+      DB_CONNECTION: "mysql"
+      DB_HOST: "127.0.0.1"
+      DB_USERNAME: "rootubu"
+      DB_PASSWORD: "123456"
+      DB_PORT: "3306"
+      DB_DATABASE: "codility-management"
+    ports:
+      - "8000:8000"
+    
