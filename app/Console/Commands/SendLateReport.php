@@ -114,6 +114,7 @@ class SendLateReport extends Command
                     }
             }
         }
+
 //if have informs
         if ((!(empty($late_users))) && empty($late_user_uninforms)) {
 
@@ -131,6 +132,7 @@ class SendLateReport extends Command
         if ((!(empty($late_user_uninforms)) && (!empty($late_users)))) {
 
             Mail::send(new MailCheckIn($late_users,$late_user_uninforms));
+
 
         }
 

@@ -129,36 +129,5 @@ $(document).ready(function () {
 
         return false;
     });
-    $('#auto_complete_search').on('keyup',function() {
-        var query = $(this).val();
-        $.ajax({
-            url:"/employees",
-            type:"GET",
-            data:{'s':query,'listing_json':true},
-            success:function (data) {
-                $('#name_listing').show();
-                if (data.data != false) {
-                    $.each(data, function (i, j) {
-                        $("#name_listing").html(``);
-                        for (l = 0; l < j.length; l++) {
-                            $("#name_listing").append(`<li class="list-group-item">${j[l].name}</li>`);
-                        }
-                    });
-                }else{
-                    $("#name_listing").html(`<li class="list-group-item">No results</li>`);
 
-                }
-            }
-        })
-    });
-    $(document).on('click', 'li', function(){
-        var value = $(this).text();
-        if ( value == 'No results') {
-            $('#auto_complete_search').val('');
-            $('#name_listing').html("");
-        }else{
-            $('#auto_complete_search').val(value);
-            $('#name_listing').html("");
-        }
-    });
 });

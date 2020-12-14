@@ -43,10 +43,12 @@ class EmployeeAbsent extends Command
         $users = User::whereHas('role', function($q){$q->whereIn('name', ['Employee']);})->where('abended',false)->get();
         $carbon = Carbon::today();
         $attendance  = Carbon::parse($carbon)->timestamp;
+
         foreach ($users as $user)
         {
             $check_attendance = \App\Attendance::whereBetween('check_in_time',[$attendance ,$carbon->endOfDay()->timestamp])->where('user_id',$user->id)->first();
             if($check_attendance == null){
+
                 $inform = \App\Inform::whereBetween('attendance_date',[$attendance, $carbon->endOfDay()->timestamp])->where('user_id',$user->id)->first();
 
                 if(!($inform == null)){

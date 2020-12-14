@@ -182,7 +182,8 @@ class QuestionAnswerController extends Controller
             'answer'    =>  $request->answer,
             'marks'     =>  $request->marks,
             'variation' =>  $request->variation,
-            'proved'    =>  $request->proved?true:false
+            'proved'    =>  $request->proved?true:false,
+            'category_id' => $request->category
 
         ]);
         if ($file = $request->file('image')) {

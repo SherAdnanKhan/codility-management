@@ -55,13 +55,6 @@ php artisan db:seed
 #####After these Steps go to your application in browser
 https://yourvirtualhost or localhost /
 
-#####Login Credentials 
-
-| Field     | Credentials|
-| ------    | ------ |
-| Email     |admin@codiliy.co|
-| Password  |secret          |
-
 After login Update your profile Upload Admin Avatar
 ##Composer Update or require 'composer require guzzlehttp/guzzle'
 

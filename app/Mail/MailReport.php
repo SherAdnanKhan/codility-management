@@ -42,6 +42,5 @@ class MailReport extends Mailable
 
         return $this->markdown('mailaa_reports', compact('report_attendance', 'report_tasks', 'report_users'))->to($to)->subject("Daily Report ".Carbon::yesterday()->format('d-m-Y'));
 
-
     }
 }

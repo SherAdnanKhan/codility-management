@@ -26,6 +26,7 @@ class AttendanceController extends Controller
                 'check_in_time' => $check_in_time,
                 'user_id'       => $request->auth->id,
                 'date'          => $date
+
             ]);
             if ($attendances)
             {

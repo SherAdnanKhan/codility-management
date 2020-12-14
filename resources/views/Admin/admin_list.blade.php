@@ -7,7 +7,7 @@
     <div class="container">
         <!-- Page Header-->
         <header>
-            <h1 class="h3 display">Administrators List</h1>
+            <h1 class="h3 display">Administrator List</h1>
         </header>
         <div class="row">
             <div class="col-lg-12">

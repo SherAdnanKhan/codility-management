@@ -193,6 +193,7 @@
         @endif
     @endforeach
     </table>
+
 @endforeach
 
 {{--<htmlpagefooter name="page-footer" >--}}
