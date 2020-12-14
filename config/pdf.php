@@ -8,6 +8,6 @@ return [
 	'keywords'              => '',
 	'creator'               => 'Codility Management System',
 	'display_mode'          => 'fullpage',
-	'tempDir'               => base_path('../temp/'),
+	'tempDir'               => base_path('temp'),
 'display_mode'     => 'fullpage'
 ];

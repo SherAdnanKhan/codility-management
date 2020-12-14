@@ -57,8 +57,8 @@ class AuthController extends Controller
             'email'     => 'required|email',
             'password'  => 'required'
         ]);
-        // Find the user by email
-        $user = User::where('email', $this->request->input('email'))->first();
+        // Find the user by email 
+       $user = User::where('email', $this->request->input('email'))->first();
         if (!$user)
         {
 

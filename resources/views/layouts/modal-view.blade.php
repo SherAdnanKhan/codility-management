@@ -246,7 +246,6 @@
     </form>
     
 @endif
-
 @if(isset($interview))
     <form class="form-horizontal" id="timetable" method="POST" action="{{route('interview.update',$interview->id)}}">
         {{ csrf_field() }}

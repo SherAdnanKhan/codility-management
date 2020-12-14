@@ -15,7 +15,7 @@
 $factory->define(App\User::class, function () {
     return [
         'name' => 'Admin',
-        'email' => 'admin@codiliy.co',
+        'email' => 'admin@codility.co',
         'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
     ];

@@ -21,7 +21,6 @@ class TaskController extends Controller
      */
     public function index()
     {
-
         if (Auth::user()->isEmployee()) {
             $tasks = User::findOrFail(Auth::id())->tasks()->orderBy('date', 'desc')->paginate(10);
             return view('Task.index', compact('tasks'));

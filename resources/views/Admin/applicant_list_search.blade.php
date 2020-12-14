@@ -103,6 +103,7 @@
                             <tr>
                                 
                                 <td>{{$test->marks?$test->marks:'No Marks Added'}}</td>
+
                                 <td>{{$test->status == 10 ?'Fail':'Pass'}}</td>
                                 <td>{{$test->serial_number != null ?$test->serial_number:'Not Exists'}}</td>
                                 <td>{{$test->note?$test->note:''}}</td>

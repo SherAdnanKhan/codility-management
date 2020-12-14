@@ -111,6 +111,15 @@ class AttendanceController extends Controller
             $attendance = Carbon::parse($request->check_in_time);
             $add_day = $attendance->endOfDay()->timestamp;
             $status = $compare_time ? 'late' : 'check_in';
+            if ( $user->workingDays == 5){
+                if (Carbon::parse($request->check_in_time)->isSunday() || Carbon::parse($request->check_in_time)->isSaturday()){
+                    $status = 'check_in';
+                }
+            }elseif($user->workingDays == 6){
+                if (Carbon::parse($request->check_in_time)->isSunday()){
+                    $status = 'check_in';
+                }
+            }
             $inform = Inform::whereBetween('attendance_date', [$attendance->startOfDay()->timestamp, $add_day])->where('user_id', Auth::user()->isEmployee() ? Auth::id() : $request->employee)->first();
         } else {
             $inform = false;
@@ -534,9 +543,12 @@ class AttendanceController extends Controller
                 $subtract_time = $default_check_out_time->diffInRealMinutes($default_check_in_time) - $total_break_minutes;
                 //edit
                 $get_month_dates = Carbon::parse($request->month . '/1')->endOfMonth()->isSunday();
-                if ($get_month_dates == true){
+                $get_month_saturday =Carbon::parse($request->month . '/1')->endOfMonth()->isSaturday();
+		if ($get_month_dates == true){
                     $this->days=Carbon::parse($request->month . '/1')->endOfMonth()->day - 2;
-                }else{
+                }elseif($get_month_saturday == true){
+		   $this->days=Carbon::parse($request->month . '/1')->endOfMonth()->day - 1;
+		}else{
                     $this->days=Carbon::parse($request->month . '/1')->endOfMonth()->day;
 
                 }
@@ -581,11 +593,11 @@ class AttendanceController extends Controller
 
                     }
                 }
-//echo($this->days);
+//dd($workdays);
 //                dd($workdays);
                 $collect = collect($workdays);
                 $collect->each(function ($item, $key) {
-//                    echo($item."</br>");
+//                    echo($item.'ss'.$this->days."</br>");
                     if ($item == $this->days) {
                         $this->total_days_form = $key  ;
                     }

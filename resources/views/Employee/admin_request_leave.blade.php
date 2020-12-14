@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title> {{config('app.name')}} | Task </title>
+    <title> {{config('app.name')}} | Leave Request List </title>
 @endsection
 @section('page_styles')
     
@@ -85,7 +85,6 @@
                                             @endif
 
                                         </div>
-    
                                         {{--<div class="form-group-material col-sm-3 "style="margin-top: 23px;">--}}
                                             {{--<div class='input-group-material'>--}}
                                                 {{--<input type='text' id='name' name="name"   value="{{\Request::get('name')?\Request::get('name'):''}}" class="input-material" />--}}
@@ -116,7 +115,7 @@
                                     <th>Employee Name</th>
                                     <th>Leave From</th>
                                     <th>Leave TO</th>
-                                    <th>Required Leave</th>
+                                    <th>Leave Approved AS</th>
                                     <th>Leave Reason</th>
                                     <th>Approved Status</th>
                                     <th>Marked Approved</th>

@@ -11,22 +11,10 @@
 |
 */
 
+//Auth::routes();
 Route::get('/', function () {
     return view('auth.login');
 });
-
-Route::group(['middleware' =>'auth:web'], function (){
-    /*--------------------------------
-        Employee Resources
-    _________________________________*/
-    Route::resource('employees','EmployeeController');
-    /*--------------------------------
-        Admin Resources
-    _________________________________*/
-    Route::resource('admins','AdminController');
-
-});
-
 Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::get('/screen/capture/change/', 'UserController@screenCapturePage')->name('screen.capture.page');
     Route::patch('/screen/capture/update/{id}', 'UserController@screenCaptureUpdate')->name('screen.capture.update');
@@ -34,7 +22,7 @@ Route::group(['middleware' => ['auth:web', 'admin']], function () {
     Route::get('admin/home', 'HomeController@home')->name('admin.home');
     Route::get('/admin/register', 'UserController@showRegisterForm')->name('register.admin.form');
     Route::get('/attendance/search', 'AttendanceController@search')->name('attendance.search');
-    Route::get('/employee/search', 'UserController@employee_search')->name('employee.search');
+    Route::get('/employee', 'UserController@show')->name('employee.show');
     Route::post('/admin/register/success/', 'UserController@store')->name('admin.register');
 //    Route::post('/upload-cv/','ApplicantsController@uploadCvPost');
 //    Route::get('/upload-csv/view','ApplicantsController@uploadCsv')->name('upload.cvs');
@@ -158,5 +146,4 @@ Route::group(['middleware' => ['web', 'guest']], function () {
     Route::get('/password/reset/{token?}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
 });
-
 

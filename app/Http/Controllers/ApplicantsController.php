@@ -135,6 +135,7 @@ class ApplicantsController extends Controller
         }else{
             $applicants=Applicants::orderBy('id','desc')->paginate(10);
             return view('Admin.applicant_list',compact('applicants','statuses'))->with('status','Search Field Empty.');
+
         }
     }
 

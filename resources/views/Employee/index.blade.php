@@ -7,7 +7,7 @@
     <div class="container">
         <!-- Page Header-->
         <header>
-            <h1 class="h3 display">Employees List</h1>
+            <h1 class="h3 display">Employee Detail</h1>
         </header>
         <div class="row">
             <div class="col-lg-12">
@@ -15,20 +15,17 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <a href="{{route('employees.create')}}" class="btn btn-outline-success ">Add New Employee
+                                <a href="{{route('register')}}" class="btn btn-outline-success ">Add New Employee
                                     <span class="fa fa-plus"></span></a>
                             </div>
                             <div class="col-lg-3">
-                                <form action="{{route('employees.index')}}" method="GET">
+                                <form action="{{route('employee.show')}}" method="GET">
                                     <div class="input-group input-group-md">
-                                        <input class="form-control" placeholder="Search by Name" type="text" name="s" id ="auto_complete_search">
-
+                                        <input class="form-control" placeholder="Search by Name" type="text" name="name">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-outline-success ">Search</button>
                                         </div>
                                     </div>
-                                        <ul class="list-group" style="display: none;" id="name_listing">
-                                        </ul>
                                 </form>
                             </div>
                         </div>
@@ -52,21 +49,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if($employees)
-                                    @foreach($employees as $employee)
+                                @if($users)
+                                    @foreach($users as $user)
                                         <tr>
-                                        <td>{{$employee->name}}</td>
-                                        <td>{{$employee->email}}</td>
-                                        <td>{{$employee->designation?$employee->designation: 'Administrator'}}</td>
-                                        <td>{{$employee->joiningDate?$employee->joiningDate :'No Date'}}</td>
-                                        <td>{{$employee->address?$employee->address:'Codility'}}</td>
-                                        <td>{{$employee->qualification?$employee->qualification :''}}</td>
-                                        <td>{{$employee->phoneNumber?$employee->phoneNumber:'Codility Number'}}</td>
-                                        <td>{{$employee->shift_time != null?($employee->shift_time == 1?'Morning':'Evening' ):'Random'}}</td>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->designation?$user->designation: 'Administrator'}}</td>
+                                        <td>{{$user->joiningDate?$user->joiningDate :'No Date'}}</td>
+                                        <td>{{$user->address?$user->address:'Codility'}}</td>
+                                        <td>{{$user->qualification?$user->qualification :''}}</td>
+                                        <td>{{$user->phoneNumber?$user->phoneNumber:'Codility Number'}}</td>
+                                        <td>{{$user->shift_time != null?($user->shift_time == 1?'Morning':'Evening' ):'Random'}}</td>
 
                                             <td class="text-primary lead">
-                                            <a href="{{route('employees.edit',$employee->id)}}"><span class="fa fa-edit"></span></a>
-                                            <form class="form-horizontal" method="POST" action = "{{ route('profile.destroy', $employee->id) }}"  enctype="multipart/form-data" >
+                                            <a href="{{route('profile.edit',$user->id)}}"><span class="fa fa-edit"></span></a>
+                                            <form class="form-horizontal" method="POST" action = "{{ route('profile.destroy', $user->id) }}"  enctype="multipart/form-data" >
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
                                                 <button class="form-submit fa fa-times" type="submit" >
@@ -80,7 +77,7 @@
                                 </tbody>
                             </table>
                             <div class="bootstrap-iso">
-                            {{$employees->links()}}
+                            {{$users->links()}}
                             </div>
                         </div>
                     </div>
@@ -88,4 +85,4 @@
             </div>
         </div>
     </div>
-@endsection
+    @endsection

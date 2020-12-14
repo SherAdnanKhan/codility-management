@@ -129,8 +129,10 @@
                                 <tbody>
                                 @if($attendances)
                                     @foreach($attendances as $attendance)
+
                                         <tr style="color: {{\App\Helper\Helper::check_uninformed_late($attendance->getOriginal('attendance_type')) == true?'red':(\App\Helper\Helper::check_informed_late($attendance->getOriginal('attendance_type'))== true ?'#f17707':(\App\Helper\Helper::check_uninformed_leave($attendance->getOriginal('attendance_type')) == true ?'#8a0000':'#067d11'))}}">
                                         {{--<tr style="color:{{$attendance->attendance_type=='Late'?'red':'green'}};">--}}
+
                                                 <td>{{$attendance->check_in_time}}</td>
                                                 <td>{{$attendance->check_out_time?$attendance->check_out_time:'Not Inserted'}}</td>
                                                 <td>{{$attendance->break_interval?$attendance->break_interval:'Not Inserted'}}</td>
@@ -155,7 +157,7 @@
                                                         @if($attendance->leave_comment && $attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp))
                                                         style= "color:{{$attendance->inform(\Carbon\Carbon::parse($attendance->check_in_time)->startOfDay()->timestamp,\Carbon\Carbon::parse($attendance->check_in_time)->endOfDay()->timestamp)->leaves->color_code}}"
                                                         @elseif($attendance->leave_comment == null && $attendance->leave_id != null)
-                                                        style= "color:{{$attendance->leave->color_code}}"
+                                                        style= "color:{{$attendance->leave->color_code?$attendance->leave->color_code:''}}"
                                                         @endif
                                                 >
                                                     @if($attendance->leave_comment != null)
@@ -179,7 +181,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="bootstrap-iso">
+	         <div class="bootstrap-iso">
                         {{$attendances->links()}}
                     </div>
                 </div>

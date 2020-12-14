@@ -250,9 +250,9 @@ class RequestLeaveController extends Controller
 
         }else{
 
-            $request_leaves = RequestLeave::whereBetween('from_date', [$this->start_date, $this->end_date])->orderBy('from_date','desc')->paginate(10);
+           $request_leaves = RequestLeave::whereBetween('from_date', [$this->start_date, $this->end_date])->orderBy('from_date','desc')->paginate(10);
 
-        }
+       }
 
         $request_leaves->withPath("?filter=$request->filter&start_date=$request->start_date&end_date=$request->end_date&name=$name");
         return view('Employee.admin_request_leave',compact('request_leaves'));

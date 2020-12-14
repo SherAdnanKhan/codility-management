@@ -13,7 +13,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsToMany('App\Role','role_admins','user_id');
+        return $this->belongsToMany('App\Role','role_admins');
     }
 
     /**
