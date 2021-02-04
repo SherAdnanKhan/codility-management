@@ -138,7 +138,7 @@ class SendLateReport extends Command
 
         if (!(empty($late_users) && empty($late_users_data))) {
             foreach ($late_users_data as $late_users_detail) {
-                Mail::send(new MailLateEmployee($late_users_detail));
+               // Mail::send(new MailLateEmployee($late_users_detail));
 
             }
         }
