@@ -4,7 +4,7 @@
 @endsection
 @section('page_styles')
 
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
 @endsection
 @section('body')
@@ -235,7 +235,7 @@
                                     </span>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-outline-success">Mark Attendance</button>
+                        <button type="submit" id="button_submit_attendance" class="btn btn-outline-success">Mark Attendance L <i class="fa fa-spinner hide" aria-hidden="true"></i></button>
                         <button type="button" id="button_clear" class="btn btn-outline-danger">
                             Reset
                         </button>
@@ -251,6 +251,8 @@
     <script src="{{asset('scripts/moment.js')}}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
+    <!-- <script src="{{asset('js/mark_attendance.js')}}"></script> -->
+
     <script type="text/javascript">
         $(function () {
             var nowDate = new Date();
@@ -280,6 +282,8 @@
             $('#timetable input[type="text"]').val('');
             $('#timetable input[type="checkbox"]').prop('checked', false);
         });
+
+        
         $(function () {
             // var FromEndDate = new Date();
             $('#start_date').datetimepicker({format:'L'
