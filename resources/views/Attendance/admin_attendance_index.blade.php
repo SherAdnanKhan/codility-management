@@ -4,7 +4,7 @@
 @endsection
 @section('page_styles')
 
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('/styles/bootstrap-datetimepicker.min.css')}}">
 @endsection
 @section('body')
@@ -391,9 +391,11 @@
         });
         $(".delete_link").on('click',function() {
             var attendance=$(this).data("value");
-            $.get('/attendance/'+ attendance +'/',function (result) {
+            var url = '{{ route("attendance.destroy", ":id") }}';
+            url = url.replace(':id', attendance );
+            $.get(`${url}`,function (result) {
                 $('#delete').html("Are You Sure Delete "  +
-                    '<form class=form-inline" method="POST"  action ="/attendance/'+result+'"   enctype="multipart/form-data" >' +
+                    '<form class=form-inline" method="POST"  action ="'+url+'"   enctype="multipart/form-data" >' +
                     '{{method_field('DELETE')}}' +
                     '{{ csrf_field()}}'+
                     ' <button class="form-submit  btn btn-outline-success" type="submit" > Confirm Delete </button> </form>');
