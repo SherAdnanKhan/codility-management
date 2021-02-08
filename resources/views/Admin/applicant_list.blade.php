@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title xmlns="http://www.w3.org/1999/html"> {{config('app.name')}} | Applicants</title>
+    <title xmlns="//www.w3.org/1999/html"> {{config('app.name')}} | Applicants</title>
 @endsection
 @section('page_styles')
     
@@ -1162,7 +1162,7 @@
 @endsection
 @section('page_scripts')
     <script src="{{asset('scripts/moment.js')}}"></script>
-    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
+    {{--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
     <script src="{{asset('scripts/bootstrap-datetimepicker.min.js')}}"></script>
     <script src="{{asset('scripts/bootstrap-tagsinput-angular.min.js')}}"></script>
     <script src="{{asset('scripts/bootstrap-tagsinput.min.js')}}"></script>
